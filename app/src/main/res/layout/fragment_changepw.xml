@@ -4,15 +4,88 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark">
 
-    <TextView
-        android:text="@string/changepw"
-        android:textColor="@color/white"
-        android:textSize="25dp"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textStyle="bold|italic"
-        />
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textViewHRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="@string/changepw"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="35dp"
+            android:textStyle="bold|italic" />
+
+        <EditText
+            android:id="@+id/editextPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/search_layout"
+            android:backgroundTint="@color/white"
+            android:ems="8"
+            android:hint="@string/enter_password"
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimaryDark"
+            android:textColorHint="@color/pinkLight"
+            android:textStyle="italic" />
+
+        <EditText
+            android:id="@+id/editextNewPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/search_layout"
+            android:backgroundTint="@color/white"
+            android:ems="8"
+            android:hint="@string/enter_new_password"
+            android:imeOptions="actionDone"
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimaryDark"
+            android:textColorHint="@color/pinkLight"
+            android:textStyle="italic" />
+        <EditText
+            android:id="@+id/editextConfirmPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/search_layout"
+            android:backgroundTint="@color/white"
+            android:ems="8"
+            android:hint="@string/confirm_password"
+            android:imeOptions="actionDone"
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimaryDark"
+            android:textColorHint="@color/pinkLight"
+            android:textStyle="italic" />
+
+        <Button
+            android:id="@+id/buttonSignin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/search_btn"
+            android:backgroundTint="@color/colorPrimary"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:text="@string/changepw"
+            android:textColor="@color/white" />
+
+
+    </LinearLayout>
 
 
 
