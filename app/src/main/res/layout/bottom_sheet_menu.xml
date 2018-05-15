@@ -46,29 +46,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/fragmentMenu1Vdo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:orientation="horizontal"
-        android:padding="16dp">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            app:srcCompat="@drawable/ic_play" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="16dp"
-            android:text="@string/videos" />
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/DialogMenu1Remove"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
