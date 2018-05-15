@@ -86,8 +86,7 @@
         android:onClick="addNewNoteFunction"
         android:src="@drawable/ic_plus_white"
         app:backgroundTint="@color/colorAccent"
-        app:fabSize="normal"
-        app:rippleColor="@android:color/darker_gray" />
+        app:fabSize="normal" />
 
 
 </android.support.design.widget.CoordinatorLayout>
