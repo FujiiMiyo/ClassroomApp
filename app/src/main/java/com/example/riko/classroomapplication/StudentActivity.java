@@ -62,9 +62,6 @@ public class StudentActivity extends AppCompatActivity implements NavigationView
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new ChangepwFragment()).commit();
                 break;
-            case R.id.nav_deleteaccount:
-                Toast.makeText(this, "Delete Account", Toast.LENGTH_SHORT).show();
-                break;
             case R.id.nav_logout:
                 signOut();
                 Toast.makeText(this, "Sign Out", Toast.LENGTH_SHORT).show();

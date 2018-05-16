@@ -73,6 +73,7 @@ public class Signin1Activity extends AppCompatActivity{
                                         signIn.putExtra("Username", member.getUsername());
                                         signIn.putExtra("Status", member.getStatus());
                                         signIn.putExtra("Name", member.getName());
+                                        signIn.putExtra("Password", member.getPassword());
                                         startActivity(signIn);
                                         Toast.makeText(Signin1Activity.this, "Sign In successfully! Welcome Teacher", Toast.LENGTH_SHORT).show();
                                     } else {
@@ -80,6 +81,7 @@ public class Signin1Activity extends AppCompatActivity{
                                         signIn.putExtra("Username", member.getUsername());
                                         signIn.putExtra("Status", member.getStatus());
                                         signIn.putExtra("Name", member.getName());
+                                        signIn.putExtra("Password", member.getPassword());
                                         startActivity(signIn);
                                         Toast.makeText(Signin1Activity.this, "Sign In successfully! Welcome Student", Toast.LENGTH_SHORT).show();
                                     }

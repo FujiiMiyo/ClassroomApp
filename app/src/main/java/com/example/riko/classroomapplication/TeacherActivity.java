@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.riko.classroomapplication.Model.Member;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -98,9 +99,17 @@ public class TeacherActivity extends AppCompatActivity implements NavigationView
                 String userName = intent.getStringExtra("Username");
                 String status = intent.getStringExtra("Status");
                 String name = intent.getStringExtra("Name");
+                String password = intent.getStringExtra("Password");
+                //HeaderView in Drawer Layout
                 textUsername.setText(userName);
                 textStatus.setText(status);
                 textName.setText(name);
+
+                Member member = dataSnapshot.child(textUsername.getText().toString()).getValue(Member.class);
+                Intent changepw = new Intent(TeacherActivity.this, ChangepwFragment.class);
+                changepw.putExtra("Username", member.getUsername());
+                changepw.putExtra("Password", member.getPassword());
+
                 Log.d(TAG, String.valueOf(textUsername));
             }
             @Override
@@ -120,9 +129,6 @@ public class TeacherActivity extends AppCompatActivity implements NavigationView
             case R.id.nav_changepw:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new ChangepwFragment()).commit();
-                break;
-            case R.id.nav_deleteaccount:
-                Toast.makeText(this, "Delete Account", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_logout:
                 signOut();
@@ -173,7 +179,10 @@ public class TeacherActivity extends AppCompatActivity implements NavigationView
     *
     *
     */
-    //--------- Function ---------------------------//
+    //--------- Send data to fragment ---------------------------//
+    private void sendData(){
+
+    }
 
 
 
