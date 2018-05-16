@@ -55,6 +55,7 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
     private LinearLayout exam, vdo, files, delete;
     private FirebaseDatabase database;
     private DatabaseReference table_subject;
+    private Query list_subject;
     private SubjectAdapter subjectAdapter;
     private List<Subject> listSubjectID;
     private List<Subject> listSubjectName;
@@ -77,7 +78,7 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
         //--------------------- Firebase ----------------------------//
         database = FirebaseDatabase.getInstance();
         table_subject = database.getReference("Subject");
-
+        //list_subject = database.getReference("Subject").orderByChild("subjectID");
         //-------------------- Search --------------------------//
         textSubjectID = view.findViewById(R.id.textSubjectId);
         textSubjectname = view.findViewById(R.id.textSubject);
@@ -147,7 +148,7 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
     //---------------- Subject List -------------------------------------------------//
     void GetSubjectFirebase(){
         //Query searchQuery = table_subject.orderByChild("subjectname").startAt(searchText).endAt(searchText + "\uf8ff");
-        table_subject.addChildEventListener(new ChildEventListener() {
+        table_subject.orderByChild("subjectname").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Subject subject = new Subject();
@@ -180,6 +181,44 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
             }
         });
     }
+
+    void GetSearchFirebase(String searchText){
+
+        //Clear ListSubject
+        listSubjectID.clear();
+        listSubjectName.clear();
+
+        Query searchQuery = table_subject.orderByChild("subjectname").startAt(searchText).endAt(searchText + "\uf8ff");
+        searchQuery.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Subject subject = new Subject();
+                subject = dataSnapshot.getValue(Subject.class);
+
+
+                //Add to ArrayList
+                listSubjectID.add(subject);
+                listSubjectName.add(subject);
+                //Add List into Adapter/RecyclerView
+                recyclerViewSubject.setAdapter(subjectAdapter);
+            }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+
+        });
+
+    }
+
 
     //---------------- Subject List -------------------------------------------------//
     public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectViewHolder>{
@@ -237,7 +276,7 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
         if (v == searchBtn){
             Toast.makeText(getActivity(), "Search", Toast.LENGTH_SHORT).show();
             String searchText = searchField.getText().toString().toUpperCase();
-            //GetSubjectFirebase(searchText);
+            GetSearchFirebase(searchText);
         }
     }
 
