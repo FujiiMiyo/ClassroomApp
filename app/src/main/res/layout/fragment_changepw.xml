@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark">
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
             android:padding="15dp"
             android:text="@string/changepw"
             android:textAlignment="center"
-            android:textColor="@color/white"
+            android:textColor="@color/colorPrimary"
             android:textSize="35dp"
             android:textStyle="bold|italic" />
 
@@ -29,14 +29,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:background="@drawable/search_layout"
-            android:backgroundTint="@color/white"
+            android:backgroundTint="@color/grey6"
             android:ems="8"
             android:hint="@string/enter_password"
             android:inputType="textPassword"
             android:padding="10dp"
             android:textAlignment="center"
-            android:textColor="@color/colorAccent"
-            android:textColorHint="@color/orangeLight2"
+            android:textColor="@color/colorPrimary"
+            android:textColorHint="@color/pinkLight"
             android:textStyle="italic" />
 
         <EditText
@@ -45,14 +45,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:background="@drawable/search_layout"
-            android:backgroundTint="@color/white"
+            android:backgroundTint="@color/grey6"
             android:ems="8"
             android:hint="@string/enter_new_password"
-            android:imeOptions="actionDone"
             android:inputType="textPassword"
             android:padding="10dp"
             android:textAlignment="center"
-            android:textColor="@color/bluegreen"
+            android:textColor="@color/colorAccent"
             android:textColorHint="@color/orangeLight2"
             android:textStyle="italic" />
         <EditText
@@ -61,14 +60,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:background="@drawable/search_layout"
-            android:backgroundTint="@color/white"
+            android:backgroundTint="@color/grey6"
             android:ems="8"
             android:hint="@string/confirm_password"
             android:imeOptions="actionDone"
             android:inputType="textPassword"
             android:padding="10dp"
             android:textAlignment="center"
-            android:textColor="@color/bluegreen"
+            android:textColor="@color/colorAccent"
             android:textColorHint="@color/orangeLight2"
             android:textStyle="italic" />
 
@@ -83,10 +82,6 @@
             android:foreground="?android:attr/selectableItemBackground"
             android:text="@string/changepw"
             android:textColor="@color/white" />
-
-
     </LinearLayout>
-
-
 
 </RelativeLayout>

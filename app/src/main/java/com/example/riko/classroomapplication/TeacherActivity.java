@@ -78,16 +78,6 @@ public class TeacherActivity extends AppCompatActivity implements NavigationView
         //------------------------------------------------------//
     }
 
-
-    private void displayDrawerLayout() {
-        setSupportActionBar(toolbar);
-        navigationView.setNavigationItemSelectedListener(this);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-    }
-
     private void initFirebase() {
         //Init Firebase SignIn
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -118,7 +108,17 @@ public class TeacherActivity extends AppCompatActivity implements NavigationView
         });
     }
 
+
     //-- Toolbar & DrawerLayout --***//
+    private void displayDrawerLayout() {
+        setSupportActionBar(toolbar);
+        navigationView.setNavigationItemSelectedListener(this);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
@@ -138,6 +138,7 @@ public class TeacherActivity extends AppCompatActivity implements NavigationView
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+
     private void signOut() {
         Intent intent = new Intent(TeacherActivity.this, MainActivity.class);
         startActivity(intent);

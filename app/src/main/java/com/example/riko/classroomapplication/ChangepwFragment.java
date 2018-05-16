@@ -1,5 +1,6 @@
 package com.example.riko.classroomapplication;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,6 +13,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.riko.classroomapplication.Model.Member;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.internal.api.FirebaseNoSignedInUserException;
+
 public class ChangepwFragment extends Fragment implements View.OnClickListener {
 
     private View view;
@@ -19,7 +29,9 @@ public class ChangepwFragment extends Fragment implements View.OnClickListener {
     private EditText editextNewPassword;
     private EditText editextConfirmPassword;
     private Button buttonChangepw;
-    private Intent intent;
+    private String pass;
+    private String newpass;
+    private String username;
 
     @Nullable
     @Override
@@ -31,6 +43,7 @@ public class ChangepwFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initInstance() {
+
         editextPassword = view.findViewById(R.id.editextPassword);
         editextNewPassword = view.findViewById(R.id.editextNewPassword);
         editextConfirmPassword = view.findViewById(R.id.editextConfirmPassword);
@@ -40,8 +53,47 @@ public class ChangepwFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if (v == buttonChangepw){
-            Toast.makeText(getContext(), "Already changed your password!", Toast.LENGTH_SHORT).show();
+        if (v == buttonChangepw) {
+            //Toast.makeText(getContext(), "Already changed your password!", Toast.LENGTH_SHORT).show();
+            initFirebase();
         }
     }
+
+    private void initFirebase() {
+        final ProgressDialog progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage("Please waiting . . .");
+        progressDialog.show();
+
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference table_member = database.getReference("Member");
+
+        table_member.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (editextPassword.getText().toString().isEmpty()) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getContext(), "Please enter your password", Toast.LENGTH_SHORT).show();
+                } else if (editextNewPassword.getText().toString().isEmpty()) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getContext(), "Please enter your new password", Toast.LENGTH_SHORT).show();
+                } else if (editextConfirmPassword.getText().toString().isEmpty()) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getContext(), "Please confirm your password", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = getIntent();
+                    String userName = intent.getStringExtra("Username");
+                    String status = intent.getStringExtra("Status");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
+
 }
