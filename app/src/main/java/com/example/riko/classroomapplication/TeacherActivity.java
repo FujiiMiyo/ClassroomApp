@@ -40,8 +40,6 @@ public class TeacherActivity extends AppCompatActivity implements NavigationView
     private View headerView;
     //<------------------------------------------------>
 
-
-
     private boolean doubleBackToExitPressedOnce;
 
 
@@ -60,7 +58,6 @@ public class TeacherActivity extends AppCompatActivity implements NavigationView
                     new TeacherCoursesFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_coures);
         }
-
     }
 
 
