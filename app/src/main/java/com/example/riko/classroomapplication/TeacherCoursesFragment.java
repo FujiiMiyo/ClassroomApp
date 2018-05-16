@@ -43,6 +43,7 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
 
     private static final String TAG = MainActivity.class.getName();
     //test comment
+    //Test MyCommit
 
     private ImageButton searchBtn;
     private TextView textSubjectID, textSubjectname;
@@ -54,7 +55,8 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
     private LinearLayout exam, vdo, files, delete;
     private FirebaseDatabase database;
     private DatabaseReference table_subject;
-    //private SubjectAdapter subjectAdapter;
+    private Query list_subject;
+    private SubjectAdapter subjectAdapter;
     private List<Subject> listSubjectID;
     private List<Subject> listSubjectName;
     private FirebaseRecyclerAdapter recyclerAdapter;
@@ -74,9 +76,9 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
 
     private void initInstance() {
         //--------------------- Firebase ----------------------------//
-        //database = FirebaseDatabase.getInstance();
-        //table_subject = database.getReference("Subject");
-
+        database = FirebaseDatabase.getInstance();
+        table_subject = database.getReference("Subject");
+        //list_subject = database.getReference("Subject").orderByChild("subjectID");
         //-------------------- Search --------------------------//
         textSubjectID = view.findViewById(R.id.textSubjectId);
         textSubjectname = view.findViewById(R.id.textSubject);
@@ -98,12 +100,12 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
 
 
         //----------------- Subject list -------------------------------//
-        /*listSubjectID = new ArrayList<>();
+        listSubjectID = new ArrayList<>();
         listSubjectName = new ArrayList<>();
         subjectAdapter = new SubjectAdapter(listSubjectID, listSubjectName);
-        //GetSubjectFirebase();*/
+        GetSubjectFirebase();
 
-
+        /*
         Query query =  FirebaseDatabase.getInstance().getReference().child("Subject");
         FirebaseRecyclerOptions<Subject> options = new FirebaseRecyclerOptions.Builder<Subject>()
                 .setQuery(query, Subject.class)
@@ -122,10 +124,10 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
                 Subject subject = model;
                 holder.setSubject(subject.getSubjectID(), subject.getSubjectname());
             }
-        };
+        };*/
 
     }
-
+    /*
     public static class SubjectViewHolder extends RecyclerView.ViewHolder{
         TextView textSubjectId;
         TextView textSubject;
@@ -140,13 +142,13 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
             textSubjectId.setText(subjectID);
             textSubject.setText(subjectname);
         }
-    }
+    }*/
 
 
     //---------------- Subject List -------------------------------------------------//
-    /*void GetSubjectFirebase(String searchText){
-        Query searchQuery = table_subject.orderByChild("subjectname").startAt(searchText).endAt(searchText + "\uf8ff");
-        searchQuery.addChildEventListener(new ChildEventListener() {
+    void GetSubjectFirebase(){
+        //Query searchQuery = table_subject.orderByChild("subjectname").startAt(searchText).endAt(searchText + "\uf8ff");
+        table_subject.orderByChild("subjectname").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Subject subject = new Subject();
@@ -178,10 +180,48 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
 
             }
         });
-    }*/
+    }
+
+    void GetSearchFirebase(String searchText){
+
+        //Clear ListSubject
+        listSubjectID.clear();
+        listSubjectName.clear();
+
+        Query searchQuery = table_subject.orderByChild("subjectname").startAt(searchText).endAt(searchText + "\uf8ff");
+        searchQuery.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Subject subject = new Subject();
+                subject = dataSnapshot.getValue(Subject.class);
+
+
+                //Add to ArrayList
+                listSubjectID.add(subject);
+                listSubjectName.add(subject);
+                //Add List into Adapter/RecyclerView
+                recyclerViewSubject.setAdapter(subjectAdapter);
+            }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+
+        });
+
+    }
+
 
     //---------------- Subject List -------------------------------------------------//
-    /*public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectViewHolder>{
+    public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectViewHolder>{
 
         List<Subject> listArrayID;
         List<Subject> listArrayName;
@@ -224,7 +264,7 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
         public int getItemCount() {
             return listArrayID.size();
         }
-    }*/
+    }
 
 
 
@@ -236,11 +276,11 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
         if (v == searchBtn){
             Toast.makeText(getActivity(), "Search", Toast.LENGTH_SHORT).show();
             String searchText = searchField.getText().toString().toUpperCase();
-            //GetSubjectFirebase(searchText);
+            GetSearchFirebase(searchText);
         }
     }
 
-
+    /*
     @Override
     public void onStart() {
         super.onStart();
@@ -251,5 +291,5 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
     public void onStop() {
         super.onStop();
         recyclerAdapter.stopListening();
-    }
+    }*/
 }
