@@ -4,12 +4,7 @@
     android:id="@+id/list_item_subject_id"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:paddingBottom="20dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:paddingTop="10dp">
-
+    android:background="@color/white">
 
     <TextView
         android:id="@+id/textSubjectId"
@@ -19,31 +14,35 @@
         android:layout_marginTop="10dp"
         android:text="l01237406"
         android:textColor="@color/grey3"
-        android:textSize="16dp" />
+        android:textSize="14dp" />
 
     <TextView
         android:id="@+id/textSubject"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textSubjectId"
+        android:layout_alignStart="@+id/textSubjectId"
         android:layout_below="@+id/textSubjectId"
-        android:layout_marginRight="75dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="80dp"
+        android:paddingRight="10dp"
         android:text="OBJECT-ORIENTED PROGRAMMING"
+        android:singleLine="true"
         android:textColor="@color/grey2"
-        android:textSize="18dp"
+        android:textSize="16dp"
         android:textStyle="bold" />
 
-
-    <ImageView
+    <ImageButton
         android:id="@+id/imgMenu"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_marginRight="23dp"
-        android:layout_marginTop="23dp"
-        app:srcCompat="@drawable/ic_expand_more" />
+        android:background="@color/black1"
+        app:srcCompat="@drawable/ic_delete_white"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"/>
 
 
 </RelativeLayout>

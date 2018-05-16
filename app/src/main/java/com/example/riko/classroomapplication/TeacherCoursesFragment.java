@@ -1,6 +1,9 @@
 package com.example.riko.classroomapplication;
 
 
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,7 +12,9 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -60,6 +65,7 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
     private List<Subject> listSubjectID;
     private List<Subject> listSubjectName;
     private FirebaseRecyclerAdapter recyclerAdapter;
+    private Dialog addSubjectDialog;
 
 
     public TeacherCoursesFragment() {
@@ -88,6 +94,7 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
 
         //---------- Fad Button -------------//
         fab = view.findViewById(R.id.fabPlus);
+        fab.setOnClickListener(this);
 
         //--------------- RecyclerView --------------------//
         recyclerViewSubject = view.findViewById(R.id.recyclerViewSubject);
@@ -95,7 +102,7 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
         RecyclerView.LayoutManager LM = new LinearLayoutManager(view.getContext());
         recyclerViewSubject.setLayoutManager(LM);
         recyclerViewSubject.setItemAnimator(new DefaultItemAnimator());
-        recyclerViewSubject.addItemDecoration(new DividerItemDecoration(view.getContext(), LinearLayoutManager.VERTICAL));
+        //recyclerViewSubject.addItemDecoration(new DividerItemDecoration(view.getContext(), LinearLayoutManager.VERTICAL));
         recyclerViewSubject.setAdapter(recyclerAdapter);
 
 
@@ -146,7 +153,7 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
 
 
     //---------------- Subject List -------------------------------------------------//
-    void GetSubjectFirebase(){
+    void GetSubjectFirebase() {
         //Query searchQuery = table_subject.orderByChild("subjectname").startAt(searchText).endAt(searchText + "\uf8ff");
         table_subject.orderByChild("subjectname").addChildEventListener(new ChildEventListener() {
             @Override
@@ -182,7 +189,7 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
         });
     }
 
-    void GetSearchFirebase(String searchText){
+    void GetSearchFirebase(String searchText) {
 
         //Clear ListSubject
         listSubjectID.clear();
@@ -202,15 +209,19 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
                 //Add List into Adapter/RecyclerView
                 recyclerViewSubject.setAdapter(subjectAdapter);
             }
+
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
             }
+
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
             }
+
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
@@ -221,12 +232,12 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
 
 
     //---------------- Subject List -------------------------------------------------//
-    public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectViewHolder>{
+    public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectViewHolder> {
 
         List<Subject> listArrayID;
         List<Subject> listArrayName;
 
-        public SubjectAdapter(List<Subject> ListID, List<Subject> ListName){
+        public SubjectAdapter(List<Subject> ListID, List<Subject> ListName) {
             this.listArrayID = ListID;
             this.listArrayName = ListName;
         }
@@ -239,7 +250,6 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
         }
 
 
-
         @Override
         public void onBindViewHolder(@NonNull SubjectAdapter.SubjectViewHolder holder, int position) {
             Subject subjectID = listArrayID.get(position);
@@ -249,7 +259,7 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
 
         }
 
-        public class SubjectViewHolder extends RecyclerView.ViewHolder{
+        public class SubjectViewHolder extends RecyclerView.ViewHolder {
             TextView textSubjectId;
             TextView textSubject;
 
@@ -266,21 +276,7 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
         }
     }
 
-
-
-
-
-
-    @Override
-    public void onClick(View v) {
-        if (v == searchBtn){
-            Toast.makeText(getActivity(), "Search", Toast.LENGTH_SHORT).show();
-            String searchText = searchField.getText().toString().toUpperCase();
-            GetSearchFirebase(searchText);
-        }
-    }
-
-    /*
+     /*
     @Override
     public void onStart() {
         super.onStart();
@@ -292,4 +288,30 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
         super.onStop();
         recyclerAdapter.stopListening();
     }*/
+
+
+    //-------------------- Dialog Add Subject -----------------------------------------//
+    private void showAddItemDialog(Context c) {
+        addSubjectDialog = new Dialog(c);
+        addSubjectDialog.setContentView(R.layout.dialog_add_subject);
+        EditText editextSubjectID = addSubjectDialog.findViewById(R.id.editextSubjectID);
+        EditText editextSubjectName = addSubjectDialog.findViewById(R.id.editextSubjectName);
+        ImageButton btnAddSubject = addSubjectDialog.findViewById(R.id.btnAddSubject);
+        ImageButton btnCancel = addSubjectDialog.findViewById(R.id.btnCancel);
+        addSubjectDialog.show();
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == searchBtn) {
+            Toast.makeText(getActivity(), "Search", Toast.LENGTH_SHORT).show();
+            String searchText = searchField.getText().toString().toUpperCase();
+            GetSearchFirebase(searchText);
+        } else if (v == fab) {
+            Toast.makeText(getContext(), "Add your subject", Toast.LENGTH_SHORT).show();
+            showAddItemDialog(getContext());
+        }
+    }
+
+
 }

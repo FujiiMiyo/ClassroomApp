@@ -80,9 +80,7 @@ public class ChangepwFragment extends Fragment implements View.OnClickListener {
                     progressDialog.dismiss();
                     Toast.makeText(getContext(), "Please confirm your password", Toast.LENGTH_SHORT).show();
                 } else {
-                    Intent intent = getIntent();
-                    String userName = intent.getStringExtra("Username");
-                    String status = intent.getStringExtra("Status");
+
                 }
             }
 
