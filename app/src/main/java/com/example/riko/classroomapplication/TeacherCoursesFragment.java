@@ -113,6 +113,7 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
         GetSubjectFirebase();
 
     }
+
     private void selectSubject() {
         Toast.makeText(getContext(), "Subject Clicked", Toast.LENGTH_SHORT).show();
         Intent exams = new Intent(getActivity(), TeacherMenuExamsActivity.class);
@@ -123,11 +124,11 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
     //---------------- Subject List -------------------------------------------------//
     void GetSubjectFirebase() {
         //Query searchQuery = table_subject.orderByChild("subjectname").startAt(searchText).endAt(searchText + "\uf8ff");
-        table_subject.orderByChild("subjectname").addChildEventListener(new ChildEventListener() {
+        table_subject.orderByChild("subjectID").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Subject subject = new Subject();
-                subject = dataSnapshot.getValue(Subject.class);
+                //Subject subject = new Subject();
+                Subject subject = dataSnapshot.getValue(Subject.class);
                 //Add to ArrayList
                 listSubjectID.add(subject);
                 listSubjectName.add(subject);
@@ -143,7 +144,7 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 //Add List into Adapter/RecyclerView
-                recyclerViewSubject.setAdapter(subjectAdapter);
+                //recyclerViewSubject.setAdapter(subjectAdapter);
             }
 
             @Override
@@ -164,7 +165,7 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
         listSubjectID.clear();
         listSubjectName.clear();
 
-        Query searchQuery = table_subject.orderByChild("subjectname").startAt(searchText).endAt(searchText + "\uf8ff");
+        Query searchQuery = table_subject.orderByChild("subjectID").startAt(searchText).endAt(searchText + "\uf8ff");
         searchQuery.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -277,22 +278,22 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
         private void deleteSubject(final String subjectID, final int position) {
             FirebaseDatabase.getInstance().getReference()
                     .child("Subject").child(subjectID).removeValue()
-            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()){
-                        //remove item from list alos and refresh recyclerview
-                        listArrayID.remove(position);
-                        notifyItemRemoved(position);
-                        notifyItemRangeChanged(position, listArrayID.size());
-                        Log.d("Delete subject", "Subject has been deleted");
-                        Toast.makeText(context,"Subject has been deleted.", Toast.LENGTH_SHORT).show();
-                    }else {
-                        Log.d("Delete subject", "Subject couldn't be deleted");
-                        Toast.makeText(context,"Subject could not be deleted!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                //remove item from list alos and refresh recyclerview
+                                listArrayID.remove(position);
+                                notifyItemRemoved(position);
+                                notifyItemRangeChanged(position, listArrayID.size());
+                                Log.d("Delete subject", "Subject has been deleted");
+                                Toast.makeText(context, "Subject has been deleted.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Log.d("Delete subject", "Subject couldn't be deleted");
+                                Toast.makeText(context, "Subject could not be deleted!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
         }
     }
 
