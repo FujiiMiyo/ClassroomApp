@@ -233,17 +233,25 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
             RelativeLayout list_item_subject_id;
             TextView textSubjectId;
             TextView textSubject;
+            ImageButton btnDelete;
 
             public SubjectViewHolder(View itemView) {
                 super(itemView);
                 list_item_subject_id = itemView.findViewById(R.id.list_item_subject_id);
                 textSubjectId = itemView.findViewById(R.id.textSubjectId);
                 textSubject = itemView.findViewById(R.id.textSubject);
+                btnDelete = itemView.findViewById(R.id.btnDelete);
             }
 
             public void bind(final Subject subjectID, Subject subjectname, final OnItemClickListener listener) {
                 textSubjectId.setText(subjectID.getSubjectID());
                 textSubject.setText(subjectname.getSubjectname());
+                btnDelete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(itemView.getContext(), "This subject already deleted!", Toast.LENGTH_SHORT).show();
+                    }
+                });
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
