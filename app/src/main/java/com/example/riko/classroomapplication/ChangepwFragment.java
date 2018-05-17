@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,8 @@ import com.google.firebase.internal.api.FirebaseNoSignedInUserException;
 
 public class ChangepwFragment extends Fragment implements View.OnClickListener {
 
+    final String TAG = "TTwTT";
+
     private View view;
     private EditText editextPassword;
     private EditText editextNewPassword;
@@ -32,6 +35,8 @@ public class ChangepwFragment extends Fragment implements View.OnClickListener {
     private String pass;
     private String newpass;
     private String username;
+    private String mParam1;
+    private String mParam2;
 
     @Nullable
     @Override
@@ -49,12 +54,14 @@ public class ChangepwFragment extends Fragment implements View.OnClickListener {
         editextConfirmPassword = view.findViewById(R.id.editextConfirmPassword);
         buttonChangepw = view.findViewById(R.id.buttonChangepw);
         buttonChangepw.setOnClickListener(this);
+
+        mParam1 = getArguments().getString("Username");
+        mParam2 = getArguments().getString("Password");
     }
 
     @Override
     public void onClick(View v) {
         if (v == buttonChangepw) {
-            //Toast.makeText(getContext(), "Already changed your password!", Toast.LENGTH_SHORT).show();
             initFirebase();
         }
     }
@@ -66,6 +73,8 @@ public class ChangepwFragment extends Fragment implements View.OnClickListener {
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference table_member = database.getReference("Member");
+
+
 
         table_member.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

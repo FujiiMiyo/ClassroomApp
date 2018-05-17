@@ -3,36 +3,27 @@ package com.example.riko.classroomapplication;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.riko.classroomapplication.Model.Subject;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -55,9 +46,7 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
     private RecyclerView recyclerViewSubject;
     private FloatingActionButton fab;
     private EditText searchField;
-    private BottomSheetDialog bottomSheetMenu;
     private View view;
-    private LinearLayout exam, vdo, files, delete;
     private FirebaseDatabase database;
     private DatabaseReference table_subject;
     private Query list_subject;
@@ -66,6 +55,7 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
     private List<Subject> listSubjectName;
     private FirebaseRecyclerAdapter recyclerAdapter;
     private Dialog addSubjectDialog;
+    private SubjectAdapter.OnItemClickListener listener;
 
 
     public TeacherCoursesFragment() {
@@ -76,6 +66,7 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_courses1, container, false);
         initInstance();
+        fabButtomAddSubject();
         return view;
     }
 
@@ -109,47 +100,21 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
         //----------------- Subject list -------------------------------//
         listSubjectID = new ArrayList<>();
         listSubjectName = new ArrayList<>();
-        subjectAdapter = new SubjectAdapter(listSubjectID, listSubjectName);
+        //subjectAdapter = new SubjectAdapter(listSubjectID, listSubjectName, listener);
+        subjectAdapter = new SubjectAdapter(listSubjectID, listSubjectName, new SubjectAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Subject subject) {
+                selectSubject();
+            }
+        });
         GetSubjectFirebase();
 
-        /*
-        Query query =  FirebaseDatabase.getInstance().getReference().child("Subject");
-        FirebaseRecyclerOptions<Subject> options = new FirebaseRecyclerOptions.Builder<Subject>()
-                .setQuery(query, Subject.class)
-                .build();
-        recyclerAdapter = new FirebaseRecyclerAdapter<Subject, SubjectViewHolder>(options) {
-
-            @NonNull
-            @Override
-            public SubjectViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_subject_names, parent, false);
-                return new SubjectViewHolder(view);
-            }
-
-            @Override
-            protected void onBindViewHolder(@NonNull SubjectViewHolder holder, int position, @NonNull Subject model) {
-                Subject subject = model;
-                holder.setSubject(subject.getSubjectID(), subject.getSubjectname());
-            }
-        };*/
-
     }
-    /*
-    public static class SubjectViewHolder extends RecyclerView.ViewHolder{
-        TextView textSubjectId;
-        TextView textSubject;
-
-        public SubjectViewHolder(View itemView) {
-            super(itemView);
-            textSubjectId = itemView.findViewById(R.id.textSubjectId);
-            textSubject = itemView.findViewById(R.id.textSubject);
-        }
-
-        public void setSubject(String subjectID, String subjectname){
-            textSubjectId.setText(subjectID);
-            textSubject.setText(subjectname);
-        }
-    }*/
+    private void selectSubject() {
+        Toast.makeText(getContext(), "Subject Clicked", Toast.LENGTH_SHORT).show();
+        Intent exams = new Intent(getActivity(), TeacherMenuExamsActivity.class);
+        startActivity(exams);
+    }
 
 
     //---------------- Subject List -------------------------------------------------//
@@ -202,7 +167,6 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
                 Subject subject = new Subject();
                 subject = dataSnapshot.getValue(Subject.class);
 
-
                 //Add to ArrayList
                 listSubjectID.add(subject);
                 listSubjectName.add(subject);
@@ -232,14 +196,20 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
 
 
     //---------------- Subject List -------------------------------------------------//
-    public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectViewHolder> {
+    public static class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectViewHolder> {
 
         List<Subject> listArrayID;
         List<Subject> listArrayName;
+        final OnItemClickListener listener;
 
-        public SubjectAdapter(List<Subject> ListID, List<Subject> ListName) {
+        public interface OnItemClickListener {
+            void onItemClick(Subject subject);
+        }
+
+        public SubjectAdapter(List<Subject> ListID, List<Subject> ListName, OnItemClickListener listener) {
             this.listArrayID = ListID;
             this.listArrayName = ListName;
+            this.listener = listener;
         }
 
         @NonNull
@@ -249,24 +219,37 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
             return new SubjectViewHolder(v);
         }
 
-
         @Override
         public void onBindViewHolder(@NonNull SubjectAdapter.SubjectViewHolder holder, int position) {
             Subject subjectID = listArrayID.get(position);
             Subject subjectname = listArrayName.get(position);
-            holder.textSubjectId.setText(subjectID.getSubjectID());
-            holder.textSubject.setText(subjectname.getSubjectname());
+            /*holder.textSubjectId.setText(subjectID.getSubjectID());
+            holder.textSubject.setText(subjectname.getSubjectname());*/
+            holder.bind(subjectID, subjectname, listener);
 
         }
 
         public class SubjectViewHolder extends RecyclerView.ViewHolder {
+            RelativeLayout list_item_subject_id;
             TextView textSubjectId;
             TextView textSubject;
 
             public SubjectViewHolder(View itemView) {
                 super(itemView);
+                list_item_subject_id = itemView.findViewById(R.id.list_item_subject_id);
                 textSubjectId = itemView.findViewById(R.id.textSubjectId);
                 textSubject = itemView.findViewById(R.id.textSubject);
+            }
+
+            public void bind(final Subject subjectID, Subject subjectname, final OnItemClickListener listener) {
+                textSubjectId.setText(subjectID.getSubjectID());
+                textSubject.setText(subjectname.getSubjectname());
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.onItemClick(subjectID);
+                    }
+                });
             }
         }
 
@@ -275,19 +258,6 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
             return listArrayID.size();
         }
     }
-
-     /*
-    @Override
-    public void onStart() {
-        super.onStart();
-        recyclerAdapter.startListening();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        recyclerAdapter.stopListening();
-    }*/
 
 
     //-------------------- Dialog Add Subject -----------------------------------------//
@@ -299,6 +269,23 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
         ImageButton btnAddSubject = addSubjectDialog.findViewById(R.id.btnAddSubject);
         ImageButton btnCancel = addSubjectDialog.findViewById(R.id.btnCancel);
         addSubjectDialog.show();
+    }
+
+    //Flot action button: Add subject
+    private void fabButtomAddSubject() {
+        // Hide Floating Action Button when scrolling in Recycler View
+        recyclerViewSubject.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
+                    fab.hide();
+                } else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
+                    fab.show();
+                }
+            }
+        });
+        //<-----------------------------------------------------------//>
     }
 
     @Override

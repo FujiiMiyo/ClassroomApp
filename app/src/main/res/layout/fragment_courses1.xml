@@ -34,13 +34,15 @@
             android:layout_marginTop="98dp"
             android:background="@drawable/search_layout"
             android:hint="@string/search_subject"
-            android:inputType="textPersonName"
+            android:inputType="text"
             android:paddingBottom="10dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:paddingTop="10dp"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="16dp" />
+            android:textSize="16dp"
+            android:imeOptions="actionSearch"
+            android:maxLines="1" />
 
         <ImageButton
             android:id="@+id/searchBtn"

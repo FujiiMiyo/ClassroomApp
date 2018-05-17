@@ -33,7 +33,7 @@
         android:textStyle="bold" />
 
     <ImageButton
-        android:id="@+id/imgMenu"
+        android:id="@+id/btnDelete"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_alignParentEnd="true"
