@@ -55,8 +55,8 @@ public class ChangepwFragment extends Fragment implements View.OnClickListener {
         buttonChangepw = view.findViewById(R.id.buttonChangepw);
         buttonChangepw.setOnClickListener(this);
 
-        mParam1 = getArguments().getString("Username");
-        mParam2 = getArguments().getString("Password");
+        /*mParam1 = getArguments().getString("Username");
+        mParam2 = getArguments().getString("Password");*/
     }
 
     @Override

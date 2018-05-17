@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,8 @@ import android.widget.Toast;
 
 import com.example.riko.classroomapplication.Model.Subject;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -101,7 +104,7 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
         listSubjectID = new ArrayList<>();
         listSubjectName = new ArrayList<>();
         //subjectAdapter = new SubjectAdapter(listSubjectID, listSubjectName, listener);
-        subjectAdapter = new SubjectAdapter(listSubjectID, listSubjectName, new SubjectAdapter.OnItemClickListener() {
+        subjectAdapter = new SubjectAdapter(getContext(), listSubjectID, listSubjectName, new SubjectAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Subject subject) {
                 selectSubject();
@@ -139,7 +142,8 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+                //Add List into Adapter/RecyclerView
+                recyclerViewSubject.setAdapter(subjectAdapter);
             }
 
             @Override
@@ -201,12 +205,14 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
         List<Subject> listArrayID;
         List<Subject> listArrayName;
         final OnItemClickListener listener;
+        private Context context;
 
         public interface OnItemClickListener {
             void onItemClick(Subject subject);
         }
 
-        public SubjectAdapter(List<Subject> ListID, List<Subject> ListName, OnItemClickListener listener) {
+        public SubjectAdapter(Context context, List<Subject> ListID, List<Subject> ListName, OnItemClickListener listener) {
+            this.context = context;
             this.listArrayID = ListID;
             this.listArrayName = ListName;
             this.listener = listener;
@@ -220,12 +226,19 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
         }
 
         @Override
-        public void onBindViewHolder(@NonNull SubjectAdapter.SubjectViewHolder holder, int position) {
-            Subject subjectID = listArrayID.get(position);
+        public void onBindViewHolder(@NonNull SubjectAdapter.SubjectViewHolder holder, final int position) {
+            final Subject subjectID = listArrayID.get(position);
             Subject subjectname = listArrayName.get(position);
             /*holder.textSubjectId.setText(subjectID.getSubjectID());
             holder.textSubject.setText(subjectname.getSubjectname());*/
             holder.bind(subjectID, subjectname, listener);
+            holder.btnDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Toast.makeText(v.getContext(), "This subject already deleted!", Toast.LENGTH_SHORT).show();
+                    deleteSubject(subjectID.getSubjectID(), position);
+                }
+            });
 
         }
 
@@ -246,12 +259,6 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
             public void bind(final Subject subjectID, Subject subjectname, final OnItemClickListener listener) {
                 textSubjectId.setText(subjectID.getSubjectID());
                 textSubject.setText(subjectname.getSubjectname());
-                btnDelete.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(itemView.getContext(), "This subject already deleted!", Toast.LENGTH_SHORT).show();
-                    }
-                });
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -264,6 +271,28 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
         @Override
         public int getItemCount() {
             return listArrayID.size();
+        }
+
+        //--------------------- Delete subject button ------------------------------//
+        private void deleteSubject(final String subjectID, final int position) {
+            FirebaseDatabase.getInstance().getReference()
+                    .child("Subject").child(subjectID).removeValue()
+            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()){
+                        //remove item from list alos and refresh recyclerview
+                        listArrayID.remove(position);
+                        notifyItemRemoved(position);
+                        notifyItemRangeChanged(position, listArrayID.size());
+                        Log.d("Delete subject", "Subject has been deleted");
+                        Toast.makeText(context,"Subject has been deleted.", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Log.d("Delete subject", "Subject couldn't be deleted");
+                        Toast.makeText(context,"Subject could not be deleted!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         }
     }
 
