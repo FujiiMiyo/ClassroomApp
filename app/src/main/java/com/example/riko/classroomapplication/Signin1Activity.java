@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,16 +18,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class Signin1Activity extends AppCompatActivity{
+public class Signin1Activity extends AppCompatActivity {
 
     private EditText editextUsername;
     private EditText editextPassword;
     Button buttonSignin;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin1);
+
+        backToolbar();
 
         editextUsername = findViewById(R.id.editextUsername);
         editextPassword = findViewById(R.id.editextPassword);
@@ -52,10 +56,10 @@ public class Signin1Activity extends AppCompatActivity{
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
                         //Check if editText is empty
-                        if (editextUsername.getText().toString().isEmpty()){
+                        if (editextUsername.getText().toString().isEmpty()) {
                             progressDialog.dismiss();
                             Toast.makeText(Signin1Activity.this, "Please enter your username", Toast.LENGTH_SHORT).show();
-                        } else if (editextPassword.getText().toString().isEmpty()){
+                        } else if (editextPassword.getText().toString().isEmpty()) {
                             progressDialog.dismiss();
                             Toast.makeText(Signin1Activity.this, "Please enter your password", Toast.LENGTH_SHORT).show();
                         } else {
@@ -68,7 +72,7 @@ public class Signin1Activity extends AppCompatActivity{
                                     //Toast.makeText(Signin1Activity.this, "Sign In successfully! ", Toast.LENGTH_SHORT).show();
 
                                     //TODO:
-                                    if (member.getStatus().equals("Teacher")){
+                                    if (member.getStatus().equals("Teacher")) {
                                         Intent signIn = new Intent(Signin1Activity.this, TeacherActivity.class);
                                         signIn.putExtra("Username", member.getUsername());
                                         signIn.putExtra("Status", member.getStatus());
@@ -104,7 +108,17 @@ public class Signin1Activity extends AppCompatActivity{
         });
     }
 
-
+    private void backToolbar() {
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(getString(R.string.app_name));
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
 
 
 }
