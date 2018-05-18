@@ -66,7 +66,7 @@ public class TeacherMenuExamsActivity extends AppCompatActivity {
     }
 
     private void backToolbar() {
-        toolbar.setTitle(getString(R.string.exam_tests));
+        toolbar.setTitle(getString(R.string.assignment));
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

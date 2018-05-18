@@ -80,7 +80,7 @@ public class Signup1Activity extends AppCompatActivity {
                             progressDialog.dismiss();
                             Toast.makeText(Signup1Activity.this, "Username already register", Toast.LENGTH_SHORT).show();
                         } else {
-                            Member member = new Member(editextName.getText().toString(), editextPassword.getText().toString(), sel, editextName.getText().toString());
+                            Member member = new Member(editextName.getText().toString(), editextPassword.getText().toString(), sel, editextUsername.getText().toString());
                             table_member.child(editextUsername.getText().toString()).setValue(member);
                             Toast.makeText(Signup1Activity.this, "Sign up successfully!", Toast.LENGTH_SHORT).show();
                             Intent signUp = new Intent(Signup1Activity.this, MainActivity.class);

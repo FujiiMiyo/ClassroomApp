@@ -2,6 +2,7 @@ package com.example.riko.classroomapplication;
 
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -35,6 +36,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,6 +118,7 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
 
     }
 
+    //***************************************************** Subject lists ********************************************************************************//
     private void selectSubject() {
         Toast.makeText(getContext(), "Subject Clicked", Toast.LENGTH_SHORT).show();
         Intent exams = new Intent(getActivity(), TeacherMenuExamsActivity.class);
@@ -123,7 +126,7 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
     }
 
 
-    //---------------- Subject List -------------------------------------------------//
+    //<------------------------ Firebase search field and display list ------------------------------------>//
     void GetSubjectFirebase() {
         //Query searchQuery = table_subject.orderByChild("subjectname").startAt(searchText).endAt(searchText + "\uf8ff");
         table_subject.orderByChild("subjectID").addChildEventListener(new ChildEventListener() {
@@ -131,7 +134,6 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 //Subject subject = new Subject();
                 Subject subject = dataSnapshot.getValue(Subject.class);
-                subject.setSubjectID(dataSnapshot.getKey());
                 //Add to ArrayList
                 listSubjectID.add(subject);
                 listSubjectName.add(subject);
@@ -168,13 +170,13 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
         listSubjectID.clear();
         listSubjectName.clear();
 
-        Query searchQuery = table_subject.orderByChild("subjectID").startAt(searchText).endAt(searchText + "\uf8ff");
+        Query searchQuery = table_subject.orderByChild("subjectname").startAt(searchText).endAt(searchText + "\uf8ff");
         searchQuery.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                //Subject subject = new Subject();
-                Subject subject = dataSnapshot.getValue(Subject.class);
-                subject.setSubjectID(dataSnapshot.getKey());
+                Subject subject = new Subject();
+                subject = dataSnapshot.getValue(Subject.class);
+
                 //Add to ArrayList
                 listSubjectID.add(subject);
                 listSubjectName.add(subject);
@@ -199,9 +201,8 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
             }
 
         });
-
     }
-
+    //------------------------------------------------------------------------------------------//
 
     //---------------- Subject List -------------------------------------------------//
     public static class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectViewHolder> {
@@ -302,8 +303,10 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
             notifyDataSetChanged();
         }
     }
+    //**************************************************************************************************************************************************//
 
 
+    //*************************************************************************************************************************************************//
     //-------------------- Dialog Add Subject -----------------------------------------//
     private void showAddItemDialog(final Context c) {
         /*addSubjectDialog = new Dialog(c);
@@ -341,11 +344,35 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
         btnAddSubject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(c, "Add a new subject", Toast.LENGTH_SHORT).show();
-                //GET DATA
-                /*fireBaseClient.saveOnline(editextSubjectID.getText().toString(),editextSubjectName.getText().toString());
-                editextSubjectID.setText("");
-                editextSubjectName.setText("");*/
+                //table_subject.addValueEventListener(new ValueEventListener() {
+                //addListenerForSingleValueEvent reads data just 1 times only
+                table_subject.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        //Check if editText is empty
+                        if (editextSubjectID.getText().toString().isEmpty()) {
+                            Toast.makeText(c, "Please enter subject id", Toast.LENGTH_SHORT).show();
+                        } else if (editextSubjectName.getText().toString().isEmpty()) {
+                            Toast.makeText(c, "Please enter subject name", Toast.LENGTH_SHORT).show();
+                        } else if (dataSnapshot.child(editextSubjectID.getText().toString()).exists()) {
+                            Toast.makeText(c, "Subject id has existed", Toast.LENGTH_SHORT).show();
+                        } else if (dataSnapshot.child(editextSubjectName.getText().toString()).exists()) {
+                            Toast.makeText(c, "Subject name has existed", Toast.LENGTH_SHORT).show();
+                        }else {
+                            Subject subject = new Subject(editextSubjectID.getText().toString(), editextSubjectName.getText().toString().toUpperCase());
+                            table_subject.child(editextSubjectID.getText().toString()).setValue(subject);
+                            Toast.makeText(c, "Add the new subject", Toast.LENGTH_SHORT).show();
+                            /*Intent signUp = new Intent(Signup1Activity.this, MainActivity.class);
+                            startActivity(signUp);*/
+                            addSubjectDialog.dismiss();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
 
             }
         });
@@ -358,6 +385,8 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
 
         addSubjectDialog.show();
     }
+
+    //*************************************************************************************************************************************************//
 
     //Flot action button: Add subject
     private void fabButtomAddSubject() {

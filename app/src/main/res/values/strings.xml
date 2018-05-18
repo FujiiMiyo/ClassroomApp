@@ -59,14 +59,16 @@
 
 
 
-    <!-- Bottom sheet: CourseFragment -->
-    <string name="exam_tests"><![CDATA[EXAMS & TESTS]]></string>
-    <string name="videos">VIDEOS</string>
-    <string name="document_files">DOCUMENT FILES</string>
-    <string name="remove_this_subject">REMOVE THIS SUBJECT</string>
+    <!-- Bottom sheet: CourseFragment Teacher -->
+    <string name="select_menu">SELECT MENU</string>
+    <string name="assignment">ASSIGNMENT</string>
+    <string name="create_assignment">CREATE ASSIGNMENT</string>
+    <string name="edit_assignment">EDIT ASSIGNMENT</string>
+    <string name="check_score">CHECK SCORE</string>
+    <string name="delete_chapter">DELETE CHAPTER</string>
 
     <!-- Dialog: add subject CourseFragment -->
-    <string name="add_your_subject">ADD YOUR SUBJECT</string>
+    <string name="add_your_subject">ADD A NEW SUBJECT</string>
     <string name="enter_your_subject_id">Enter your subject id</string>
     <string name="enter_your_subject_name">Enter your subject name</string>
 

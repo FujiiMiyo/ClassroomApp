@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/list_item_subject_id"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/textSubject"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textSubjectId"
+        android:layout_alignStart="@+id/textSubjectId"
+        android:layout_below="@+id/textSubjectId"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="80dp"
+        android:paddingRight="10dp"
+        android:text="CHAPTER 1"
+        android:singleLine="true"
+        android:textColor="@color/grey2"
+        android:textSize="16dp"
+        android:textStyle="bold" />
+
+
+    <ImageView
+        android:id="@+id/btnDelete"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/black1"
+        app:srcCompat="@drawable/ic_selectmenu"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"/>
+
+
+
+
+</RelativeLayout>

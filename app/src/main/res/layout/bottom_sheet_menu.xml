@@ -16,14 +16,14 @@
         android:layout_margin="5dp"
         android:background="@drawable/search_layout"
         android:backgroundTint="@color/grey3"
-        android:text="SELECT MENU"
+        android:text="@string/select_menu"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="16dp"
         android:textStyle="bold" />
 
     <LinearLayout
-        android:id="@+id/fragmentMenu1Exam"
+        android:id="@+id/menuCreateAssign"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
@@ -35,18 +35,18 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            app:srcCompat="@drawable/ic_test" />
+            app:srcCompat="@drawable/ic_assign" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="16dp"
-            android:text="@string/exam_tests" />
+            android:text="@string/create_assignment" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/DialogMenu1Remove"
+        android:id="@+id/menuEditAssign"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
@@ -58,14 +58,60 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            app:srcCompat="@drawable/ic_remove" />
+            app:srcCompat="@drawable/ic_edit" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="16dp"
-            android:text="@string/remove_this_subject" />
+            android:text="@string/edit_assignment" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/menuScore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/ic_check_score" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="16dp"
+            android:text="@string/check_score" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/menuDelete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/ic_delete_black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="16dp"
+            android:text="@string/delete_chapter" />
     </LinearLayout>
 
 
