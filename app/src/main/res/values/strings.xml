@@ -16,7 +16,7 @@
 
 
     <!-- Teacher & Student Activity -->
-    <string name="search_subject">Search subject id....</string>
+    <string name="search_subject">Search subject name....</string>
 
     <string name="subject_names">Subject Names</string>
     <string name="title_activity_main2">Main2Activity</string>

@@ -45,7 +45,7 @@ public class TeacherMenuExamsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_teacher_menu_exams);
         initInstance();
         backToolbar();
-        //initFirebase();
+        initFirebase();
         // displayDrawerLayout();
     }
 
@@ -66,7 +66,7 @@ public class TeacherMenuExamsActivity extends AppCompatActivity {
     }
 
     private void backToolbar() {
-        toolbar.setTitle(getString(R.string.assignment));
+        //toolbar.setTitle(getString(R.string.assignment));
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,7 +76,7 @@ public class TeacherMenuExamsActivity extends AppCompatActivity {
         });
     }
 
-    /*private void initFirebase() {
+    private void initFirebase() {
         //Init Firebase SignIn
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference table_member = database.getReference("Member");
@@ -92,14 +92,32 @@ public class TeacherMenuExamsActivity extends AppCompatActivity {
                 textUsername.setText(userName);
                 textStatus.setText(status);
                 textName.setText(name);
-                Log.d(TAG, String.valueOf(textName));
+                //Log.d(TAG, String.valueOf(textName));
+                //Toast.makeText(TeacherMenuExamsActivity.this,textName.getText().toString(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-    }*/
+
+        final DatabaseReference table_subject = database.getReference("Subject");
+        table_subject.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Intent intent = getIntent();
+                String subjectID = intent.getStringExtra("subjectID");
+                String subjectname = intent.getStringExtra("subjectname");
+                toolbar.setTitle(subjectname);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
 
     //-- Toolbar & DrawerLayout --***//
     /*private void displayDrawerLayout() {

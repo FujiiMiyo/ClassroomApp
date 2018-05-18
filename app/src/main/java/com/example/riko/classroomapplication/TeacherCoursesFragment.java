@@ -111,7 +111,13 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
         subjectAdapter = new SubjectAdapter(getContext(), listSubjectID, listSubjectName, new SubjectAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Subject subject) {
-                selectSubject();
+                //selectSubject();
+                Toast.makeText(getContext(), "Subject Clicked", Toast.LENGTH_SHORT).show();
+                Intent assign = new Intent(getActivity(), TeacherMenuExamsActivity.class);
+                assign.putExtra("subjectID", subject.getSubjectID());
+                assign.putExtra("subjectname", subject.getSubjectname());
+                startActivity(assign);
+                Toast.makeText(getContext(), "Assignment", Toast.LENGTH_SHORT).show();
             }
         });
         GetSubjectFirebase();
@@ -119,13 +125,6 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
     }
 
     //***************************************************** Subject lists ********************************************************************************//
-    private void selectSubject() {
-        Toast.makeText(getContext(), "Subject Clicked", Toast.LENGTH_SHORT).show();
-        Intent exams = new Intent(getActivity(), TeacherMenuExamsActivity.class);
-        startActivity(exams);
-    }
-
-
     //<------------------------ Firebase search field and display list ------------------------------------>//
     void GetSubjectFirebase() {
         //Query searchQuery = table_subject.orderByChild("subjectname").startAt(searchText).endAt(searchText + "\uf8ff");
@@ -309,31 +308,6 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
     //*************************************************************************************************************************************************//
     //-------------------- Dialog Add Subject -----------------------------------------//
     private void showAddItemDialog(final Context c) {
-        /*addSubjectDialog = new Dialog(c);
-        addSubjectDialog.setContentView(R.layout.dialog_add_subject);
-        EditText editextSubjectID = addSubjectDialog.findViewById(R.id.editextSubjectID);
-        EditText editextSubjectName = addSubjectDialog.findViewById(R.id.editextSubjectName);
-        ImageButton btnAddSubject = addSubjectDialog.findViewById(R.id.btnAddSubject);
-        ImageButton btnCancel = addSubjectDialog.findViewById(R.id.btnCancel);
-        addSubjectDialog.show();*/
-
-        /*final EditText subjectIDEditText = new EditText(c);
-        final EditText subjectnameEditText = new EditText(c);
-        AlertDialog dialog = new AlertDialog.Builder(c)
-                .setTitle("ADD A NEW SUBJECT")
-                .setView(subjectIDEditText)
-                .setView(subjectnameEditText)
-                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String subjectID = String.valueOf(subjectIDEditText.getText());
-                        String subjectname = String.valueOf(subjectnameEditText.getText());
-                    }
-                })
-                .setNegativeButton("Cancel", null)
-                .create();
-        dialog.show();*/
-
         final Dialog addSubjectDialog = new Dialog(c);
         addSubjectDialog.setContentView(R.layout.dialog_add_subject);
         final EditText editextSubjectID = addSubjectDialog.findViewById(R.id.editextSubjectID);
@@ -370,10 +344,8 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-
                     }
                 });
-
             }
         });
         btnCancel.setOnClickListener(new View.OnClickListener() {
@@ -382,7 +354,6 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
                 addSubjectDialog.cancel();
             }
         });
-
         addSubjectDialog.show();
     }
 
@@ -412,7 +383,7 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
             String searchText = searchField.getText().toString().toUpperCase();
             GetSearchFirebase(searchText);
         } else if (v == fab) {
-            Toast.makeText(getContext(), "Add your subject", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Add a new subject", Toast.LENGTH_SHORT).show();
             showAddItemDialog(getContext());
         }
     }
