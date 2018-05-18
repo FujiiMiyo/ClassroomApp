@@ -28,4 +28,5 @@ public class Subject {
     public void setSubjectname(String subjectname) {
         this.subjectname = subjectname;
     }
+
 }

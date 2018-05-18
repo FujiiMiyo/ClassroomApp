@@ -41,7 +41,7 @@
             android:paddingTop="10dp"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="16dp"
-            android:imeOptions="actionSearch"
+            android:imeOptions="actionDone"
             android:maxLines="1" />
 
         <ImageButton

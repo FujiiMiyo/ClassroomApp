@@ -3,12 +3,14 @@ package com.example.riko.classroomapplication;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -129,6 +131,7 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 //Subject subject = new Subject();
                 Subject subject = dataSnapshot.getValue(Subject.class);
+                subject.setSubjectID(dataSnapshot.getKey());
                 //Add to ArrayList
                 listSubjectID.add(subject);
                 listSubjectName.add(subject);
@@ -169,9 +172,9 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
         searchQuery.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Subject subject = new Subject();
-                subject = dataSnapshot.getValue(Subject.class);
-
+                //Subject subject = new Subject();
+                Subject subject = dataSnapshot.getValue(Subject.class);
+                subject.setSubjectID(dataSnapshot.getKey());
                 //Add to ArrayList
                 listSubjectID.add(subject);
                 listSubjectName.add(subject);
@@ -229,7 +232,7 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
         @Override
         public void onBindViewHolder(@NonNull SubjectAdapter.SubjectViewHolder holder, final int position) {
             final Subject subjectID = listArrayID.get(position);
-            Subject subjectname = listArrayName.get(position);
+            final Subject subjectname = listArrayName.get(position);
             /*holder.textSubjectId.setText(subjectID.getSubjectID());
             holder.textSubject.setText(subjectname.getSubjectname());*/
             holder.bind(subjectID, subjectname, listener);
@@ -237,7 +240,7 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
                 @Override
                 public void onClick(View v) {
                     //Toast.makeText(v.getContext(), "This subject already deleted!", Toast.LENGTH_SHORT).show();
-                    deleteSubject(subjectID.getSubjectID(), position);
+                    deleteSubject(subjectID.getSubjectID(), subjectname.getSubjectname(), position);
                 }
             });
 
@@ -275,15 +278,16 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
         }
 
         //--------------------- Delete subject button ------------------------------//
-        private void deleteSubject(final String subjectID, final int position) {
-            FirebaseDatabase.getInstance().getReference()
-                    .child("Subject").child(subjectID).removeValue()
+        private void deleteSubject(final String subjectID, String subjectname, final int position) {
+            FirebaseDatabase.getInstance().getReference().child("Subject")
+                    .child(subjectID).removeValue()
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
                                 //remove item from list alos and refresh recyclerview
                                 listArrayID.remove(position);
+                                listArrayName.remove(position);
                                 notifyItemRemoved(position);
                                 notifyItemRangeChanged(position, listArrayID.size());
                                 Log.d("Delete subject", "Subject has been deleted");
@@ -294,18 +298,64 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
                             }
                         }
                     });
+            Log.d("Delete subject", "Subject has been deleted");
+            notifyDataSetChanged();
         }
     }
 
 
     //-------------------- Dialog Add Subject -----------------------------------------//
-    private void showAddItemDialog(Context c) {
-        addSubjectDialog = new Dialog(c);
+    private void showAddItemDialog(final Context c) {
+        /*addSubjectDialog = new Dialog(c);
         addSubjectDialog.setContentView(R.layout.dialog_add_subject);
         EditText editextSubjectID = addSubjectDialog.findViewById(R.id.editextSubjectID);
         EditText editextSubjectName = addSubjectDialog.findViewById(R.id.editextSubjectName);
         ImageButton btnAddSubject = addSubjectDialog.findViewById(R.id.btnAddSubject);
         ImageButton btnCancel = addSubjectDialog.findViewById(R.id.btnCancel);
+        addSubjectDialog.show();*/
+
+        /*final EditText subjectIDEditText = new EditText(c);
+        final EditText subjectnameEditText = new EditText(c);
+        AlertDialog dialog = new AlertDialog.Builder(c)
+                .setTitle("ADD A NEW SUBJECT")
+                .setView(subjectIDEditText)
+                .setView(subjectnameEditText)
+                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String subjectID = String.valueOf(subjectIDEditText.getText());
+                        String subjectname = String.valueOf(subjectnameEditText.getText());
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .create();
+        dialog.show();*/
+
+        final Dialog addSubjectDialog = new Dialog(c);
+        addSubjectDialog.setContentView(R.layout.dialog_add_subject);
+        final EditText editextSubjectID = addSubjectDialog.findViewById(R.id.editextSubjectID);
+        final EditText editextSubjectName = addSubjectDialog.findViewById(R.id.editextSubjectName);
+        ImageButton btnAddSubject = addSubjectDialog.findViewById(R.id.btnAddSubject);
+        ImageButton btnCancel = addSubjectDialog.findViewById(R.id.btnCancel);
+        //SAVE
+        btnAddSubject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(c, "Add a new subject", Toast.LENGTH_SHORT).show();
+                //GET DATA
+                /*fireBaseClient.saveOnline(editextSubjectID.getText().toString(),editextSubjectName.getText().toString());
+                editextSubjectID.setText("");
+                editextSubjectName.setText("");*/
+
+            }
+        });
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addSubjectDialog.cancel();
+            }
+        });
+
         addSubjectDialog.show();
     }
 

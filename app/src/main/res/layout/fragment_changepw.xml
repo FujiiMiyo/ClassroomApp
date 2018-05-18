@@ -31,7 +31,7 @@
             android:background="@drawable/search_layout"
             android:backgroundTint="@color/grey6"
             android:ems="8"
-            android:hint="@string/enter_password"
+            android:hint="@string/enter_current_password"
             android:inputType="textPassword"
             android:padding="10dp"
             android:textAlignment="center"

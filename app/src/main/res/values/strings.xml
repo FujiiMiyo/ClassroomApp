@@ -4,7 +4,8 @@
     <!--Sign Up & Sign in Activity-->
     <string name="sign_up">Sign Up</string>
     <string name="enter_user">Enter your username</string>
-    <string name="enter_password">Enter your current password</string>
+    <string name="enter_password">Enter your password</string>
+    <string name="enter_current_password">Enter your current password</string>
     <string name="enter_new_password">Enter your new password</string>
     <string name="confirm_password">Confirm your new password</string>
     <string name="enter_name">Enter your name</string>
@@ -15,7 +16,7 @@
 
 
     <!-- Teacher & Student Activity -->
-    <string name="search_subject">Search subject name....</string>
+    <string name="search_subject">Search subject id....</string>
 
     <string name="subject_names">Subject Names</string>
     <string name="title_activity_main2">Main2Activity</string>
