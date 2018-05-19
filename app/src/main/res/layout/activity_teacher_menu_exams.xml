@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/drawerLayout"
     android:fitsSystemWindows="true"
-    tools:context=".TeacherMenuExamsActivity"
-    android:focusable="true"
-    android:focusableInTouchMode="false">
-    <!--tools:openDrawer="start"-->
+    tools:context=".TeacherMenuExamsActivity" >
 
 
     <LinearLayout
@@ -28,11 +24,6 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             android:elevation="2dp"/>
 
-        <!--FrameLayout
-            android:id="@+id/fragment_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/-->
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -43,7 +34,7 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="30dp"
                 android:text="@string/assignment"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/pinkRose1"
                 android:textSize="30dp"
                 android:textStyle="bold|italic" />
 
@@ -56,13 +47,13 @@
                 android:layout_marginRight="80dp"
                 android:layout_marginTop="98dp"
                 android:background="@drawable/search_layout"
-                android:hint="@string/search_subject"
+                android:hint="@string/search_assign"
                 android:inputType="text"
                 android:paddingBottom="10dp"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:paddingTop="10dp"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/pinkRose"
                 android:textSize="16dp"
                 android:imeOptions="actionDone"
                 android:maxLines="1" />
@@ -75,14 +66,14 @@
                 android:layout_alignTop="@+id/search_field"
                 android:layout_marginRight="30dp"
                 android:background="@drawable/search_btn"
-                android:backgroundTint="@color/colorPrimary"
+                android:backgroundTint="@color/pinkRose1"
                 android:cropToPadding="false"
                 android:padding="8dp"
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/ic_search" />
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerViewSubject"
+                android:id="@+id/recyclerViewAssign"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
@@ -92,20 +83,29 @@
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:background="@color/white"/>
-        </RelativeLayout>
 
+            <!--FabButton: Insert assign-->
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fabPlus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="bottom|right"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:elevation="4dp"
+                android:onClick="addNewNoteFunction"
+                android:src="@drawable/ic_plus_white"
+                app:backgroundTint="@color/colorAccent"
+                app:fabSize="normal"
+                tools:ignore="OnClick" />
+
+        </RelativeLayout>
     </LinearLayout>
 
 
-    <!-- Navigation Bar -->
-    <android.support.design.widget.NavigationView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:id="@+id/nav_view"
-        app:headerLayout="@layout/nav_header"
-        app:menu="@menu/drawer_menu">
-    </android.support.design.widget.NavigationView>
 
-
-</android.support.v4.widget.DrawerLayout>
+</RelativeLayout>

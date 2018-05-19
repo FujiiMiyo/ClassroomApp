@@ -57,9 +57,19 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!-- Dialog: add subject CourseFragment -->
+    <string name="add_your_subject">ADD A NEW SUBJECT</string>
+    <string name="enter_your_subject_id">Enter new subject id</string>
+    <string name="enter_your_subject_name">Enter new subject name</string>
 
 
-    <!-- Bottom sheet: CourseFragment Teacher -->
+    <!-- AssignActivity Teacher -->
+    <string name="search_assign">Search assignment....</string>
+    <!-- Dialog: add subject CourseFragment -->
+    <string name="add_new_assign">ADD A NEW ASSIGNMENT</string>
+    <string name="enter_new_assign">Enter new assignment</string>
+
+    <!-- Bottom sheet: AssignActivity Teacher -->
     <string name="select_menu">SELECT MENU</string>
     <string name="assignment">ASSIGNMENT</string>
     <string name="create_assignment">CREATE ASSIGNMENT</string>
@@ -67,10 +77,7 @@
     <string name="check_score">CHECK SCORE</string>
     <string name="delete_chapter">DELETE CHAPTER</string>
 
-    <!-- Dialog: add subject CourseFragment -->
-    <string name="add_your_subject">ADD A NEW SUBJECT</string>
-    <string name="enter_your_subject_id">Enter your subject id</string>
-    <string name="enter_your_subject_name">Enter your subject name</string>
+
 
 
 </resources>

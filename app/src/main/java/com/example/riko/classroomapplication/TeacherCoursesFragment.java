@@ -335,7 +335,7 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
                         }else {
                             Subject subject = new Subject(editextSubjectID.getText().toString(), editextSubjectName.getText().toString().toUpperCase());
                             table_subject.child(editextSubjectID.getText().toString()).setValue(subject);
-                            Toast.makeText(c, "Add the new subject", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(c, "Subject already is added", Toast.LENGTH_SHORT).show();
                             /*Intent signUp = new Intent(Signup1Activity.this, MainActivity.class);
                             startActivity(signUp);*/
                             addSubjectDialog.dismiss();

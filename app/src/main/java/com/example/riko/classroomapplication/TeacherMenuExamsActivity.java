@@ -1,8 +1,11 @@
 package com.example.riko.classroomapplication;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,31 +16,32 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.riko.classroomapplication.Model.Subject;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class TeacherMenuExamsActivity extends AppCompatActivity {
+public class TeacherMenuExamsActivity extends AppCompatActivity implements View.OnClickListener {
 
 
     //<------------------------------------------------>
     final String TAG = "TTwTT";
-    //-- DrawerLayout --***//
-    private DrawerLayout drawerLayout;
-    private TextView textUsername;
-    private TextView textStatus;
-    private TextView textName;
+    //-- Toolbar --***//
     private Toolbar toolbar;
-    private NavigationView navigationView;
-    private View headerView;
     //<------------------------------------------------>
 
     private boolean doubleBackToExitPressedOnce;
+    private FloatingActionButton fab;
+
+    private ImageButton searchBtn;
+    private EditText searchField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,21 +54,24 @@ public class TeacherMenuExamsActivity extends AppCompatActivity {
     }
 
 
+
     private void initInstance() {
         // TODO;
-        //-- Toolbar & DrawerLayout --***//
+        //-- Toolbar --***//
         toolbar = findViewById(R.id.toolbar);
-        drawerLayout = findViewById(R.id.drawerLayout);
-        navigationView = findViewById(R.id.nav_view);
-        //-----------------------------------------------//
-        //------------ Receive Intent from SignIn ------------***//
-        /*headerView = navigationView.getHeaderView(0);
-        textUsername = headerView.findViewById(R.id.txtUsername);
-        textStatus = headerView.findViewById(R.id.txtStatus);
-        textName = headerView.findViewById(R.id.txtName);*/
-        //------------------------------------------------------//-----------------------------------------------//
+
+        //---------- Fad Button -------------//
+        fab = findViewById(R.id.fabPlus);
+        fab.setOnClickListener(this);
+
+        //-------------------- Search --------------------------//
+        searchField = findViewById(R.id.search_field);
+        searchBtn = findViewById(R.id.searchBtn);
+        searchBtn.setOnClickListener(this);
     }
 
+
+    //--------------------- Back press Toolbar -----------------------//
     private void backToolbar() {
         //toolbar.setTitle(getString(R.string.assignment));
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
@@ -76,31 +83,11 @@ public class TeacherMenuExamsActivity extends AppCompatActivity {
         });
     }
 
+
+    //--------------------- Firebase Intent -----------------------//
     private void initFirebase() {
         //Init Firebase SignIn
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference table_member = database.getReference("Member");
-        table_member.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Intent intent = getIntent();
-                String userName = intent.getStringExtra("Username");
-                String status = intent.getStringExtra("Status");
-                String name = intent.getStringExtra("Name");
-                String password = intent.getStringExtra("Password");
-                //HeaderView in Drawer Layout
-                textUsername.setText(userName);
-                textStatus.setText(status);
-                textName.setText(name);
-                //Log.d(TAG, String.valueOf(textName));
-                //Toast.makeText(TeacherMenuExamsActivity.this,textName.getText().toString(), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-
         final DatabaseReference table_subject = database.getReference("Subject");
         table_subject.addValueEventListener(new ValueEventListener() {
             @Override
@@ -110,52 +97,18 @@ public class TeacherMenuExamsActivity extends AppCompatActivity {
                 String subjectname = intent.getStringExtra("subjectname");
                 toolbar.setTitle(subjectname);
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
-
     }
 
-    //-- Toolbar & DrawerLayout --***//
-    /*private void displayDrawerLayout() {
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.nav_coures:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                                new TeacherCoursesFragment()).commit();
-                        break;
-                    case R.id.nav_changepw:
-                        //initChangePassword();
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                                new ChangepwFragment()).commit();
-                        break;
-                    case R.id.nav_logout:
-                        signOut();
-                        Toast.makeText(headerView.getContext(), "Sign out", Toast.LENGTH_SHORT).show();
-                        break;
-                }
-                return true;
-            }
-        });
-    }
 
-    private void signOut() {
-        Intent intent = new Intent(TeacherMenuExamsActivity.this, MainActivity.class);
-        startActivity(intent);
-        finish();
-    }*/
-
-    //--------- Back Press --------------------***//
+    //------------------------------- Back Press --------------------------------------//
     @Override
     public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START);
-        } else if (doubleBackToExitPressedOnce) {
+        if (doubleBackToExitPressedOnce) {
             super.onBackPressed();
             Intent intent = new Intent(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_HOME);
@@ -177,5 +130,38 @@ public class TeacherMenuExamsActivity extends AppCompatActivity {
         }, 2000);
     }
 
+    private void showAddItemDialog(final Context c) {
+        final Dialog addAssignDialog = new Dialog(c);
+        addAssignDialog.setContentView(R.layout.dialog_add_assign_name);
+        final EditText editextSubjectID = addAssignDialog.findViewById(R.id.editextAssignname);
+        ImageButton btnAddAssign = addAssignDialog.findViewById(R.id.btnAddAssign);
+        ImageButton btnCancel = addAssignDialog.findViewById(R.id.btnCancel);
+        //SAVE
+        btnAddAssign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(c, "Assignment already is added", Toast.LENGTH_SHORT).show();
+                addAssignDialog.dismiss();
+            }
+        });
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addAssignDialog.cancel();
+            }
+        });
+        addAssignDialog.show();
+    }
 
+    @Override
+    public void onClick(View v) {
+        if (v == searchBtn) {
+            Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show();
+            //String searchText = searchField.getText().toString().toUpperCase();
+            //GetSearchFirebase(searchText);
+        } else if (v == fab) {
+            Toast.makeText(this, "Add a new assignment", Toast.LENGTH_SHORT).show();
+            showAddItemDialog(this);
+        }
+    }
 }
