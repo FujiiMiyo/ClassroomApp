@@ -6,9 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
-public class AddExamsActivity extends AppCompatActivity {
+public class AddExamsActivity extends AppCompatActivity implements View.OnClickListener {
 
     //<------------------------------------------------>
     final String TAG = "TTwTT";
@@ -18,12 +20,17 @@ public class AddExamsActivity extends AppCompatActivity {
 
     private boolean doubleBackToExitPressedOnce;
     private String assignname;
+    private Button btnChoice;
+    private Button btnWrite;
+    private ImageButton btnAdd;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_exams);
         initInstance();
+        clickButton();
         backToolbar();
     }
 
@@ -33,6 +40,15 @@ public class AddExamsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         assignname = intent.getStringExtra("assignname");
         toolbar.setTitle(assignname);
+
+        btnChoice = findViewById(R.id.btnChoice);
+        btnWrite = findViewById(R.id.btnWrite);
+        btnAdd = findViewById(R.id.btnAdd);
+    }
+
+    private void clickButton() {
+        btnChoice.setOnClickListener(this);
+        btnWrite.setOnClickListener(this);
     }
 
     private void backToolbar() {
@@ -72,4 +88,14 @@ public class AddExamsActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onClick(View v) {
+        if (v == btnChoice){
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_exam,
+                    new CreateChoiceFragment()).commit();
+        } else  if (v == btnWrite){
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_exam,
+                    new CreateWriteFragment()).commit();
+        }
+    }
 }

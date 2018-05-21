@@ -77,5 +77,12 @@
     <string name="check_score">CHECK SCORE</string>
     <string name="delete_assignment">DELETE ASSIGNMENT</string>
 
+    <!-- AddAssignmentActivity Teacher -->
+    <string name="add_quest">ADD QUESTION</string>
+    <string name="choice">Choice</string>
+    <string name="write">Write</string>
+
+    <string name="enter_quest">Enter a question</string>
+    <string name="enter_ans">Enter an answer</string>
 
 </resources>
