@@ -64,7 +64,6 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
     private Dialog addSubjectDialog;
     private SubjectAdapter.OnItemClickListener listener;
 
-
     public TeacherCoursesFragment() {
     }
 
@@ -112,12 +111,12 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
             @Override
             public void onItemClick(Subject subject) {
                 //selectSubject();
-                Toast.makeText(getContext(), "Subject Clicked", Toast.LENGTH_SHORT).show();
-                Intent assign = new Intent(getActivity(), TeacherMenuExamsActivity.class);
-                assign.putExtra("subjectID", subject.getSubjectID());
-                assign.putExtra("subjectname", subject.getSubjectname());
-                startActivity(assign);
-                Toast.makeText(getContext(), "Assignment", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Subject is clicked", Toast.LENGTH_SHORT).show();
+                Intent isubject = new Intent(getActivity(), TeacherMenuExamsActivity.class);
+                isubject.putExtra("subjectID", subject.getSubjectID());
+                isubject.putExtra("subjectname", subject.getSubjectname());
+                startActivity(isubject);
+                //Toast.makeText(getContext(), "Assignment", Toast.LENGTH_SHORT).show();
             }
         });
         GetSubjectFirebase();
@@ -233,8 +232,6 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
         public void onBindViewHolder(@NonNull SubjectAdapter.SubjectViewHolder holder, final int position) {
             final Subject subjectID = listArrayID.get(position);
             final Subject subjectname = listArrayName.get(position);
-            /*holder.textSubjectId.setText(subjectID.getSubjectID());
-            holder.textSubject.setText(subjectname.getSubjectname());*/
             holder.bind(subjectID, subjectname, listener);
             holder.btnDelete.setOnClickListener(new View.OnClickListener() {
                 @Override

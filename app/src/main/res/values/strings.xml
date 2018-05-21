@@ -64,7 +64,7 @@
 
 
     <!-- AssignActivity Teacher -->
-    <string name="search_assign">Search assignment....</string>
+    <string name="search_assign">Search assignment name....</string>
     <!-- Dialog: add subject CourseFragment -->
     <string name="add_new_assign">ADD A NEW ASSIGNMENT</string>
     <string name="enter_new_assign">Enter new assignment</string>
@@ -75,9 +75,7 @@
     <string name="create_assignment">CREATE ASSIGNMENT</string>
     <string name="edit_assignment">EDIT ASSIGNMENT</string>
     <string name="check_score">CHECK SCORE</string>
-    <string name="delete_chapter">DELETE CHAPTER</string>
-
-
+    <string name="delete_assignment">DELETE ASSIGNMENT</string>
 
 
 </resources>

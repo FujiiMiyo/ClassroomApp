@@ -111,7 +111,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="16dp"
-            android:text="@string/delete_chapter" />
+            android:text="@string/delete_assignment" />
     </LinearLayout>
 
 

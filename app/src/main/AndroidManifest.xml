@@ -16,24 +16,38 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".test" />
-        <activity android:name=".Signup1Activity" android:screenOrientation="portrait"/>
-        <activity android:name=".Signin1Activity" android:screenOrientation="portrait"/>
-        <activity android:name=".TeacherActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".StudentActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".TeacherMenuExamsActivity" android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Signup1Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Signin1Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TeacherActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".StudentActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TeacherMenuExamsActivity"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <activity android:name=".AddExamsActivity"></activity>
     </application>
 
 </manifest>

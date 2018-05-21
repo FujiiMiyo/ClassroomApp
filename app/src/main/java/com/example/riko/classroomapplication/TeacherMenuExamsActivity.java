@@ -5,28 +5,36 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.riko.classroomapplication.Model.Assign;
 import com.example.riko.classroomapplication.Model.Subject;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TeacherMenuExamsActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -42,23 +50,44 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
 
     private ImageButton searchBtn;
     private EditText searchField;
+    private RecyclerView recyclerViewAssign;
+    private FirebaseDatabase database;
+    private DatabaseReference table_assign;
+    private List<Subject> listSubjectID;
+    private List<Assign> listAssignName;
+    private AssignAdapter assignAdapter;
+    private String subjectID;
+    private String subjectname;
+    private BottomSheetDialog bottomSheetMenu;
+    private View sheetView;
+    private LinearLayout createAssign;
+    private LinearLayout editAssign;
+    private LinearLayout checkScore;
+    private LinearLayout delete;
+    private Intent iassign;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacher_menu_exams);
         initInstance();
+        fabButtomAddSubject();
+        //bottomSheetSelectMenu();
         backToolbar();
-        initFirebase();
-        // displayDrawerLayout();
     }
 
-
-
     private void initInstance() {
-        // TODO;
+
         //-- Toolbar --***//
         toolbar = findViewById(R.id.toolbar);
+        Intent intent = getIntent();
+        subjectID = intent.getStringExtra("subjectID");
+        subjectname = intent.getStringExtra("subjectname");
+        toolbar.setTitle(subjectname);
+
+        //----- Firebase ------//
+        database = FirebaseDatabase.getInstance();
+        table_assign = database.getReference().child("Assign");
 
         //---------- Fad Button -------------//
         fab = findViewById(R.id.fabPlus);
@@ -68,6 +97,186 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
         searchField = findViewById(R.id.search_field);
         searchBtn = findViewById(R.id.searchBtn);
         searchBtn.setOnClickListener(this);
+
+        //--------------- RecyclerView --------------------//
+        recyclerViewAssign = findViewById(R.id.recyclerViewAssign);
+        recyclerViewAssign.setHasFixedSize(true);
+        RecyclerView.LayoutManager LM = new LinearLayoutManager(this);
+        recyclerViewAssign.setLayoutManager(LM);
+        recyclerViewAssign.setItemAnimator(new DefaultItemAnimator());
+        //recyclerViewAssign.addItemDecoration(new DividerItemDecoration(view.getContext(), LinearLayoutManager.VERTICAL));
+        //recyclerViewAssign.setAdapter(recyclerAdapter);
+
+        //----------------- Subject list -------------------------------//
+        listSubjectID = new ArrayList<>();
+        listAssignName = new ArrayList<>();
+        assignAdapter = new AssignAdapter(listAssignName, new AssignAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Assign assign) {
+                //Toast.makeText(TeacherMenuExamsActivity.this, "Assignment is clicked", Toast.LENGTH_SHORT).show();
+                Intent iassign = new Intent(TeacherMenuExamsActivity.this, AddExamsActivity.class);
+                iassign.putExtra("assignname", assign.getAssignname());
+                startActivity(iassign);
+                //displaySelectMenu();
+            }
+        });
+        GetSearchFirebase();
+
+    }
+
+
+    //***************************************************** Assignment lists ********************************************************************************//
+    //<------------------------ Firebase search field and display list ------------------------------------>//
+    private void GetSearchFirebase() {
+        table_assign.orderByChild("assignname").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Assign assign = new Assign();
+                assign = dataSnapshot.getValue(Assign.class);
+                //Add to ArrayList
+                listAssignName.add(assign);
+                //Add List into Adapter/RecyclerView
+                recyclerViewAssign.setAdapter(assignAdapter);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    void GetSearchFirebase(String searchText) {
+
+        //Clear ListSubject
+        listAssignName.clear();
+
+        Query searchQuery = table_assign.orderByChild("assignname").startAt(searchText).endAt(searchText + "\uf8ff");
+        searchQuery.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Assign assign = new Assign();
+                assign = dataSnapshot.getValue(Assign.class);
+                //Add to ArrayList
+                listAssignName.add(assign);
+                //Add List into Adapter/RecyclerView
+                recyclerViewAssign.setAdapter(assignAdapter);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+
+        });
+    }
+
+    //---------------- Subject List -------------------------------------------------//
+    public static class AssignAdapter extends RecyclerView.Adapter<TeacherMenuExamsActivity.AssignAdapter.AssignHolder> {
+
+        List<Assign> listAssignName;
+        final OnItemClickListener listener;
+        private Context context;
+
+        public interface OnItemClickListener {
+            void onItemClick(Assign assign);
+        }
+
+        public AssignAdapter(List<Assign> listAssignName, OnItemClickListener listener) {
+            this.listAssignName = listAssignName;
+            this.listener = listener;
+        }
+
+        @NonNull
+        @Override
+        public AssignAdapter.AssignHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_assign_names, parent, false);
+            return new AssignHolder(v);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull AssignAdapter.AssignHolder holder, int position) {
+            Assign assignname = listAssignName.get(position);
+            holder.bind(assignname, listener);
+        }
+
+        @Override
+        public int getItemCount() {
+            return listAssignName.size();
+        }
+
+        public class AssignHolder extends RecyclerView.ViewHolder {
+            TextView textAssignName;
+            RelativeLayout list_assign_names;
+
+            public AssignHolder(View itemView) {
+                super(itemView);
+                list_assign_names = itemView.findViewById(R.id.list_item_assign_name);
+                textAssignName = itemView.findViewById(R.id.textAssignName);
+            }
+
+            public void bind(final Assign assignname, final OnItemClickListener listener) {
+                textAssignName.setText(assignname.getAssignname());
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.onItemClick(assignname);
+                    }
+                });
+            }
+        }
+    }
+
+
+    // Bottom sheet dialog: Select menu
+    private void bottomSheetSelectMenu() {
+        bottomSheetMenu = new BottomSheetDialog(this);
+        sheetView = TeacherMenuExamsActivity.this.getLayoutInflater().inflate(R.layout.bottom_sheet_menu, null);
+        bottomSheetMenu.setContentView(sheetView);
+        initSelectMenu();
+        menuClickListener();
+    }
+    private void initSelectMenu() {
+        createAssign = sheetView.findViewById(R.id.menuCreateAssign);
+        editAssign = sheetView.findViewById(R.id.menuEditAssign);
+        checkScore = sheetView.findViewById(R.id.menuScore);
+        delete = sheetView.findViewById(R.id.menuDelete);
+    }
+    private void menuClickListener() {
+        createAssign.setOnClickListener(this);
+        editAssign.setOnClickListener(this);
+        checkScore.setOnClickListener(this);
+        delete.setOnClickListener(this);
+    }
+    private void displaySelectMenu() {
+        Toast.makeText(TeacherMenuExamsActivity. this, "Assignment is clicked", Toast.LENGTH_SHORT).show();
+        bottomSheetMenu.show();
     }
 
 
@@ -83,26 +292,6 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
         });
     }
 
-
-    //--------------------- Firebase Intent -----------------------//
-    private void initFirebase() {
-        //Init Firebase SignIn
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference table_subject = database.getReference("Subject");
-        table_subject.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Intent intent = getIntent();
-                String subjectID = intent.getStringExtra("subjectID");
-                String subjectname = intent.getStringExtra("subjectname");
-                toolbar.setTitle(subjectname);
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
 
 
     //------------------------------- Back Press --------------------------------------//
@@ -133,15 +322,37 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
     private void showAddItemDialog(final Context c) {
         final Dialog addAssignDialog = new Dialog(c);
         addAssignDialog.setContentView(R.layout.dialog_add_assign_name);
-        final EditText editextSubjectID = addAssignDialog.findViewById(R.id.editextAssignname);
+        final EditText editextAssignName = addAssignDialog.findViewById(R.id.editextAssignname);
         ImageButton btnAddAssign = addAssignDialog.findViewById(R.id.btnAddAssign);
         ImageButton btnCancel = addAssignDialog.findViewById(R.id.btnCancel);
         //SAVE
         btnAddAssign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(c, "Assignment already is added", Toast.LENGTH_SHORT).show();
-                addAssignDialog.dismiss();
+                /*Toast.makeText(c, "Assignment already is added", Toast.LENGTH_SHORT).show();
+                addAssignDialog.dismiss();*/
+                table_assign.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        //Check if editText is empty
+                        if (editextAssignName.getText().toString().isEmpty()) {
+                            Toast.makeText(c, "Please enter assignment name", Toast.LENGTH_SHORT).show();
+                        }  else if (dataSnapshot.child(editextAssignName.getText().toString()).exists()) {
+                            Toast.makeText(c, "Assignment name has existed", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Assign assign = new Assign(editextAssignName.getText().toString());
+                            table_assign.child(editextAssignName.getText().toString()).setValue(assign);
+                            Toast.makeText(c, "Assignment already is added", Toast.LENGTH_SHORT).show();
+                            /*Intent signUp = new Intent(Signup1Activity.this, MainActivity.class);
+                            startActivity(signUp);*/
+                            addAssignDialog.dismiss();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
             }
         });
         btnCancel.setOnClickListener(new View.OnClickListener() {
@@ -153,15 +364,48 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
         addAssignDialog.show();
     }
 
+
+
+    //Flot action button: Add subject
+    private void fabButtomAddSubject() {
+        // Hide Floating Action Button when scrolling in Recycler View
+        recyclerViewAssign.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
+                    fab.hide();
+                } else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
+                    fab.show();
+                }
+            }
+        });
+        //<-----------------------------------------------------------//>
+    }
+
     @Override
     public void onClick(View v) {
         if (v == searchBtn) {
             Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show();
-            //String searchText = searchField.getText().toString().toUpperCase();
-            //GetSearchFirebase(searchText);
+            String searchText = searchField.getText().toString().toUpperCase();
+            GetSearchFirebase(searchText);
         } else if (v == fab) {
             Toast.makeText(this, "Add a new assignment", Toast.LENGTH_SHORT).show();
             showAddItemDialog(this);
+        } else if (v == createAssign){
+            Toast.makeText(this, "Create Assignment", Toast.LENGTH_SHORT).show();
+            /*Intent iiassign = getIntent();
+            String aassignname = iiassign.getStringExtra("assignname");
+            Intent iiiassign = new Intent(this, AddExamsActivity.class);
+            iiiassign.putExtra("aassignname", aassignname);
+            startActivity(iassign);*/
+        } else if (v == editAssign){
+            Toast.makeText(this, "Edit Assignment", Toast.LENGTH_SHORT).show();
+        } else if (v == checkScore){
+            Toast.makeText(this, "Check score", Toast.LENGTH_SHORT).show();
+        } else if (v == delete){
+            Toast.makeText(this, "Delete Assignment", Toast.LENGTH_SHORT).show();
+            //deleteAssign(subjectID.getSubjectID(), subjectname.getSubjectname(), position);
         }
     }
 }
