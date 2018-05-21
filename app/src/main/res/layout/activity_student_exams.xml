@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".TeacherMenuExamsActivity" >
+
+
+    <LinearLayout
+        android:id="@+id/activityController"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:background="@color/colorAccent"
+            app:titleTextColor="@color/colorPrimaryDark"
+            android:id="@+id/toolbar"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            android:elevation="2dp"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/heading_assign"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="30dp"
+                android:text="@string/assignment"
+                android:textColor="@color/pinkRose1"
+                android:textSize="30dp"
+                android:textStyle="bold|italic" />
+
+            <EditText
+                android:id="@+id/search_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/heading_assign"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="80dp"
+                android:layout_marginTop="98dp"
+                android:background="@drawable/search_layout"
+                android:hint="@string/search_assign"
+                android:inputType="text"
+                android:paddingBottom="10dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="10dp"
+                android:textColor="@color/pinkRose"
+                android:textSize="16dp"
+                android:imeOptions="actionDone"
+                android:maxLines="1" />
+
+            <ImageButton
+                android:id="@+id/searchBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/search_field"
+                android:layout_marginRight="30dp"
+                android:background="@drawable/search_btn"
+                android:backgroundTint="@color/pinkRose1"
+                android:cropToPadding="false"
+                android:padding="8dp"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/ic_search" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerViewAssign"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/search_field"
+                android:layout_marginTop="50dp"
+                android:scrollbars="vertical"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:background="@color/white"/>
+
+        </RelativeLayout>
+    </LinearLayout>
+
+
+
+</RelativeLayout>

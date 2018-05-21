@@ -2,6 +2,7 @@ package com.example.riko.classroomapplication;
 
 //-- Toolbar & DrawerLayout --//
 import android.content.Intent;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -10,61 +11,145 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.riko.classroomapplication.Model.Member;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 //-----------------------------//
 
 
 
 public class StudentActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    //-- DrawerLayout --//
+    //<------------------------------------------------>
+    final String TAG = "TTwTT";
+    //-- DrawerLayout --***//
     private DrawerLayout drawerLayout;
+    private TextView textUsername;
+    private TextView textStatus;
+    private TextView textName;
+    private Toolbar toolbar;
+    private NavigationView navigationView;
+    private View headerView;
+    //<------------------------------------------------>
+
+
+    private boolean doubleBackToExitPressedOnce;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student);
 
-        //-- Toolbar & DrawerLayout --//
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        initInstance();
+        displayDrawerLayout();
+        initFirebase();
+
+        //------ Replace null Fragment -----***//
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new StudentCoursesFragment()).commit();
+            navigationView.setCheckedItem(R.id.nav_coures);
+        }
+        //---------------------------------------------------------//
+
+    }
+
+    //<------------------------------- Pattern drawerLayout ---------------------------------------->//
+    private void initInstance() {
+        // TODO;
+        //-- Toolbar & DrawerLayout --***//
+        toolbar = findViewById(R.id.toolbar);
+        drawerLayout = findViewById(R.id.drawerLayout);
+        navigationView = findViewById(R.id.nav_view);
+        //-----------------------------------------------//
+        //------------ Receive Intent from SignIn ------------***//
+        headerView = navigationView.getHeaderView(0);
+        textUsername = headerView.findViewById(R.id.txtUsername);
+        textStatus = headerView.findViewById(R.id.txtStatus);
+        textName = headerView.findViewById(R.id.txtName);
+        //------------------------------------------------------//
+    }
+
+    //<---------------------------------- Firebase & Intetn -------------------------->//
+    private void initFirebase() {
+        //Init Firebase SignIn
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference table_member = database.getReference("Member");
+        table_member.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Intent intent = getIntent();
+                String userName = intent.getStringExtra("Username");
+                String status = intent.getStringExtra("Status");
+                String name = intent.getStringExtra("Name");
+                String password = intent.getStringExtra("Password");
+                //HeaderView in Drawer Layout
+                textUsername.setText(userName);
+                textStatus.setText(status);
+                textName.setText(name);
+                Log.d(TAG, String.valueOf(textName));
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
+
+    private void initChangePassword() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference table_chgmember = database.getReference("Member");
+        table_chgmember.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Member member = dataSnapshot.child(textUsername.getText().toString()).getValue(Member.class);
+                Bundle changepw = new Bundle();
+                changepw.putString("Username", member.getUsername());
+                changepw.putString("Password", member.getPassword());
+                ChangepwFragment myObj = new ChangepwFragment();
+                myObj.setArguments(changepw);
+                Log.d(TAG, String.valueOf(textUsername));
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
+
+
+    //-- Toolbar & DrawerLayout --***//
+    private void displayDrawerLayout() {
         setSupportActionBar(toolbar);
-
-        drawerLayout = findViewById(R.id.drawerLayout_stu);
-        NavigationView navigationView = findViewById(R.id.nav_view_stu);
         navigationView.setNavigationItemSelectedListener(this);
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new ChangepwFragment()).commit();
-            navigationView.setCheckedItem(R.id.nav_changepw);
-        }
-
-        //---------------------------------------------------------//
-
-
     }
 
-    //-- Toolbar & DrawerLayout --//
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.nav_coures:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new TeacherCoursesFragment()).commit();
+                        new StudentCoursesFragment()).commit();
                 break;
             case R.id.nav_changepw:
+                initChangePassword();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new ChangepwFragment()).commit();
                 break;
             case R.id.nav_logout:
                 signOut();
-                Toast.makeText(this, "Sign Out", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Sign out", Toast.LENGTH_SHORT).show();
                 break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -77,17 +162,44 @@ public class StudentActivity extends AppCompatActivity implements NavigationView
         finish();
     }
 
+    //--------- Back Press --------------------***//
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
+        } else if (doubleBackToExitPressedOnce){
             super.onBackPressed();
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+            System.exit(1);
+            return;
         }
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
     }
+    //-----------------------------------------------//
+    //<---------------------------------------------------------------------------------------------------->//
+    /*
+     *
+     *
+     *
+     *
+     *
+     */
+    //--------- Send data to fragment ---------------------------//
+    private void sendData(){
 
-    //---------------------------------------------------------//
-
-
+    }
 
 }
