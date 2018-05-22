@@ -41,8 +41,18 @@ public class ChangepwFragment extends Fragment implements View.OnClickListener {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater,  ViewGroup container,Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_changepw, container, false);
+
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString("Username");
+            mParam2 = getArguments().getString("Password");
+            Toast.makeText(getContext(), mParam1+" "+mParam2, Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(getContext(), "Bundle == null", Toast.LENGTH_SHORT).show();
+        }
+
         initInstance();
         return view;
 
@@ -56,15 +66,8 @@ public class ChangepwFragment extends Fragment implements View.OnClickListener {
         buttonChangepw = view.findViewById(R.id.buttonChangepw);
         buttonChangepw.setOnClickListener(this);
 
-        Bundle changepw = this.getArguments();
-        if (changepw != null) {
-            mParam1 = changepw.getString("Username");
-            mParam2 = changepw.getString("Password");
-            Toast.makeText(getContext(), "Bundle != null", Toast.LENGTH_SHORT).show();
-        }
-        else {
-            Toast.makeText(getContext(), "Bundle == null", Toast.LENGTH_SHORT).show();
-        }
+
+
 
 
     }

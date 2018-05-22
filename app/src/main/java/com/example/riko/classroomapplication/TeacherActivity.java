@@ -39,6 +39,7 @@ public class TeacherActivity extends AppCompatActivity implements NavigationView
     private Toolbar toolbar;
     private NavigationView navigationView;
     private View headerView;
+
     //<------------------------------------------------>
 
     private boolean doubleBackToExitPressedOnce;
@@ -48,6 +49,8 @@ public class TeacherActivity extends AppCompatActivity implements NavigationView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacher);
+
+
 
         initInstance();
         displayDrawerLayout();
@@ -87,10 +90,12 @@ public class TeacherActivity extends AppCompatActivity implements NavigationView
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Intent intent = getIntent();
+
                 String userName = intent.getStringExtra("Username");
                 String status = intent.getStringExtra("Status");
                 String name = intent.getStringExtra("Name");
                 String password = intent.getStringExtra("Password");
+
                 //HeaderView in Drawer Layout
                 textUsername.setText(userName);
                 textStatus.setText(status);
@@ -104,17 +109,26 @@ public class TeacherActivity extends AppCompatActivity implements NavigationView
     }
 
     private void initChangePassword() {
+
+
+
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference table_chgmember = database.getReference("Member");
         table_chgmember.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Member member = dataSnapshot.child(textUsername.getText().toString()).getValue(Member.class);
+
                 Bundle changepw = new Bundle();
                 changepw.putString("Username", member.getUsername());
                 changepw.putString("Password", member.getPassword());
                 ChangepwFragment myObj = new ChangepwFragment();
                 myObj.setArguments(changepw);
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        myObj).commit();
+
                 Log.d(TAG, String.valueOf(textUsername));
             }
             @Override
@@ -143,8 +157,10 @@ public class TeacherActivity extends AppCompatActivity implements NavigationView
                 break;
             case R.id.nav_changepw:
                 initChangePassword();
+                /*
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new ChangepwFragment()).commit();
+                */
                 break;
             case R.id.nav_logout:
                 signOut();
