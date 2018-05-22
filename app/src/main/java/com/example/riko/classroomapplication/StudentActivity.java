@@ -145,7 +145,7 @@ public class StudentActivity extends AppCompatActivity implements NavigationView
             case R.id.nav_changepw:
                 initChangePassword();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new ChangepwFragment()).commit();
+                        new StudentChangepwFragment()).commit();
                 break;
             case R.id.nav_logout:
                 signOut();
