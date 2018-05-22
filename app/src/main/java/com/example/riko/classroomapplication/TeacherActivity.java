@@ -109,12 +109,8 @@ public class TeacherActivity extends AppCompatActivity implements NavigationView
     }
 
     private void initChangePassword() {
-
-
-
-
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference table_chgmember = database.getReference("Member");
+        final DatabaseReference table_chgmember = database.getReference().child("Member").child();
         table_chgmember.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -135,7 +131,7 @@ public class TeacherActivity extends AppCompatActivity implements NavigationView
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-    }
+    }*/
     //<------------------------------------------------------------------------------------------>
 
     //-- Toolbar & DrawerLayout --***//

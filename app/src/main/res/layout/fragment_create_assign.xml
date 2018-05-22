@@ -1,154 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:scrollbars="vertical">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="No."
-                android:textSize="18dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1"
-                android:textSize="18dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=": "
-                android:textSize="18dp"
-                android:textStyle="bold" />
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/edittext_assign_layout"
-                android:hint="@string/enter_quest"
-                android:padding="5dp"
-                android:textAlignment="center"
-                android:textColor="@color/pinkRose1" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="15dp"
-            android:orientation="horizontal">
-
-            <RadioGroup
-                android:id="@+id/radioGroupStatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <RadioButton
-                    android:id="@+id/radioA"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="onRadioButtonClicked"
-                    android:textSize="16dp" />
-
-                <RadioButton
-                    android:id="@+id/radioB"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:onClick="onRadioButtonClicked"
-                    android:textSize="16dp" />
-
-                <RadioButton
-                    android:id="@+id/radioC"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:onClick="onRadioButtonClicked"
-                    android:textSize="16dp" />
-
-                <RadioButton
-                    android:id="@+id/radioD"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:onClick="onRadioButtonClicked"
-                    android:textSize="16dp" />
-            </RadioGroup>
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No."
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=": "
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/edittextA"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edittext_assign_layout"
-                    android:hint="@string/enter_ans"
-                    android:padding="5dp"
-                    android:textAlignment="center"
-                    android:textColor="@color/pinkRose1" />
-
-                <EditText
-                    android:id="@+id/edittextB"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/edittext_assign_layout"
-                    android:hint="@string/enter_ans"
-                    android:padding="5dp"
-                    android:textAlignment="center"
-                    android:textColor="@color/pinkRose1" />
-
-                <EditText
-                    android:id="@+id/edittextC"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/edittext_assign_layout"
-                    android:hint="@string/enter_ans"
-                    android:padding="5dp"
-                    android:textAlignment="center"
-                    android:textColor="@color/pinkRose1" />
-
-                <EditText
-                    android:id="@+id/edittextD"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/edittext_assign_layout"
-                    android:hint="@string/enter_ans"
+                    android:hint="@string/enter_quest"
                     android:padding="5dp"
                     android:textAlignment="center"
                     android:textColor="@color/pinkRose1" />
             </LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+                <RadioGroup
+                    android:id="@+id/radioGroupStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RadioButton
+                        android:id="@+id/radioA"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="onRadioButtonClicked"
+                        android:textSize="16dp" />
+
+                    <RadioButton
+                        android:id="@+id/radioB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:onClick="onRadioButtonClicked"
+                        android:textSize="16dp" />
+
+                    <RadioButton
+                        android:id="@+id/radioC"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:onClick="onRadioButtonClicked"
+                        android:textSize="16dp" />
+
+                    <RadioButton
+                        android:id="@+id/radioD"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:onClick="onRadioButtonClicked"
+                        android:textSize="16dp" />
+                </RadioGroup>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/edittextA"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittext_assign_layout"
+                        android:hint="@string/enter_ans"
+                        android:padding="5dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/pinkRose1" />
+
+                    <EditText
+                        android:id="@+id/edittextB"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/edittext_assign_layout"
+                        android:hint="@string/enter_ans"
+                        android:padding="5dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/pinkRose1" />
+
+                    <EditText
+                        android:id="@+id/edittextC"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/edittext_assign_layout"
+                        android:hint="@string/enter_ans"
+                        android:padding="5dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/pinkRose1" />
+
+                    <EditText
+                        android:id="@+id/edittextD"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/edittext_assign_layout"
+                        android:hint="@string/enter_ans"
+                        android:padding="5dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/pinkRose1" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>
