@@ -20,6 +20,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.internal.api.FirebaseNoSignedInUserException;
 
@@ -55,8 +56,17 @@ public class ChangepwFragment extends Fragment implements View.OnClickListener {
         buttonChangepw = view.findViewById(R.id.buttonChangepw);
         buttonChangepw.setOnClickListener(this);
 
-        /*mParam1 = getArguments().getString("Username");
-        mParam2 = getArguments().getString("Password");*/
+        Bundle changepw = this.getArguments();
+        if (changepw != null) {
+            mParam1 = changepw.getString("Username");
+            mParam2 = changepw.getString("Password");
+            Toast.makeText(getContext(), "Bundle != null", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(getContext(), "Bundle == null", Toast.LENGTH_SHORT).show();
+        }
+
+
     }
 
     @Override
@@ -89,7 +99,17 @@ public class ChangepwFragment extends Fragment implements View.OnClickListener {
                     progressDialog.dismiss();
                     Toast.makeText(getContext(), "Please confirm your password", Toast.LENGTH_SHORT).show();
                 } else {
+                    progressDialog.dismiss();
+                    pass = editextPassword.getText().toString();
 
+
+
+
+                    /*
+                    Query searchQuery = table_member.child("password").equalTo(pass);
+                    if (searchQuery != null) {
+                        Toast.makeText(getContext(), "getdata" + pass, Toast.LENGTH_SHORT).show();
+                    }*/
                 }
             }
 
