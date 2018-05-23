@@ -81,7 +81,7 @@ public class TeacherActivity extends AppCompatActivity implements NavigationView
         //------------------------------------------------------//
     }
 
-    //<---------------------------------- Firebase & Intetn -------------------------->//
+    //<---------------------------------- Firebase & Intent -------------------------->//
     private void initFirebase() {
         //Init Firebase SignIn
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -110,7 +110,7 @@ public class TeacherActivity extends AppCompatActivity implements NavigationView
 
     private void initChangePassword() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference table_chgmember = database.getReference().child("Member").child();
+        final DatabaseReference table_chgmember = database.getReference().child("Member");
         table_chgmember.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -131,7 +131,7 @@ public class TeacherActivity extends AppCompatActivity implements NavigationView
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-    }*/
+    }
     //<------------------------------------------------------------------------------------------>
 
     //-- Toolbar & DrawerLayout --***//
@@ -212,7 +212,6 @@ public class TeacherActivity extends AppCompatActivity implements NavigationView
     private void sendData(){
 
     }
-
 
 
 
