@@ -121,14 +121,14 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
             }
         });
         GetSearchFirebase();
-
     }
 
 
     //***************************************************** Assignment lists ********************************************************************************//
     //<------------------------ Firebase search field and display list ------------------------------------>//
     private void GetSearchFirebase() {
-        table_assign.orderByChild("assignname").addChildEventListener(new ChildEventListener() {
+        Query searchQuery = table_assign.orderByChild("subjectID").equalTo(subjectID);
+        searchQuery.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Assign assign = new Assign();
@@ -293,7 +293,6 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
     }
 
 
-
     //------------------------------- Back Press --------------------------------------//
     @Override
     public void onBackPressed() {
@@ -340,8 +339,8 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
                         }  else if (dataSnapshot.child(editextAssignName.getText().toString()).exists()) {
                             Toast.makeText(c, "Assignment name has existed", Toast.LENGTH_SHORT).show();
                         } else {
-                            Assign assign = new Assign(editextAssignName.getText().toString().toUpperCase());
-                            table_assign.child(editextAssignName.getText().toString().toUpperCase()).setValue(assign);
+                            Assign assign = new Assign(editextAssignName.getText().toString().toUpperCase(), subjectID);
+                            table_assign.push().setValue(assign);
                             Toast.makeText(c, "Assignment already is added", Toast.LENGTH_SHORT).show();
                             /*Intent signUp = new Intent(Signup1Activity.this, MainActivity.class);
                             startActivity(signUp);*/

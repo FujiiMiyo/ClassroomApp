@@ -2,13 +2,15 @@ package com.example.riko.classroomapplication.Model;
 
 public class Assign {
 
-    String assignname;
+    private String assignname;
+    private String subjectID;
 
     public Assign() {
     }
 
-    public Assign(String assignname) {
+    public Assign(String assignname, String subjectID) {
         this.assignname = assignname;
+        this.subjectID = subjectID;
     }
 
     public String getAssignname() {
@@ -17,5 +19,13 @@ public class Assign {
 
     public void setAssignname(String assignname) {
         this.assignname = assignname;
+    }
+
+    public String getSubjectID() {
+        return subjectID;
+    }
+
+    public void setSubjectID(String subjectID) {
+        this.subjectID = subjectID;
     }
 }

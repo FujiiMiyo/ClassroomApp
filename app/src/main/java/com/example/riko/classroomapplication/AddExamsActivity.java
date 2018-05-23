@@ -29,6 +29,7 @@ public class AddExamsActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_exams);
+
         initInstance();
         clickButton();
         backToolbar();
@@ -40,7 +41,6 @@ public class AddExamsActivity extends AppCompatActivity implements View.OnClickL
         Intent intent = getIntent();
         assignname = intent.getStringExtra("assignname");
         toolbar.setTitle(assignname);
-
         btnChoice = findViewById(R.id.btnChoice);
         btnWrite = findViewById(R.id.btnWrite);
         btnAdd = findViewById(R.id.btnAdd);

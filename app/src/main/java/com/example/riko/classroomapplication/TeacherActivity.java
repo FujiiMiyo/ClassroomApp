@@ -58,15 +58,8 @@ public class TeacherActivity extends AppCompatActivity implements NavigationView
 
         //------ Replace null Fragment -----***//
         if (savedInstanceState == null) {
-            Toast.makeText(this, "TeacherActivity", Toast.LENGTH_SHORT).show();
-            //Send data to courseFragment
-            Bundle courseFragment = new Bundle();
-            courseFragment.putString("Username", userName);
-            TeacherCoursesFragment myObj = new TeacherCoursesFragment();
-            myObj.setArguments(courseFragment);
-
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    myObj).commit();
+            //Toast.makeText(this, "TeacherActivity", Toast.LENGTH_SHORT).show();
+            initCourses();
             navigationView.setCheckedItem(R.id.nav_coures);
         }
     }
@@ -140,7 +133,33 @@ public class TeacherActivity extends AppCompatActivity implements NavigationView
             }
         });
     }
+
+    private void initCourses() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference table_crsmember = database.getReference().child("Member");
+        table_crsmember.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Member member = dataSnapshot.child(textUsername.getText().toString()).getValue(Member.class);
+
+                //Send data to courseFragment
+                Bundle courseFragment = new Bundle();
+                courseFragment.putString("Username", userName);
+                TeacherCoursesFragment myObj = new TeacherCoursesFragment();
+                myObj.setArguments(courseFragment);
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        myObj).commit();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
     //<------------------------------------------------------------------------------------------>
+
 
     //-- Toolbar & DrawerLayout --***//
     private void displayDrawerLayout() {
@@ -156,21 +175,10 @@ public class TeacherActivity extends AppCompatActivity implements NavigationView
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.nav_coures:
-                //Send data to courseFragment
-                Bundle courseFragment = new Bundle();
-                courseFragment.putString("Username", userName);
-                TeacherCoursesFragment myObj = new TeacherCoursesFragment();
-                myObj.setArguments(courseFragment);
-
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        myObj).commit();
+                initCourses();
                 break;
             case R.id.nav_changepw:
                 initChangePassword();
-                /*
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new ChangepwFragment()).commit();
-                */
                 break;
             case R.id.nav_logout:
                 signOut();
@@ -215,18 +223,5 @@ public class TeacherActivity extends AppCompatActivity implements NavigationView
     }
     //-----------------------------------------------//
     //<---------------------------------------------------------------------------------------------------->//
-    /*
-    *
-    *
-    *
-    *
-    *
-    */
-    //--------- Send data to fragment ---------------------------//
-    private void sendData(){
-
-    }
-
-
 
 }

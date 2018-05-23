@@ -75,7 +75,7 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
 
         if (getArguments() != null) {
             Username = getArguments().getString("Username");
-            Toast.makeText(getContext(), Username, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getContext(), Username, Toast.LENGTH_SHORT).show();
         }
         else {
             Toast.makeText(getContext(), "Bundle == null", Toast.LENGTH_SHORT).show();
@@ -336,13 +336,13 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
                             Toast.makeText(c, "Please enter subject id", Toast.LENGTH_SHORT).show();
                         } else if (editextSubjectName.getText().toString().isEmpty()) {
                             Toast.makeText(c, "Please enter subject name", Toast.LENGTH_SHORT).show();
-                        } else if (dataSnapshot.child(editextSubjectID.getText().toString()).exists()) {
+                        } /*else if (dataSnapshot.child(editextSubjectID.getText().toString()).exists()) {
                             Toast.makeText(c, "Subject id has existed", Toast.LENGTH_SHORT).show();
                         } else if (dataSnapshot.child(editextSubjectName.getText().toString()).exists()) {
                             Toast.makeText(c, "Subject name has existed", Toast.LENGTH_SHORT).show();
-                        }else {
-                            Subject subject = new Subject(editextSubjectID.getText().toString(), editextSubjectName.getText().toString().toUpperCase());
-                            table_subject.child(editextSubjectID.getText().toString()).setValue(subject);
+                        }*/else {
+                            Subject subject = new Subject(editextSubjectID.getText().toString().toUpperCase(), editextSubjectName.getText().toString().toUpperCase(), Username);
+                            table_subject.push().setValue(subject);
                             Toast.makeText(c, "Subject already is added", Toast.LENGTH_SHORT).show();
                             /*Intent signUp = new Intent(Signup1Activity.this, MainActivity.class);
                             startActivity(signUp);*/

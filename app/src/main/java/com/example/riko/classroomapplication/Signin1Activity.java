@@ -79,7 +79,7 @@ public class Signin1Activity extends AppCompatActivity {
                                         signIn.putExtra("Name", member.getName());
                                         signIn.putExtra("Password", member.getPassword());
                                         startActivity(signIn);
-                                        Toast.makeText(Signin1Activity.this, "Sign In successfully! Welcome Teacher", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(Signin1Activity.this, "Sign In successfully! Welcome " + editextUsername.getText().toString(), Toast.LENGTH_SHORT).show();
                                     } else {
                                         Intent signIn = new Intent(Signin1Activity.this, StudentActivity.class);
                                         signIn.putExtra("Username", member.getUsername());
@@ -87,7 +87,7 @@ public class Signin1Activity extends AppCompatActivity {
                                         signIn.putExtra("Name", member.getName());
                                         signIn.putExtra("Password", member.getPassword());
                                         startActivity(signIn);
-                                        Toast.makeText(Signin1Activity.this, "Sign In successfully! Welcome Student", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(Signin1Activity.this, "Sign In successfully! Welcome " + editextUsername.getText().toString(), Toast.LENGTH_SHORT).show();
                                     }
 
                                 } else {

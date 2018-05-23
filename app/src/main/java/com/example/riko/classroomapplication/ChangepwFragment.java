@@ -57,14 +57,11 @@ public class ChangepwFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initInstance() {
-
         editextPassword = view.findViewById(R.id.editextPassword);
         editextNewPassword = view.findViewById(R.id.editextNewPassword);
         editextConfirmPassword = view.findViewById(R.id.editextConfirmPassword);
         buttonChangepw = view.findViewById(R.id.buttonChangepw);
         buttonChangepw.setOnClickListener(this);
-
-
     }
 
     @Override
@@ -82,8 +79,6 @@ public class ChangepwFragment extends Fragment implements View.OnClickListener {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference table_member = database.getReference("Member");
 
-
-
         table_member.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -100,14 +95,16 @@ public class ChangepwFragment extends Fragment implements View.OnClickListener {
                     progressDialog.dismiss();
                     Toast.makeText(getContext(), "Your confirm password is incorrect", Toast.LENGTH_SHORT).show();
                 } else {
-                    progressDialog.dismiss();
                     oldPassword = editextPassword.getText().toString();
                     if (oldPassword.equals(Password)) {
                         //Toast.makeText(getContext(), "Your Password is correct", Toast.LENGTH_SHORT).show();
                         table_member.child(Username).child("password").setValue(editextNewPassword.getText().toString());
                         Toast.makeText(getContext(), "Change Password Complete", Toast.LENGTH_SHORT).show();
+                        Intent chgpw = new Intent(getActivity(), Signin1Activity.class);
+                        startActivity(chgpw);
                     }
                     else {
+                        progressDialog.dismiss();
                         Toast.makeText(getContext(), "Your Password is incorrect", Toast.LENGTH_SHORT).show();
                     }
                 }
