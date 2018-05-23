@@ -40,6 +40,8 @@ public class TeacherActivity extends AppCompatActivity implements NavigationView
     private NavigationView navigationView;
     private View headerView;
 
+    private String userName;
+
     //<------------------------------------------------>
 
     private boolean doubleBackToExitPressedOnce;
@@ -50,16 +52,21 @@ public class TeacherActivity extends AppCompatActivity implements NavigationView
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacher);
 
-
-
         initInstance();
         displayDrawerLayout();
         initFirebase();
 
         //------ Replace null Fragment -----***//
         if (savedInstanceState == null) {
+            Toast.makeText(this, "TeacherActivity", Toast.LENGTH_SHORT).show();
+            //Send data to courseFragment
+            Bundle courseFragment = new Bundle();
+            courseFragment.putString("Username", userName);
+            TeacherCoursesFragment myObj = new TeacherCoursesFragment();
+            myObj.setArguments(courseFragment);
+
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new TeacherCoursesFragment()).commit();
+                    myObj).commit();
             navigationView.setCheckedItem(R.id.nav_coures);
         }
     }
@@ -91,7 +98,8 @@ public class TeacherActivity extends AppCompatActivity implements NavigationView
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Intent intent = getIntent();
 
-                String userName = intent.getStringExtra("Username");
+                //String userName = intent.getStringExtra("Username");
+                userName = intent.getStringExtra("Username");// make all method can use
                 String status = intent.getStringExtra("Status");
                 String name = intent.getStringExtra("Name");
                 String password = intent.getStringExtra("Password");
@@ -148,8 +156,14 @@ public class TeacherActivity extends AppCompatActivity implements NavigationView
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.nav_coures:
+                //Send data to courseFragment
+                Bundle courseFragment = new Bundle();
+                courseFragment.putString("Username", userName);
+                TeacherCoursesFragment myObj = new TeacherCoursesFragment();
+                myObj.setArguments(courseFragment);
+
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new TeacherCoursesFragment()).commit();
+                        myObj).commit();
                 break;
             case R.id.nav_changepw:
                 initChangePassword();

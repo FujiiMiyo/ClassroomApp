@@ -63,6 +63,7 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
     private FirebaseRecyclerAdapter recyclerAdapter;
     private Dialog addSubjectDialog;
     private SubjectAdapter.OnItemClickListener listener;
+    private String Username;
 
     public TeacherCoursesFragment() {
     }
@@ -71,6 +72,15 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_courses1, container, false);
+
+        if (getArguments() != null) {
+            Username = getArguments().getString("Username");
+            Toast.makeText(getContext(), Username, Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(getContext(), "Bundle == null", Toast.LENGTH_SHORT).show();
+        }
+
         initInstance();
         fabButtomAddSubject();
         return view;
@@ -126,12 +136,13 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
     //***************************************************** Subject lists ********************************************************************************//
     //<------------------------ Firebase search field and display list ------------------------------------>//
     void GetSubjectFirebase() {
-        //Query searchQuery = table_subject.orderByChild("subjectname").startAt(searchText).endAt(searchText + "\uf8ff");
-        table_subject.orderByChild("subjectID").addChildEventListener(new ChildEventListener() {
+        Query searchQuery = table_subject.orderByChild("username").equalTo(Username);
+        searchQuery.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 //Subject subject = new Subject();
                 Subject subject = dataSnapshot.getValue(Subject.class);
+
                 //Add to ArrayList
                 listSubjectID.add(subject);
                 listSubjectName.add(subject);
