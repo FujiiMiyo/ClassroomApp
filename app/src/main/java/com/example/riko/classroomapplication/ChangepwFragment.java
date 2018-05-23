@@ -33,11 +33,9 @@ public class ChangepwFragment extends Fragment implements View.OnClickListener {
     private EditText editextNewPassword;
     private EditText editextConfirmPassword;
     private Button buttonChangepw;
-    private String pass;
-    private String newpass;
-    private String username;
-    private String mParam1;
-    private String mParam2;
+    private String oldPassword;
+    private String Username;
+    private String Password;
 
     @Nullable
     @Override
@@ -45,9 +43,9 @@ public class ChangepwFragment extends Fragment implements View.OnClickListener {
         view = inflater.inflate(R.layout.fragment_changepw, container, false);
 
         if (getArguments() != null) {
-            mParam1 = getArguments().getString("Username");
-            mParam2 = getArguments().getString("Password");
-            Toast.makeText(getContext(), mParam1+" "+mParam2, Toast.LENGTH_SHORT).show();
+            Username = getArguments().getString("Username");
+            Password = getArguments().getString("Password");
+            //Toast.makeText(getContext(), Username+" "+Password, Toast.LENGTH_SHORT).show();
         }
         else {
             Toast.makeText(getContext(), "Bundle == null", Toast.LENGTH_SHORT).show();
@@ -65,9 +63,6 @@ public class ChangepwFragment extends Fragment implements View.OnClickListener {
         editextConfirmPassword = view.findViewById(R.id.editextConfirmPassword);
         buttonChangepw = view.findViewById(R.id.buttonChangepw);
         buttonChangepw.setOnClickListener(this);
-
-
-
 
 
     }
@@ -101,18 +96,20 @@ public class ChangepwFragment extends Fragment implements View.OnClickListener {
                 } else if (editextConfirmPassword.getText().toString().isEmpty()) {
                     progressDialog.dismiss();
                     Toast.makeText(getContext(), "Please confirm your password", Toast.LENGTH_SHORT).show();
+                } else if(!editextConfirmPassword.getText().toString().equals(editextNewPassword.getText().toString())) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getContext(), "Your confirm password is incorrect", Toast.LENGTH_SHORT).show();
                 } else {
                     progressDialog.dismiss();
-                    pass = editextPassword.getText().toString();
-
-
-
-
-                    /*
-                    Query searchQuery = table_member.child("password").equalTo(pass);
-                    if (searchQuery != null) {
-                        Toast.makeText(getContext(), "getdata" + pass, Toast.LENGTH_SHORT).show();
-                    }*/
+                    oldPassword = editextPassword.getText().toString();
+                    if (oldPassword.equals(Password)) {
+                        //Toast.makeText(getContext(), "Your Password is correct", Toast.LENGTH_SHORT).show();
+                        table_member.child(Username).child("password").setValue(editextNewPassword.getText().toString());
+                        Toast.makeText(getContext(), "Change Password Complete", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        Toast.makeText(getContext(), "Your Password is incorrect", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
@@ -124,6 +121,7 @@ public class ChangepwFragment extends Fragment implements View.OnClickListener {
 
 
     }
+
 
 
 }

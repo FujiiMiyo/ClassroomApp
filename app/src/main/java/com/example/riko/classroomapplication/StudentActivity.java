@@ -111,11 +111,16 @@ public class StudentActivity extends AppCompatActivity implements NavigationView
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Member member = dataSnapshot.child(textUsername.getText().toString()).getValue(Member.class);
+
                 Bundle changepw = new Bundle();
                 changepw.putString("Username", member.getUsername());
                 changepw.putString("Password", member.getPassword());
                 ChangepwFragment myObj = new ChangepwFragment();
                 myObj.setArguments(changepw);
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        myObj).commit();
+
                 Log.d(TAG, String.valueOf(textUsername));
             }
             @Override
@@ -144,8 +149,10 @@ public class StudentActivity extends AppCompatActivity implements NavigationView
                 break;
             case R.id.nav_changepw:
                 initChangePassword();
+                /*
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new StudentChangepwFragment()).commit();
+                */
                 break;
             case R.id.nav_logout:
                 signOut();
