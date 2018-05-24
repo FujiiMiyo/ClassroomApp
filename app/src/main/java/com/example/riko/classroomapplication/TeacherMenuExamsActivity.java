@@ -120,13 +120,17 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
                 //displaySelectMenu();
             }
         });
-        GetSearchFirebase();
+        GetAssignFirebase();
     }
 
 
     //***************************************************** Assignment lists ********************************************************************************//
     //<------------------------ Firebase search field and display list ------------------------------------>//
-    private void GetSearchFirebase() {
+    private void GetAssignFirebase() {
+
+        //Clear ListSubject
+        listAssignName.clear();
+
         Query searchQuery = table_assign.orderByChild("subjectID").equalTo(subjectID);
         searchQuery.addChildEventListener(new ChildEventListener() {
             @Override
@@ -385,9 +389,14 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
     @Override
     public void onClick(View v) {
         if (v == searchBtn) {
-            Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show();
-            String searchText = searchField.getText().toString().toUpperCase();
-            GetSearchFirebase(searchText);
+            if (searchField.getText().toString().isEmpty()) {
+                //Toast.makeText(getActivity(), "Please enter subjectname", Toast.LENGTH_SHORT).show();
+                GetAssignFirebase();
+            } else {
+                Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show();
+                String searchText = searchField.getText().toString().toUpperCase();
+                GetSearchFirebase(searchText);
+            }
         } else if (v == fab) {
             Toast.makeText(this, "Add a new assignment", Toast.LENGTH_SHORT).show();
             showAddItemDialog(this);

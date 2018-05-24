@@ -17,8 +17,8 @@
         <android.support.v7.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
-            android:background="@color/colorAccent"
-            app:titleTextColor="@color/colorPrimaryDark"
+            android:background="@color/colorPrimary"
+            app:titleTextColor="@color/white"
             android:id="@+id/toolbar"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
@@ -53,7 +53,7 @@
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:paddingTop="10dp"
-                android:textColor="@color/pinkRose"
+                android:textColor="@color/pinkRose1"
                 android:textSize="16dp"
                 android:imeOptions="actionDone"
                 android:maxLines="1" />
@@ -66,7 +66,7 @@
                 android:layout_alignTop="@+id/search_field"
                 android:layout_marginRight="30dp"
                 android:background="@drawable/search_btn"
-                android:backgroundTint="@color/pinkRose1"
+                android:backgroundTint="@color/pinkRose"
                 android:cropToPadding="false"
                 android:padding="8dp"
                 android:scaleType="fitXY"

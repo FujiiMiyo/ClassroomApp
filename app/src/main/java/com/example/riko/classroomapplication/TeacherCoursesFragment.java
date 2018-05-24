@@ -76,8 +76,7 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
         if (getArguments() != null) {
             Username = getArguments().getString("Username");
             //Toast.makeText(getContext(), Username, Toast.LENGTH_SHORT).show();
-        }
-        else {
+        } else {
             Toast.makeText(getContext(), "Bundle == null", Toast.LENGTH_SHORT).show();
         }
 
@@ -136,6 +135,8 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
     //***************************************************** Subject lists ********************************************************************************//
     //<------------------------ Firebase search field and display list ------------------------------------>//
     void GetSubjectFirebase() {
+        listSubjectID.clear();
+        listSubjectName.clear();
         Query searchQuery = table_subject.orderByChild("username").equalTo(Username);
         searchQuery.addChildEventListener(new ChildEventListener() {
             @Override
@@ -292,7 +293,7 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
             subjectQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot subjectSnapshot: dataSnapshot.getChildren()){
+                    for (DataSnapshot subjectSnapshot : dataSnapshot.getChildren()) {
                         subjectSnapshot.getRef().removeValue();
                         listArrayID.remove(position);
                         listArrayName.remove(position);
@@ -362,7 +363,7 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
                             Toast.makeText(c, "Subject id has existed", Toast.LENGTH_SHORT).show();
                         } else if (dataSnapshot.child(editextSubjectName.getText().toString()).exists()) {
                             Toast.makeText(c, "Subject name has existed", Toast.LENGTH_SHORT).show();
-                        }*/else {
+                        }*/ else {
                             Subject subject = new Subject(editextSubjectID.getText().toString().toUpperCase(), editextSubjectName.getText().toString().toUpperCase(), Username);
                             table_subject.push().setValue(subject);
                             Toast.makeText(c, "Subject already is added", Toast.LENGTH_SHORT).show();
@@ -409,9 +410,14 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
     @Override
     public void onClick(View v) {
         if (v == searchBtn) {
-            Toast.makeText(getActivity(), "Search", Toast.LENGTH_SHORT).show();
-            String searchText = searchField.getText().toString().toUpperCase();
-            GetSearchFirebase(searchText);
+            if (searchField.getText().toString().isEmpty()) {
+                //Toast.makeText(getActivity(), "Please enter subjectname", Toast.LENGTH_SHORT).show();
+                GetSubjectFirebase();
+            } else {
+                Toast.makeText(getActivity(), "Search", Toast.LENGTH_SHORT).show();
+                String searchText = searchField.getText().toString().toUpperCase();
+                GetSearchFirebase(searchText);
+            }
         } else if (v == fab) {
             Toast.makeText(getContext(), "Add a new subject", Toast.LENGTH_SHORT).show();
             showAddItemDialog(getContext());

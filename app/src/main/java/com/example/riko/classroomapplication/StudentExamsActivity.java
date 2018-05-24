@@ -111,14 +111,19 @@ public class StudentExamsActivity extends AppCompatActivity implements View.OnCl
                 //displaySelectMenu();
             }
         });
-        GetSearchFirebase();
+        GetAssignFirebase();
 
     }
 
     //***************************************************** Assignment lists ********************************************************************************//
     //<------------------------ Firebase search field and display list ------------------------------------>//
-    private void GetSearchFirebase() {
-        table_assign.orderByChild("assignname").addChildEventListener(new ChildEventListener() {
+    private void GetAssignFirebase() {
+
+        //Clear ListSubject
+        listAssignName.clear();
+
+        Query searchQuery = table_assign.orderByChild("subjectID").equalTo(subjectID);
+        searchQuery.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Assign assign = new Assign();
@@ -285,9 +290,14 @@ public class StudentExamsActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onClick(View v) {
         if (v == searchBtn) {
-            Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show();
-            String searchText = searchField.getText().toString().toUpperCase();
-            GetSearchFirebase(searchText);
+            if (searchField.getText().toString().isEmpty()) {
+                //Toast.makeText(getActivity(), "Please enter subjectname", Toast.LENGTH_SHORT).show();
+                GetAssignFirebase();
+            } else {
+                Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show();
+                String searchText = searchField.getText().toString().toUpperCase();
+                GetSearchFirebase(searchText);
+            }
         }
     }
 }

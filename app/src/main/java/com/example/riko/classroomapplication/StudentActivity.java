@@ -39,6 +39,8 @@ public class StudentActivity extends AppCompatActivity implements NavigationView
     private Toolbar toolbar;
     private NavigationView navigationView;
     private View headerView;
+
+    private String userName;
     //<------------------------------------------------>
 
 
@@ -55,8 +57,10 @@ public class StudentActivity extends AppCompatActivity implements NavigationView
 
         //------ Replace null Fragment -----***//
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new StudentCoursesFragment()).commit();
+            /*getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new StudentCoursesFragment()).commit();*/
+            //Toast.makeText(this, "StudentActivity", Toast.LENGTH_SHORT).show();
+            initCourses();
             navigationView.setCheckedItem(R.id.nav_coures);
         }
         //---------------------------------------------------------//
@@ -88,7 +92,7 @@ public class StudentActivity extends AppCompatActivity implements NavigationView
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Intent intent = getIntent();
-                String userName = intent.getStringExtra("Username");
+                userName = intent.getStringExtra("Username");
                 String status = intent.getStringExtra("Status");
                 String name = intent.getStringExtra("Name");
                 String password = intent.getStringExtra("Password");
@@ -129,6 +133,32 @@ public class StudentActivity extends AppCompatActivity implements NavigationView
         });
     }
 
+    private void initCourses() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference table_crsmember = database.getReference().child("Member");
+        table_crsmember.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Member member = dataSnapshot.child(textUsername.getText().toString()).getValue(Member.class);
+
+                //Send data to courseFragment
+                Bundle courseFragment = new Bundle();
+                courseFragment.putString("Username", userName);
+                StudentCoursesFragment myObj = new StudentCoursesFragment();
+                myObj.setArguments(courseFragment);
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        myObj).commit();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+    //<------------------------------------------------------------------------------------------>
+
 
     //-- Toolbar & DrawerLayout --***//
     private void displayDrawerLayout() {
@@ -144,8 +174,7 @@ public class StudentActivity extends AppCompatActivity implements NavigationView
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.nav_coures:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new StudentCoursesFragment()).commit();
+                initCourses();
                 break;
             case R.id.nav_changepw:
                 initChangePassword();

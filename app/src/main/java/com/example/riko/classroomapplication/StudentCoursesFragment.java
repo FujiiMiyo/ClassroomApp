@@ -59,6 +59,7 @@ public class StudentCoursesFragment extends Fragment implements View.OnClickList
     private FirebaseRecyclerAdapter recyclerAdapter;
     private Dialog addSubjectDialog;
     private SubjectAdapter.OnItemClickListener listener;
+    private String Username;
 
     public StudentCoursesFragment() {
     }
@@ -67,6 +68,15 @@ public class StudentCoursesFragment extends Fragment implements View.OnClickList
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_courses1, container, false);
+
+        if (getArguments() != null) {
+            Username = getArguments().getString("Username");
+            Toast.makeText(getContext(), Username, Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(getContext(), "Bundle == null", Toast.LENGTH_SHORT).show();
+        }
+
         initInstance();
         fabButtomAddSubject();
         return view;
@@ -76,7 +86,7 @@ public class StudentCoursesFragment extends Fragment implements View.OnClickList
     private void initInstance() {
         //--------------------- Firebase ----------------------------//
         database = FirebaseDatabase.getInstance();
-        table_subject = database.getReference("Subject");
+        table_subject = database.getReference("Subject_student");
         //list_subject = database.getReference("Subject").orderByChild("subjectID");
         //-------------------- Search --------------------------//
         textSubjectID = view.findViewById(R.id.textSubjectId);
@@ -122,8 +132,14 @@ public class StudentCoursesFragment extends Fragment implements View.OnClickList
     //***************************************************** Subject lists ********************************************************************************//
     //<------------------------ Firebase search field and display list ------------------------------------>//
     void GetSubjectFirebase() {
+
+        //Clear ListSubject
+        listSubjectID.clear();
+        listSubjectName.clear();
+
         //Query searchQuery = table_subject.orderByChild("subjectname").startAt(searchText).endAt(searchText + "\uf8ff");
-        table_subject.orderByChild("subjectID").addChildEventListener(new ChildEventListener() {
+        Query searchQuery = table_subject.orderByChild("username").equalTo(Username);
+        searchQuery.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 //Subject subject = new Subject();
@@ -322,9 +338,14 @@ public class StudentCoursesFragment extends Fragment implements View.OnClickList
     @Override
     public void onClick(View v) {
         if (v == searchBtn) {
-            Toast.makeText(getActivity(), "Search", Toast.LENGTH_SHORT).show();
-            String searchText = searchField.getText().toString().toUpperCase();
-            GetSearchFirebase(searchText);
+            if (searchField.getText().toString().isEmpty()) {
+                //Toast.makeText(getActivity(), "Please enter subjectname", Toast.LENGTH_SHORT).show();
+                GetSubjectFirebase();
+            } else {
+                Toast.makeText(getActivity(), "Search", Toast.LENGTH_SHORT).show();
+                String searchText = searchField.getText().toString().toUpperCase();
+                GetSearchFirebase(searchText);
+            }
         } else if (v == fab) {
             Toast.makeText(getContext(), "Add a new subject", Toast.LENGTH_SHORT).show();
             showAddItemDialog(getContext());
