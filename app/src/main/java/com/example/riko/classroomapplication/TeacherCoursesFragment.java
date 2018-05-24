@@ -309,7 +309,7 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
                 }
             });
             /*FirebaseDatabase.getInstance().getReference().child("Subject")
-                    .child(subjectID).removeValue() //TODO; can't delete cuz .child(key).child(subjectID)
+                    .child(subjectID).removeValue()
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
