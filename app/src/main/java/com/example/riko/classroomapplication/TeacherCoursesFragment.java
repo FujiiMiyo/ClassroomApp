@@ -287,8 +287,29 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
 
         //--------------------- Delete subject button ------------------------------//
         private void deleteSubject(final String subjectID, String subjectname, final int position) {
-            FirebaseDatabase.getInstance().getReference().child("Subject")
-                    .child(subjectID).removeValue()
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+            Query subjectQuery = ref.child("Subject").orderByChild("subjectID").equalTo(subjectID);
+            subjectQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot subjectSnapshot: dataSnapshot.getChildren()){
+                        subjectSnapshot.getRef().removeValue();
+                        listArrayID.remove(position);
+                        listArrayName.remove(position);
+                        notifyItemRemoved(position);
+                        notifyItemRangeChanged(position, listArrayID.size());
+                        Log.d("Delete subject", "Subject has been deleted");
+                        Toast.makeText(context, "Subject has been deleted.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.e(TAG, "onCancelled", databaseError.toException());
+                }
+            });
+            /*FirebaseDatabase.getInstance().getReference().child("Subject")
+                    .child(subjectID).removeValue() //TODO; can't delete cuz .child(key).child(subjectID)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -306,8 +327,9 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
                             }
                         }
                     });
+
             Log.d("Delete subject", "Subject has been deleted");
-            notifyDataSetChanged();
+            notifyDataSetChanged();*/
         }
     }
     //**************************************************************************************************************************************************//
