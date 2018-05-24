@@ -71,9 +71,8 @@ public class StudentCoursesFragment extends Fragment implements View.OnClickList
 
         if (getArguments() != null) {
             Username = getArguments().getString("Username");
-            Toast.makeText(getContext(), Username, Toast.LENGTH_SHORT).show();
-        }
-        else {
+            //Toast.makeText(getContext(), Username, Toast.LENGTH_SHORT).show();
+        } else {
             Toast.makeText(getContext(), "Bundle == null", Toast.LENGTH_SHORT).show();
         }
 
@@ -236,7 +235,7 @@ public class StudentCoursesFragment extends Fragment implements View.OnClickList
         @NonNull
         @Override
         public SubjectAdapter.SubjectViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_subject_names_stu, parent, false);
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_subject_names, parent, false);
             return new SubjectViewHolder(v);
         }
 
@@ -245,18 +244,27 @@ public class StudentCoursesFragment extends Fragment implements View.OnClickList
             final Subject subjectID = listArrayID.get(position);
             final Subject subjectname = listArrayName.get(position);
             holder.bind(subjectID, subjectname, listener);
+            holder.btnDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Toast.makeText(v.getContext(), "This subject already deleted!", Toast.LENGTH_SHORT).show();
+                    deleteSubject(subjectID.getSubjectID(), subjectname.getSubjectname(), position);
+                }
+            });
         }
 
         public class SubjectViewHolder extends RecyclerView.ViewHolder {
             RelativeLayout list_item_subject_id;
             TextView textSubjectId;
             TextView textSubject;
+            ImageButton btnDelete;
 
             public SubjectViewHolder(View itemView) {
                 super(itemView);
-                list_item_subject_id = itemView.findViewById(R.id.list_item_subject_id_stu);
+                list_item_subject_id = itemView.findViewById(R.id.list_item_subject_id);
                 textSubjectId = itemView.findViewById(R.id.textSubjectId);
                 textSubject = itemView.findViewById(R.id.textSubject);
+                btnDelete = itemView.findViewById(R.id.btnDelete);
             }
 
             public void bind(final Subject subjectID, Subject subjectname, final OnItemClickListener listener) {
@@ -276,19 +284,66 @@ public class StudentCoursesFragment extends Fragment implements View.OnClickList
             return listArrayID.size();
         }
 
+        //--------------------- Delete subject button ------------------------------//
+        private void deleteSubject(final String subjectID, String subjectname, final int position) {
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+            Query subjectQuery = ref.child("Subject_student").orderByChild("subjectID").equalTo(subjectID);
+            subjectQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot subjectSnapshot : dataSnapshot.getChildren()) {
+                        subjectSnapshot.getRef().removeValue();
+                        listArrayID.remove(position);
+                        listArrayName.remove(position);
+                        notifyItemRemoved(position);
+                        notifyItemRangeChanged(position, listArrayID.size());
+                        Log.d("Delete subject", "Subject has been deleted");
+                        Toast.makeText(context, "Subject has been deleted.", Toast.LENGTH_SHORT).show();
+                    }
+                }
 
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.e(TAG, "onCancelled", databaseError.toException());
+                }
+            });
+            /*FirebaseDatabase.getInstance().getReference().child("Subject")
+                    .child(subjectID).removeValue()
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                //remove item from list alos and refresh recyclerview
+                                listArrayID.remove(position);
+                                listArrayName.remove(position);
+                                notifyItemRemoved(position);
+                                notifyItemRangeChanged(position, listArrayID.size());
+                                Log.d("Delete subject", "Subject has been deleted");
+                                Toast.makeText(context, "Subject has been deleted.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Log.d("Delete subject", "Subject couldn't be deleted");
+                                Toast.makeText(context, "Subject could not be deleted!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
+            Log.d("Delete subject", "Subject has been deleted");
+            notifyDataSetChanged();*/
+        }
     }
+
+
     //**************************************************************************************************************************************************//
 
 
     //*************************************************************************************************************************************************//
     //-------------------- Dialog Add Subject -----------------------------------------//
-    private void showAddItemDialog(final Context c) {
+    /*private void showAddItemDialog(final Context c) {
         final Dialog addSubjectDialog = new Dialog(c);
         addSubjectDialog.setContentView(R.layout.dialog_add_subject_stu);
         /*final EditText editextSubjectID = addSubjectDialog.findViewById(R.id.editextSubjectID);
         final EditText editextSubjectName = addSubjectDialog.findViewById(R.id.editextSubjectName);*/
-        ImageButton btnAddSubject = addSubjectDialog.findViewById(R.id.btnAddSubject);
+        /*ImageButton btnAddSubject = addSubjectDialog.findViewById(R.id.btnAddSubject);
         ImageButton btnCancel = addSubjectDialog.findViewById(R.id.btnCancel);
         //SAVE
         btnAddSubject.setOnClickListener(new View.OnClickListener() {
@@ -314,8 +369,57 @@ public class StudentCoursesFragment extends Fragment implements View.OnClickList
             }
         });
         addSubjectDialog.show();
-    }
+    }*/
 
+    private void showAddItemDialog(final Context c) {
+        final Dialog addSubjectDialog = new Dialog(c);
+        addSubjectDialog.setContentView(R.layout.dialog_add_subject);
+        final EditText editextSubjectID = addSubjectDialog.findViewById(R.id.editextSubjectID);
+        final EditText editextSubjectName = addSubjectDialog.findViewById(R.id.editextSubjectName);
+        ImageButton btnAddSubject = addSubjectDialog.findViewById(R.id.btnAddSubject);
+        ImageButton btnCancel = addSubjectDialog.findViewById(R.id.btnCancel);
+        //SAVE
+        btnAddSubject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //table_subject.addValueEventListener(new ValueEventListener() {
+                //addListenerForSingleValueEvent reads data just 1 times only
+                table_subject.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        //Check if editText is empty
+                        if (editextSubjectID.getText().toString().isEmpty()) {
+                            Toast.makeText(c, "Please enter subject id", Toast.LENGTH_SHORT).show();
+                        } else if (editextSubjectName.getText().toString().isEmpty()) {
+                            Toast.makeText(c, "Please enter subject name", Toast.LENGTH_SHORT).show();
+                        } /*else if (dataSnapshot.child(editextSubjectID.getText().toString()).exists()) {
+                            Toast.makeText(c, "Subject id has existed", Toast.LENGTH_SHORT).show();
+                        } else if (dataSnapshot.child(editextSubjectName.getText().toString()).exists()) {
+                            Toast.makeText(c, "Subject name has existed", Toast.LENGTH_SHORT).show();
+                        }*/ else {
+                            Subject subject = new Subject(editextSubjectID.getText().toString().toUpperCase(), editextSubjectName.getText().toString().toUpperCase(), Username);
+                            table_subject.push().setValue(subject);
+                            Toast.makeText(c, "Subject already is added", Toast.LENGTH_SHORT).show();
+                            /*Intent signUp = new Intent(Signup1Activity.this, MainActivity.class);
+                            startActivity(signUp);*/
+                            addSubjectDialog.dismiss();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+            }
+        });
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addSubjectDialog.cancel();
+            }
+        });
+        addSubjectDialog.show();
+    }
     //*************************************************************************************************************************************************//
 
     //Flot action button: Add subject
