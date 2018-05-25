@@ -49,7 +49,9 @@
 
         <activity android:name=".AddExamsActivity" />
         <activity android:name=".StudentExamsActivity" />
-        <activity android:name=".StudentExamTestActivity"></activity>
+        <activity android:name=".StudentExamTestActivity" />
+        <activity android:name=".EditExamsActivity" />
+        <activity android:name=".CheckScoresActivity"></activity>
     </application>
 
 </manifest>

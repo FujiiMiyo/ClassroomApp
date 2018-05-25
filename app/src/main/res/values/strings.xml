@@ -74,10 +74,10 @@
     <string name="assignment">ASSIGNMENT</string>
     <string name="create_assignment">CREATE ASSIGNMENT</string>
     <string name="edit_assignment">EDIT ASSIGNMENT</string>
-    <string name="check_score">CHECK SCORE</string>
+    <string name="check_score">CHECK SCORES</string>
     <string name="delete_assignment">DELETE ASSIGNMENT</string>
 
-    <!-- AddAssignmentActivity Teacher -->
+    <!-- AddExamsActivity Teacher -->
     <string name="add_quest">ADD QUESTION</string>
     <string name="choice">Choice</string>
     <string name="write">Write</string>
@@ -85,6 +85,7 @@
     <string name="enter_quest">Enter a question</string>
     <string name="enter_ans">Enter an answer</string>
 
+    <!-- EditExamsActivity Teacher -->
 
 
 </resources>

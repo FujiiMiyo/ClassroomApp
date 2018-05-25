@@ -156,7 +156,7 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(TeacherMenuExamsActivity. this, "Edit assignment", Toast.LENGTH_SHORT).show();
-                        Intent iassign = new Intent(TeacherMenuExamsActivity.this, AddExamsActivity.class);
+                        Intent iassign = new Intent(TeacherMenuExamsActivity.this, EditExamsActivity.class);
                         iassign.putExtra("assignname", assign.getAssignname());
                         startActivity(iassign);
                         bottomSheetMenu.dismiss();
@@ -166,7 +166,7 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(TeacherMenuExamsActivity. this, "Check scores of students", Toast.LENGTH_SHORT).show();
-                        Intent iassign = new Intent(TeacherMenuExamsActivity.this, AddExamsActivity.class);
+                        Intent iassign = new Intent(TeacherMenuExamsActivity.this, CheckScoresActivity.class);
                         iassign.putExtra("assignname", assign.getAssignname());
                         startActivity(iassign);
                         bottomSheetMenu.dismiss();
