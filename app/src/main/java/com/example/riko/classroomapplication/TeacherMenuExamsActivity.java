@@ -6,14 +6,21 @@ import android.content.Intent;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialog;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -24,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.riko.classroomapplication.Model.Assign;
+import com.example.riko.classroomapplication.Model.Member;
 import com.example.riko.classroomapplication.Model.Subject;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -43,7 +51,16 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
     final String TAG = "TTwTT";
     //-- Toolbar --***//
     private Toolbar toolbar;
+    //-- DrawerLayout --***//
+    private DrawerLayout drawerLayout;
+    private TextView textUsername;
+    private TextView textStatus;
+    private TextView textName;
+    private NavigationView navigationView;
+    private View headerView;
     //<------------------------------------------------>
+
+    private String userName;
 
     private boolean doubleBackToExitPressedOnce;
     private FloatingActionButton fab;
@@ -74,6 +91,7 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
         fabButtomAddSubject();
         //bottomSheetSelectMenu();
         backToolbar();
+
     }
 
     private void initInstance() {
@@ -84,6 +102,15 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
         subjectID = intent.getStringExtra("subjectID");
         subjectname = intent.getStringExtra("subjectname");
         toolbar.setTitle(subjectname);
+        drawerLayout = findViewById(R.id.drawerLayout);
+        navigationView = findViewById(R.id.nav_view);
+        //-----------------------------------------------//
+        //------------ Receive Intent from SignIn ------------***//
+        headerView = navigationView.getHeaderView(0);
+        textUsername = headerView.findViewById(R.id.txtUsername);
+        textStatus = headerView.findViewById(R.id.txtStatus);
+        textName = headerView.findViewById(R.id.txtName);
+        //------------------------------------------------------//
 
         //----- Firebase ------//
         database = FirebaseDatabase.getInstance();
@@ -112,12 +139,47 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
         listAssignName = new ArrayList<>();
         assignAdapter = new AssignAdapter(listAssignName, new AssignAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(Assign assign) {
-                //Toast.makeText(TeacherMenuExamsActivity.this, "Assignment is clicked", Toast.LENGTH_SHORT).show();
-                Intent iassign = new Intent(TeacherMenuExamsActivity.this, AddExamsActivity.class);
-                iassign.putExtra("assignname", assign.getAssignname());
-                startActivity(iassign);
-                //displaySelectMenu();
+            public void onItemClick(final Assign assign) {
+                bottomSheetSelectMenu();
+                displaySelectMenu();
+                createAssign.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(TeacherMenuExamsActivity. this, "Create assignment", Toast.LENGTH_SHORT).show();
+                        Intent iassign = new Intent(TeacherMenuExamsActivity.this, AddExamsActivity.class);
+                        iassign.putExtra("assignname", assign.getAssignname());
+                        startActivity(iassign);
+                        bottomSheetMenu.dismiss();
+                    }
+                });
+                editAssign.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(TeacherMenuExamsActivity. this, "Edit assignment", Toast.LENGTH_SHORT).show();
+                        Intent iassign = new Intent(TeacherMenuExamsActivity.this, AddExamsActivity.class);
+                        iassign.putExtra("assignname", assign.getAssignname());
+                        startActivity(iassign);
+                        bottomSheetMenu.dismiss();
+                    }
+                });
+                checkScore.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(TeacherMenuExamsActivity. this, "Check scores of students", Toast.LENGTH_SHORT).show();
+                        Intent iassign = new Intent(TeacherMenuExamsActivity.this, AddExamsActivity.class);
+                        iassign.putExtra("assignname", assign.getAssignname());
+                        startActivity(iassign);
+                        bottomSheetMenu.dismiss();
+                    }
+                });
+                delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(TeacherMenuExamsActivity. this, "Delete assignment", Toast.LENGTH_SHORT).show();
+                        bottomSheetMenu.dismiss();
+                    }
+                });
+
             }
         });
         GetAssignFirebase();
@@ -257,14 +319,12 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
         }
     }
 
-
-    // Bottom sheet dialog: Select menu
+    //--------------- Bottom sheet dialog: Select menu ---------------------//
     private void bottomSheetSelectMenu() {
         bottomSheetMenu = new BottomSheetDialog(this);
         sheetView = TeacherMenuExamsActivity.this.getLayoutInflater().inflate(R.layout.bottom_sheet_menu, null);
         bottomSheetMenu.setContentView(sheetView);
         initSelectMenu();
-        menuClickListener();
     }
     private void initSelectMenu() {
         createAssign = sheetView.findViewById(R.id.menuCreateAssign);
@@ -272,55 +332,11 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
         checkScore = sheetView.findViewById(R.id.menuScore);
         delete = sheetView.findViewById(R.id.menuDelete);
     }
-    private void menuClickListener() {
-        createAssign.setOnClickListener(this);
-        editAssign.setOnClickListener(this);
-        checkScore.setOnClickListener(this);
-        delete.setOnClickListener(this);
-    }
     private void displaySelectMenu() {
-        Toast.makeText(TeacherMenuExamsActivity. this, "Assignment is clicked", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(TeacherMenuExamsActivity. this, "Assignment is clicked", Toast.LENGTH_SHORT).show();
         bottomSheetMenu.show();
     }
 
-
-    //--------------------- Back press Toolbar -----------------------//
-    private void backToolbar() {
-        //toolbar.setTitle(getString(R.string.assignment));
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-    }
-
-
-    //------------------------------- Back Press --------------------------------------//
-    @Override
-    public void onBackPressed() {
-        if (doubleBackToExitPressedOnce) {
-            super.onBackPressed();
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_HOME);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            finish();
-            System.exit(1);
-            return;
-        }
-        this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
-
-        new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                doubleBackToExitPressedOnce = false;
-            }
-        }, 2000);
-    }
 
     private void showAddItemDialog(final Context c) {
         final Dialog addAssignDialog = new Dialog(c);
@@ -368,7 +384,6 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
     }
 
 
-
     //Flot action button: Add subject
     private void fabButtomAddSubject() {
         // Hide Floating Action Button when scrolling in Recycler View
@@ -386,6 +401,45 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
         //<-----------------------------------------------------------//>
     }
 
+
+    //--------------------- Back press Toolbar -----------------------//
+    private void backToolbar() {
+        //toolbar.setTitle(getString(R.string.assignment));
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
+    //------------------------------- Back Press --------------------------------------//
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+            System.exit(1);
+            return;
+        }
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+        }, 2000);
+    }
+
+
     @Override
     public void onClick(View v) {
         if (v == searchBtn) {
@@ -400,20 +454,6 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
         } else if (v == fab) {
             Toast.makeText(this, "Add a new assignment", Toast.LENGTH_SHORT).show();
             showAddItemDialog(this);
-        } else if (v == createAssign){
-            Toast.makeText(this, "Create Assignment", Toast.LENGTH_SHORT).show();
-            /*Intent iiassign = getIntent();
-            String aassignname = iiassign.getStringExtra("assignname");
-            Intent iiiassign = new Intent(this, AddExamsActivity.class);
-            iiiassign.putExtra("aassignname", aassignname);
-            startActivity(iassign);*/
-        } else if (v == editAssign){
-            Toast.makeText(this, "Edit Assignment", Toast.LENGTH_SHORT).show();
-        } else if (v == checkScore){
-            Toast.makeText(this, "Check score", Toast.LENGTH_SHORT).show();
-        } else if (v == delete){
-            Toast.makeText(this, "Delete Assignment", Toast.LENGTH_SHORT).show();
-            //deleteAssign(subjectID.getSubjectID(), subjectname.getSubjectname(), position);
         }
     }
 }
