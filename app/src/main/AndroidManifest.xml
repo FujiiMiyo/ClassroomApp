@@ -47,11 +47,16 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".AddExamsActivity" />
-        <activity android:name=".StudentExamsActivity" />
-        <activity android:name=".StudentExamTestActivity" />
-        <activity android:name=".EditExamsActivity" />
-        <activity android:name=".CheckScoresActivity"></activity>
+        <activity android:name=".AddExamsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".StudentExamsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".StudentExamTestActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".EditExamsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".CheckScoresActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

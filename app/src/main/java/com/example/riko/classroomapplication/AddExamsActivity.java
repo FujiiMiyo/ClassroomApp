@@ -1,5 +1,8 @@
 package com.example.riko.classroomapplication;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -33,6 +36,8 @@ public class AddExamsActivity extends AppCompatActivity implements View.OnClickL
         initInstance();
         clickButton();
         backToolbar();
+
+
     }
 
     private void initInstance() {
@@ -44,6 +49,7 @@ public class AddExamsActivity extends AppCompatActivity implements View.OnClickL
         btnChoice = findViewById(R.id.btnChoice);
         btnWrite = findViewById(R.id.btnWrite);
         btnAdd = findViewById(R.id.btnAdd);
+
     }
 
     private void clickButton() {
@@ -91,11 +97,14 @@ public class AddExamsActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         if (v == btnChoice){
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_exam,
+            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container_exam,
                     new CreateChoiceFragment()).commit();
         } else  if (v == btnWrite){
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_exam,
+            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container_exam,
                     new CreateWriteFragment()).commit();
         }
     }
+
+
+
 }

@@ -36,7 +36,7 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="30dp"
                 android:text="@string/assignment"
-                android:textColor="@color/pinkRose1"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="30dp"
                 android:textStyle="bold|italic" />
 
@@ -55,7 +55,7 @@
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:paddingTop="10dp"
-                android:textColor="@color/pinkRose1"
+                android:textColor="@color/colorPrimary"
                 android:textSize="16dp"
                 android:imeOptions="actionDone"
                 android:maxLines="1" />
@@ -68,7 +68,7 @@
                 android:layout_alignTop="@+id/search_field"
                 android:layout_marginRight="30dp"
                 android:background="@drawable/search_btn"
-                android:backgroundTint="@color/pinkRose"
+                android:backgroundTint="@color/colorPrimary"
                 android:cropToPadding="false"
                 android:padding="8dp"
                 android:scaleType="fitXY"

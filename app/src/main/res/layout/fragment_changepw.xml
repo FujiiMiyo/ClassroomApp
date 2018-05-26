@@ -19,7 +19,7 @@
             android:padding="15dp"
             android:text="@string/changepw"
             android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="35dp"
             android:textStyle="bold|italic" />
 
