@@ -184,10 +184,11 @@ public class StudentCoursesFragment extends Fragment implements View.OnClickList
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Subject subject = new Subject();
                 subject = dataSnapshot.getValue(Subject.class);
-
-                //Add to ArrayList
-                listSubjectID.add(subject);
-                listSubjectName.add(subject);
+                if (subject.getUsername() == Username ){
+                    //Add to ArrayList
+                    listSubjectID.add(subject);
+                    listSubjectName.add(subject);
+                }
                 //Add List into Adapter/RecyclerView
                 recyclerViewSubject.setAdapter(subjectAdapter);
             }

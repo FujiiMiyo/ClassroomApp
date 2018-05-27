@@ -179,7 +179,6 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
         //Clear ListSubject
         listSubjectID.clear();
         listSubjectName.clear();
-
         Query searchQuery = table_subject.orderByChild("subjectname").startAt(searchText).endAt(searchText + "\uf8ff");
         searchQuery.addChildEventListener(new ChildEventListener() {
             @Override
@@ -187,9 +186,11 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
                 Subject subject = new Subject();
                 subject = dataSnapshot.getValue(Subject.class);
 
-                //Add to ArrayList
-                listSubjectID.add(subject);
-                listSubjectName.add(subject);
+                if (subject.getUsername() == Username ){
+                    //Add to ArrayList
+                    listSubjectID.add(subject);
+                    listSubjectName.add(subject);
+                }
                 //Add List into Adapter/RecyclerView
                 recyclerViewSubject.setAdapter(subjectAdapter);
             }
