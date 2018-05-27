@@ -31,6 +31,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/txtNo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="1"
@@ -45,6 +46,7 @@
                     android:textStyle="bold" />
 
                 <EditText
+                    android:id="@+id/edittextQuest"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edittext_assign_layout"
@@ -151,45 +153,36 @@
             </LinearLayout>
 
             <LinearLayout
+                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal">
-
-                <!--ImageButton
-                    android:id="@+id/btnAdd"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/ic_add_circle"
-                    android:focusable="true"
-                    android:foreground="?android:attr/selectableItemBackground" /-->
-
-                <ImageButton
-                    android:id="@+id/btnAdd"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/select_type_left"
-                    android:backgroundTint="@color/pinkRoseLight1"
-                    android:focusable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    app:srcCompat="@drawable/ic_add"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:textColor="@color/pinkRose"
-                    android:minHeight="48dp"/>
 
                 <ImageButton
                     android:id="@+id/btnReset"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:background="@color/grey6"
+                    android:background="@drawable/select_type_left"
                     android:backgroundTint="@color/grey6"
                     android:focusable="true"
                     android:foreground="?android:attr/selectableItemBackground"
                     app:srcCompat="@drawable/ic_refresh"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:textColor="@color/pinkRose"
+                    android:minHeight="48dp"/>
+
+                <ImageButton
+                    android:id="@+id/btnAdd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/pinkRoseLight1"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    app:srcCompat="@drawable/ic_add"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:textColor="@color/pinkRose"
