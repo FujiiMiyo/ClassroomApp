@@ -13,6 +13,13 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.example.riko.classroomapplication.Model.Member;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 public class AddExamsActivity extends AppCompatActivity implements View.OnClickListener {
 
     //<------------------------------------------------>
@@ -23,9 +30,11 @@ public class AddExamsActivity extends AppCompatActivity implements View.OnClickL
 
     private boolean doubleBackToExitPressedOnce;
     private String assignname;
+    private String subjectID;
     private Button btnChoice;
     private Button btnWrite;
     private ImageButton btnAdd;
+    private String subjectname;
 
 
     @Override
@@ -34,16 +43,14 @@ public class AddExamsActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_add_exams);
 
         initInstance();
-        clickButton();
         backToolbar();
+        clickButton();
 
         if (savedInstanceState == null) {
             //Toast.makeText(this, "TeacherActivity", Toast.LENGTH_SHORT).show();
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container_exam,
                     new CreateSpaceFragment()).commit();
         }
-
-
     }
 
     private void initInstance() {
@@ -51,11 +58,44 @@ public class AddExamsActivity extends AppCompatActivity implements View.OnClickL
         toolbar = findViewById(R.id.toolbar);
         Intent intent = getIntent();
         assignname = intent.getStringExtra("assignname");
+        subjectID = intent.getStringExtra("subjectID");
+        subjectname = intent.getStringExtra("subjectname");
         toolbar.setTitle(assignname);
         btnChoice = findViewById(R.id.btnChoice);
         btnWrite = findViewById(R.id.btnWrite);
         btnAdd = findViewById(R.id.btnAdd);
 
+        btnChoice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initChoice();
+            }
+        });
+    }
+
+    private void initChoice() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference table_assign = database.getReference().child("Assign");
+        table_assign.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //Member member = dataSnapshot.child(textUsername.getText().toString()).getValue(Member.class);
+                //Send data to courseFragment
+                Bundle choiceFragment = new Bundle();
+                choiceFragment.putString("subjectID", subjectID);
+                choiceFragment.putString("assignname", assignname);
+                choiceFragment.putString("subjectname", subjectname);
+                CreateChoiceFragment myObj = new CreateChoiceFragment();
+                myObj.setArguments(choiceFragment);
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_exam,
+                        myObj).commit();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 
     private void clickButton() {
@@ -103,8 +143,9 @@ public class AddExamsActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         if (v == btnChoice){
-            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container_exam,
-                    new CreateChoiceFragment()).commit();
+            /*getSupportFragmentManager().beginTransaction().add(R.id.fragment_container_exam,
+                    new CreateChoiceFragment()).commit();*/
+            initChoice();
         } else  if (v == btnWrite){
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container_exam,
                     new CreateWriteFragment()).commit();

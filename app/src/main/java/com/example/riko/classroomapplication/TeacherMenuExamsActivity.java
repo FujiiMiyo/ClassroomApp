@@ -148,6 +148,8 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
                         Toast.makeText(TeacherMenuExamsActivity. this, "Create assignment", Toast.LENGTH_SHORT).show();
                         Intent iassign = new Intent(TeacherMenuExamsActivity.this, AddExamsActivity.class);
                         iassign.putExtra("assignname", assign.getAssignname());
+                        iassign.putExtra("subjectID", subjectID);
+                        iassign.putExtra("subjectname", subjectname);
                         startActivity(iassign);
                         bottomSheetMenu.dismiss();
                     }

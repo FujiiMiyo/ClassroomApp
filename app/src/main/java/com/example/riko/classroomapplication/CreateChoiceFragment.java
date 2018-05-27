@@ -1,5 +1,6 @@
 package com.example.riko.classroomapplication;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +15,14 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.riko.classroomapplication.Model.Choice;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
 public class CreateChoiceFragment extends Fragment implements View.OnClickListener {
 
     private View view;
@@ -26,6 +35,11 @@ public class CreateChoiceFragment extends Fragment implements View.OnClickListen
     private EditText edittextC;
     private EditText edittextD;
     private TextView txtNo;
+    private String subjectID;
+    private String assignname;
+    private String subjectname;
+    private FirebaseDatabase database;
+    private DatabaseReference table_assign;
 
     @Nullable
     @Override
@@ -33,10 +47,26 @@ public class CreateChoiceFragment extends Fragment implements View.OnClickListen
         view = inflater.inflate(R.layout.fragment_create_assign, container, false);
         initInstance();
         clickButton();
+        //inputQuestionAns();
+
+        if (getArguments() != null) {
+            subjectID = getArguments().getString("subjectID");
+            assignname = getArguments().getString("assignname");
+            subjectname = getArguments().getString("subjectname");
+            //Toast.makeText(getContext(), Username, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getContext(), "Bundle == null", Toast.LENGTH_SHORT).show();
+        }
+
         return view;
     }
 
     private void initInstance() {
+
+        //Init Firebase
+        database = FirebaseDatabase.getInstance();
+        table_assign = database.getReference("Assign");
+
         //----------- Text View -----------//
         txtNo = view.findViewById(R.id.txtNo);
 
@@ -54,10 +84,53 @@ public class CreateChoiceFragment extends Fragment implements View.OnClickListen
     }
 
 
-    private void numberQuestion() {
-        int tmp = Integer.valueOf( txtNo.getText().toString());
-        txtNo.setText( String.valueOf( tmp+1) );
+    private void inputQuestionAns() {
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Please waiting . . .");
+        progressDialog.show();
+
+        Query searchQuery = table_assign.orderByChild("subjectID").equalTo(subjectID);
+        searchQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //Check if editText is empty
+                if (edittextQuest.getText().toString().isEmpty()) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getActivity(), "Please enter question", Toast.LENGTH_SHORT).show();
+                } else if (edittextA.getText().toString().isEmpty()) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getActivity(), "Please enter answer A", Toast.LENGTH_SHORT).show();
+                } else if (edittextB.getText().toString().isEmpty()) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getActivity(), "Please enter answer B", Toast.LENGTH_SHORT).show();
+                } else if (edittextC.getText().toString().isEmpty()) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getActivity(), "Please enter answer C", Toast.LENGTH_SHORT).show();
+                } else if (edittextD.getText().toString().isEmpty()) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getActivity(), "Please enter answer D", Toast.LENGTH_SHORT).show();
+                } else {
+                    Choice choice = new Choice(txtNo.getText().toString(), edittextQuest.getText().toString(),
+                            edittextA.getText().toString(), edittextB.getText().toString(), edittextC.getText().toString(), edittextD.getText().toString(),
+                            "choice", "A");
+                    table_assign.child(txtNo.getText().toString()).setValue(choice);
+                    Toast.makeText(getActivity(), "Add a question", Toast.LENGTH_SHORT).show();
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
+
+
+    /*private void numberQuestion() {
+        int tmp = Integer.valueOf(txtNo.getText().toString());
+        txtNo.setText( String.valueOf( tmp+1) );
+    }*/
 
     private void clickButton() {
         btnAdd.setOnClickListener(this);
@@ -67,9 +140,10 @@ public class CreateChoiceFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        if (v == btnAdd){
-            Toast.makeText(getActivity(), "Add a question", Toast.LENGTH_SHORT);
-            numberQuestion();
+        if (v == btnAdd) {
+            inputQuestionAns();
+            //Toast.makeText(getActivity(), "Add a question", Toast.LENGTH_SHORT);
+            //numberQuestion();
         } else if (v == btnReset) {
             Toast.makeText(getActivity(), "Reset this question", Toast.LENGTH_SHORT);
             edittextQuest.getText().clear();
@@ -79,8 +153,6 @@ public class CreateChoiceFragment extends Fragment implements View.OnClickListen
             edittextD.getText().clear();
         } else if (v == btnSubmit) {
             Toast.makeText(getActivity(), "Submit assignment", Toast.LENGTH_SHORT);
-            Intent submit = new Intent(getActivity(), TeacherMenuExamsActivity.class);
-            startActivity(submit);
         }
     }
 
