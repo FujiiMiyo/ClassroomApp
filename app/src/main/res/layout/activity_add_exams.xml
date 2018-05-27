@@ -48,7 +48,7 @@
                 android:backgroundTint="@color/pinkRose"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:minHeight="40dp"
+                android:minHeight="48dp"
                 android:text="@string/choice"
                 android:textColor="@color/white" />
 
@@ -60,19 +60,22 @@
                 android:backgroundTint="@color/colorAccent"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:minHeight="40dp"
+                android:minHeight="48dp"
                 android:text="WRITE"
                 android:textColor="@color/white" />
 
-            <ImageButton
+            <!--ImageButton
                 android:id="@+id/btnAdd"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="20dp"
                 android:background="@drawable/ic_add_circle"
                 android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackground" />
+                android:foreground="?android:attr/selectableItemBackground"/-->
+
         </LinearLayout>
+
+
 
         <FrameLayout
             android:id="@+id/fragment_container_exam"
@@ -80,6 +83,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="30dp"
             android:scrollbars="vertical" />
+
 
     </LinearLayout>
 

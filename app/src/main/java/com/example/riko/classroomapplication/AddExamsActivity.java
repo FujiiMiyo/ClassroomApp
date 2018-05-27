@@ -37,6 +37,12 @@ public class AddExamsActivity extends AppCompatActivity implements View.OnClickL
         clickButton();
         backToolbar();
 
+        if (savedInstanceState == null) {
+            //Toast.makeText(this, "TeacherActivity", Toast.LENGTH_SHORT).show();
+            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container_exam,
+                    new CreateSpaceFragment()).commit();
+        }
+
 
     }
 
