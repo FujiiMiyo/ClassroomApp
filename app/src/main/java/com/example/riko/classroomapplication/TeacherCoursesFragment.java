@@ -174,19 +174,19 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
         });
     }
 
-    void GetSearchFirebase(String searchText) {
+    void GetSearchFirebase(final String searchText) {
 
         //Clear ListSubject
         listSubjectID.clear();
         listSubjectName.clear();
-        Query searchQuery = table_subject.orderByChild("subjectname").startAt(searchText).endAt(searchText + "\uf8ff");
+        Query searchQuery = table_subject.orderByChild("username").equalTo(Username);
         searchQuery.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Subject subject = new Subject();
                 subject = dataSnapshot.getValue(Subject.class);
 
-                if (subject.getUsername() == Username ){
+                if (subject.getSubjectname().contains(searchText)){
                     //Add to ArrayList
                     listSubjectID.add(subject);
                     listSubjectName.add(subject);

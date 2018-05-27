@@ -227,19 +227,23 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
         });
     }
 
-    void GetSearchFirebase(String searchText) {
+    void GetSearchFirebase(final String searchText) {
 
         //Clear ListSubject
         listAssignName.clear();
 
-        Query searchQuery = table_assign.orderByChild("assignname").startAt(searchText).endAt(searchText + "\uf8ff");
+        Query searchQuery = table_assign.orderByChild("subjectID").equalTo(subjectID);
         searchQuery.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Assign assign = new Assign();
                 assign = dataSnapshot.getValue(Assign.class);
-                //Add to ArrayList
-                listAssignName.add(assign);
+
+                if (assign.getAssignname().contains(searchText) ){
+                    //Add to ArrayList
+                    listAssignName.add(assign);
+                }
+
                 //Add List into Adapter/RecyclerView
                 recyclerViewAssign.setAdapter(assignAdapter);
             }
