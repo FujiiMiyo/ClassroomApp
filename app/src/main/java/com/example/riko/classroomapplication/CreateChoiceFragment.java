@@ -1,6 +1,8 @@
 package com.example.riko.classroomapplication;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -65,7 +67,6 @@ public class CreateChoiceFragment extends Fragment implements View.OnClickListen
     }
 
     private void initInstance() {
-
         //Init Firebase
         database = FirebaseDatabase.getInstance();
         table_assign = database.getReference("Assign");
@@ -87,7 +88,8 @@ public class CreateChoiceFragment extends Fragment implements View.OnClickListen
     }
 
 
-    private void inputQuestionAns() {
+    //-------------------------------- Add button ------------------------------------//
+    private void addQuestionAns() {
         final ProgressDialog progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Please waiting . . .");
         progressDialog.show();
@@ -129,31 +131,84 @@ public class CreateChoiceFragment extends Fragment implements View.OnClickListen
             }
         });
     }
-
-
     /*private void numberQuestion() {
         int tmp = Integer.valueOf(txtNo.getText().toString());
         txtNo.setText( String.valueOf( tmp+1) );
     }*/
+    //-------------------------------------------------------------------------------//
 
-    private void replaceFragment(Fragment fragment) {
-        inputQuestionAns();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container_exam, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+
+    //--------------------------- Submit button -------------------------------------//
+    private void submitQuestionAns() {
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Please waiting . . .");
+        progressDialog.show();
+
+        Query searchQuery = table_assign.orderByChild("subjectID").equalTo(subjectID);
+        searchQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //Check if editText is empty
+                if (edittextQuest.getText().toString().isEmpty()) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getActivity(), "Please enter question", Toast.LENGTH_SHORT).show();
+                } else if (edittextA.getText().toString().isEmpty()) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getActivity(), "Please enter answer A", Toast.LENGTH_SHORT).show();
+                } else if (edittextB.getText().toString().isEmpty()) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getActivity(), "Please enter answer B", Toast.LENGTH_SHORT).show();
+                } else if (edittextC.getText().toString().isEmpty()) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getActivity(), "Please enter answer C", Toast.LENGTH_SHORT).show();
+                } else if (edittextD.getText().toString().isEmpty()) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getActivity(), "Please enter answer D", Toast.LENGTH_SHORT).show();
+                } else {
+                    Choice choice = new Choice(txtNo.getText().toString(), edittextQuest.getText().toString(),
+                            edittextA.getText().toString(), edittextB.getText().toString(), edittextC.getText().toString(), edittextD.getText().toString(),
+                            "choice", "A");
+                    table_assign.child(txtNo.getText().toString()).setValue(choice);
+                    Toast.makeText(getActivity(), "Add a question", Toast.LENGTH_SHORT).show();
+                    showAddItemDialog();
+
+                    /*FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    CreateSpaceFragment fragment = new CreateSpaceFragment();
+                    transaction.replace(R.id.fragment_container_exam, fragment);
+                    transaction.addToBackStack(null);
+                    transaction.commit();*/
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
+
+    private void showAddItemDialog() {
+        Dialog addSubjectDialog = new Dialog(getContext());
+        addSubjectDialog.setContentView(R.layout.dialog_createassign__success);
+        addSubjectDialog.show();
+    }
+    //---------------------------------------------------------------------------------//
+
+
+
+
 
     private void clickButton() {
         btnAdd.setOnClickListener(this);
         btnReset.setOnClickListener(this);
         btnSubmit.setOnClickListener(this);
     }
-
     @Override
     public void onClick(View v) {
         if (v == btnAdd) {
-            inputQuestionAns();
+            addQuestionAns();
             //Toast.makeText(getActivity(), "Add a question", Toast.LENGTH_SHORT);
             //numberQuestion();
         } else if (v == btnReset) {
@@ -165,10 +220,7 @@ public class CreateChoiceFragment extends Fragment implements View.OnClickListen
             edittextD.getText().clear();
         } else if (v == btnSubmit) {
             Toast.makeText(getActivity(), "Submit assignment", Toast.LENGTH_SHORT);
-            inputQuestionAns();
-            Fragment fragment = null;
-            fragment = new CreateSuccessFragment();
-            replaceFragment(fragment);
+            submitQuestionAns();
         }
     }
 

@@ -113,6 +113,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edittext_assign_layout"
                         android:hint="@string/enter_ans"
+                        android:imeOptions="actionNext"
                         android:padding="5dp"
                         android:textAlignment="center"
                         android:textColor="@color/pinkRose1" />
@@ -124,6 +125,7 @@
                         android:layout_marginTop="5dp"
                         android:background="@drawable/edittext_assign_layout"
                         android:hint="@string/enter_ans"
+                        android:imeOptions="actionNext"
                         android:padding="5dp"
                         android:textAlignment="center"
                         android:textColor="@color/pinkRose1" />
@@ -135,6 +137,7 @@
                         android:layout_marginTop="5dp"
                         android:background="@drawable/edittext_assign_layout"
                         android:hint="@string/enter_ans"
+                        android:imeOptions="actionNext"
                         android:padding="5dp"
                         android:textAlignment="center"
                         android:textColor="@color/pinkRose1" />
@@ -146,6 +149,7 @@
                         android:layout_marginTop="5dp"
                         android:background="@drawable/edittext_assign_layout"
                         android:hint="@string/enter_ans"
+                        android:imeOptions="actionNext"
                         android:padding="5dp"
                         android:textAlignment="center"
                         android:textColor="@color/pinkRose1" />
@@ -153,9 +157,9 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
@@ -168,11 +172,11 @@
                     android:backgroundTint="@color/grey6"
                     android:focusable="true"
                     android:foreground="?android:attr/selectableItemBackground"
-                    app:srcCompat="@drawable/ic_refresh"
+                    android:minHeight="48dp"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:textColor="@color/pinkRose"
-                    android:minHeight="48dp"/>
+                    app:srcCompat="@drawable/ic_refresh" />
 
                 <ImageButton
                     android:id="@+id/btnAdd"
@@ -182,11 +186,11 @@
                     android:background="@color/pinkRoseLight1"
                     android:focusable="true"
                     android:foreground="?android:attr/selectableItemBackground"
-                    app:srcCompat="@drawable/ic_add"
+                    android:minHeight="48dp"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:textColor="@color/pinkRose"
-                    android:minHeight="48dp"/>
+                    app:srcCompat="@drawable/ic_add" />
 
                 <Button
                     android:id="@+id/btnSubmit"
@@ -197,9 +201,9 @@
                     android:backgroundTint="@color/bluegreen"
                     android:focusable="true"
                     android:foreground="?android:attr/selectableItemBackground"
+                    android:minHeight="48dp"
                     android:text="@string/submit"
-                    android:textColor="@color/white"
-                    android:minHeight="48dp" />
+                    android:textColor="@color/white" />
 
             </LinearLayout>
         </LinearLayout>
