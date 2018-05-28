@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +42,7 @@ public class CreateChoiceFragment extends Fragment implements View.OnClickListen
     private String subjectname;
     private FirebaseDatabase database;
     private DatabaseReference table_assign;
+    private Integer tmp;
 
     @Nullable
     @Override
@@ -115,6 +118,7 @@ public class CreateChoiceFragment extends Fragment implements View.OnClickListen
                             "choice", "A");
                     table_assign.child(txtNo.getText().toString()).setValue(choice);
                     Toast.makeText(getActivity(), "Add a question", Toast.LENGTH_SHORT).show();
+
                 }
                 progressDialog.dismiss();
             }
@@ -131,6 +135,14 @@ public class CreateChoiceFragment extends Fragment implements View.OnClickListen
         int tmp = Integer.valueOf(txtNo.getText().toString());
         txtNo.setText( String.valueOf( tmp+1) );
     }*/
+
+    private void replaceFragment(Fragment fragment) {
+        inputQuestionAns();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container_exam, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
 
     private void clickButton() {
         btnAdd.setOnClickListener(this);
@@ -153,6 +165,10 @@ public class CreateChoiceFragment extends Fragment implements View.OnClickListen
             edittextD.getText().clear();
         } else if (v == btnSubmit) {
             Toast.makeText(getActivity(), "Submit assignment", Toast.LENGTH_SHORT);
+            inputQuestionAns();
+            Fragment fragment = null;
+            fragment = new CreateSuccessFragment();
+            replaceFragment(fragment);
         }
     }
 
