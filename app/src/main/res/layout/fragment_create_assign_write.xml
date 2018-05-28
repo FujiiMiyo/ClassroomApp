@@ -52,7 +52,6 @@
                     android:hint="@string/enter_quest"
                     android:padding="5dp"
                     android:singleLine="true"
-                    android:textAlignment="center"
                     android:textColor="@color/pinkRose1" />
             </LinearLayout>
 
@@ -67,7 +66,6 @@
                 android:background="@drawable/edittext_assign_layout"
                 android:hint="@string/enter_ans"
                 android:padding="5dp"
-                android:textAlignment="center"
                 android:textColor="@color/pinkRose1" />
 
             <LinearLayout

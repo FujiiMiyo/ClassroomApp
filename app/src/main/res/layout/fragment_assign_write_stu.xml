@@ -45,14 +45,12 @@
                 android:textSize="18dp"
                 android:textStyle="bold" />
 
-            <EditText
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/edittext_assign_layout"
-                android:hint="@string/enter_quest"
+                android:text="Question"
                 android:padding="5dp"
-                android:singleLine="true"
-                android:textAlignment="center"
+                android:textSize="18dp"
                 android:textColor="@color/pinkRose1" />
         </LinearLayout>
 
@@ -67,8 +65,7 @@
             android:background="@drawable/edittext_assign_layout"
             android:hint="@string/enter_ans"
             android:padding="5dp"
-            android:textAlignment="center"
-            android:textColor="@color/pinkRose1" />
+            android:textColor="@color/black" />
     </LinearLayout>
 
 </RelativeLayout>

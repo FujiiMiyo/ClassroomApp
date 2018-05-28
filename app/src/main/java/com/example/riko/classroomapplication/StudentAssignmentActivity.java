@@ -6,11 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
-public class StudentExamTestActivity extends AppCompatActivity {
+public class StudentAssignmentActivity extends AppCompatActivity {
 
     //<------------------------------------------------>
     final String TAG = "TTwTT";
@@ -20,13 +18,21 @@ public class StudentExamTestActivity extends AppCompatActivity {
 
     private boolean doubleBackToExitPressedOnce;
     private String assignname;
+    private String subjectID;
+    private String Username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_student_exam_test);
+        setContentView(R.layout.activity_student_assignment);
         initInstance();
         backToolbar();
+
+        if (savedInstanceState == null) {
+            //Toast.makeText(this, "TeacherActivity", Toast.LENGTH_SHORT).show();
+            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container_exam,
+                    new StudentAssignChoiceFragment()).commit();
+        }
     }
 
     private void initInstance() {
@@ -34,14 +40,10 @@ public class StudentExamTestActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         android.content.Intent intent = getIntent();
         assignname = intent.getStringExtra("assignname");
+        subjectID = intent.getStringExtra("subjectID");
+        Username = intent.getStringExtra("Username");
         toolbar.setTitle(assignname);
     }
-
-
-
-
-
-
 
 
     private void backToolbar() {

@@ -55,6 +55,7 @@ public class StudentExamsActivity extends AppCompatActivity implements View.OnCl
     private AssignAdapter assignAdapter;
     private String subjectID;
     private String subjectname;
+    private String Username;
     private BottomSheetDialog bottomSheetMenu;
     private View sheetView;
     private LinearLayout createAssign;
@@ -79,6 +80,7 @@ public class StudentExamsActivity extends AppCompatActivity implements View.OnCl
         Intent intent = getIntent();
         subjectID = intent.getStringExtra("subjectID");
         subjectname = intent.getStringExtra("subjectname");
+        Username = intent.getStringExtra("Username");
         toolbar.setTitle(subjectname);
 
         //----- Firebase ------//
@@ -105,8 +107,10 @@ public class StudentExamsActivity extends AppCompatActivity implements View.OnCl
         assignAdapter = new AssignAdapter(listAssignName, new AssignAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Assign assign) {
-                Intent iassign = new Intent(StudentExamsActivity.this, StudentExamTestActivity.class);
+                Intent iassign = new Intent(StudentExamsActivity.this, StudentAssignmentActivity.class);
                 iassign.putExtra("assignname", assign.getAssignname());
+                iassign.putExtra("subjectID", subjectID);
+                iassign.putExtra("Username", Username);
                 startActivity(iassign);
                 //displaySelectMenu();
             }

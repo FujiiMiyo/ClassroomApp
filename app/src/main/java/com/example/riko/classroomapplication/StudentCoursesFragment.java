@@ -119,6 +119,7 @@ public class StudentCoursesFragment extends Fragment implements View.OnClickList
                 Intent isubject = new Intent(getActivity(), StudentExamsActivity.class);
                 isubject.putExtra("subjectID", subject.getSubjectID());
                 isubject.putExtra("subjectname", subject.getSubjectname());
+                isubject.putExtra("Username", Username);
                 startActivity(isubject);
                 //Toast.makeText(getContext(), "Assignment", Toast.LENGTH_SHORT).show();
             }
