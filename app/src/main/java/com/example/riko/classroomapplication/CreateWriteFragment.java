@@ -1,5 +1,7 @@
 package com.example.riko.classroomapplication;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,8 +15,15 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.riko.classroomapplication.Model.Assign;
+import com.example.riko.classroomapplication.Model.Choice;
+import com.example.riko.classroomapplication.Model.Write;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class CreateWriteFragment extends Fragment implements View.OnClickListener {
 
@@ -72,6 +81,115 @@ public class CreateWriteFragment extends Fragment implements View.OnClickListene
     }
 
 
+    //-------------------------------- Add button ------------------------------------//
+    private void addQuestionAns() {
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Please waiting . . .");
+        progressDialog.show();
+
+        Query searchQuery = table_assign.orderByChild("subjectID").equalTo(subjectID);
+        searchQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //Check if editText is empty
+                if (edittextQuest.getText().toString().isEmpty()) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getActivity(), "Please enter question", Toast.LENGTH_SHORT).show();
+                } else if (edittextA.getText().toString().isEmpty()) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getActivity(), "Please enter answer", Toast.LENGTH_SHORT).show();
+                }  else {
+                    //Add Question
+                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        Assign assign = new Assign();
+                        assign = postSnapshot.getValue(Assign.class);
+
+                        if (assign.getAssignname().equals(assignname)){
+                            long questionNumber;
+                            if (postSnapshot.hasChild("Quest")) {
+                                questionNumber = postSnapshot.child("Quest").getChildrenCount()+1;
+                            }
+                            else{
+                                questionNumber = 1;
+                            }
+                            //Log.e( "Key",postSnapshot.getKey());
+                            //Log.e( "Name",assign.getAssignname());
+                            // Log.e("Count",String.valueOf(count));
+                            Write write = new Write(String.valueOf(questionNumber), edittextQuest.getText().toString(), "write", edittextA.getText().toString());
+                            table_assign.child(postSnapshot.getKey()).child("Quest").child(String.valueOf(questionNumber)).setValue(write);
+                        }
+                    }
+                    Toast.makeText(getActivity(), "Add a question", Toast.LENGTH_SHORT).show();
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+    //-------------------------------------------------------------------------------//
+
+
+    //--------------------------- Submit button -------------------------------------//
+    private void submitQuestionAns() {
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Please waiting . . .");
+        progressDialog.show();
+
+        Query searchQuery = table_assign.orderByChild("subjectID").equalTo(subjectID);
+        searchQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //Check if editText is empty
+                if (edittextQuest.getText().toString().isEmpty()) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getActivity(), "Please enter question", Toast.LENGTH_SHORT).show();
+                } else if (edittextA.getText().toString().isEmpty()) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getActivity(), "Please enter answer", Toast.LENGTH_SHORT).show();
+                } else {
+                    //Add Question
+                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        Assign assign = new Assign();
+                        assign = postSnapshot.getValue(Assign.class);
+
+                        if (assign.getAssignname().equals(assignname)){
+                            long questionNumber;
+                            if (postSnapshot.hasChild("Quest")) {
+                                questionNumber = postSnapshot.child("Quest").getChildrenCount()+1;
+                            }
+                            else{
+                                questionNumber = 1;
+                            }
+                            //Log.e( "Key",postSnapshot.getKey());
+                            //Log.e( "Name",assign.getAssignname());
+                            // Log.e("Count",String.valueOf(count));
+                            Write write = new Write(String.valueOf(questionNumber), edittextQuest.getText().toString(), "write", edittextA.getText().toString());
+                            table_assign.child(postSnapshot.getKey()).child("Quest").child(String.valueOf(questionNumber)).setValue(write);
+                        }
+                    }
+                    Toast.makeText(getActivity(), "Add question", Toast.LENGTH_SHORT).show();
+                    showAddItemDialog();
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
+
+    private void showAddItemDialog() {
+        Dialog addSubjectDialog = new Dialog(getContext());
+        addSubjectDialog.setContentView(R.layout.dialog_createassign__success);
+        addSubjectDialog.show();
+    }
+    //---------------------------------------------------------------------------------//
 
 
     private void clickButton() {
@@ -82,16 +200,14 @@ public class CreateWriteFragment extends Fragment implements View.OnClickListene
     @Override
     public void onClick(View v) {
         if (v == btnAdd) {
-            //addQuestionAns();
-            //Toast.makeText(getActivity(), "Add a question", Toast.LENGTH_SHORT);
-            //numberQuestion();
+            addQuestionAns();
         } else if (v == btnReset) {
             Toast.makeText(getActivity(), "Reset this question", Toast.LENGTH_SHORT);
             edittextQuest.getText().clear();
             edittextA.getText().clear();
         } else if (v == btnSubmit) {
             Toast.makeText(getActivity(), "Submit assignment", Toast.LENGTH_SHORT);
-            //submitQuestionAns();
+            submitQuestionAns();
         }
     }
 

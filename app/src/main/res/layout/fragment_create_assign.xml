@@ -23,7 +23,7 @@
                 android:layout_marginRight="30dp"
                 android:orientation="horizontal">
 
-                <TextView
+                <!--TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/no"
@@ -43,7 +43,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/semi"
                     android:textSize="18dp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold" /-->
 
                 <EditText
                     android:id="@+id/edittextQuest"

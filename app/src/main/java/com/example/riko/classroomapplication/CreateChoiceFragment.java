@@ -159,7 +159,7 @@ public class CreateChoiceFragment extends Fragment implements View.OnClickListen
                             table_assign.child(postSnapshot.getKey()).child("Quest").child(String.valueOf(questionNumber)).setValue(choice);
                         }
                     }
-                    Toast.makeText(getActivity(), "Add a question", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Add question", Toast.LENGTH_SHORT).show();
 
                 }
                 progressDialog.dismiss();
@@ -231,7 +231,7 @@ public class CreateChoiceFragment extends Fragment implements View.OnClickListen
                             table_assign.child(postSnapshot.getKey()).child("Quest").child(String.valueOf(questionNumber)).setValue(choice);
                         }
                     }
-                    Toast.makeText(getActivity(), "Add a question", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Add question", Toast.LENGTH_SHORT).show();
                     showAddItemDialog();
                 }
                 progressDialog.dismiss();
