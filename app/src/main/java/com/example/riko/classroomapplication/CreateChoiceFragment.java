@@ -295,6 +295,7 @@ public class CreateChoiceFragment extends Fragment implements View.OnClickListen
             edittextB.getText().clear();
             edittextC.getText().clear();
             edittextD.getText().clear();
+            radioGroupChoice.clearCheck();
         } else if (v == btnSubmit) {
             Toast.makeText(getActivity(), "Submit assignment", Toast.LENGTH_SHORT);
             submitQuestionAns();

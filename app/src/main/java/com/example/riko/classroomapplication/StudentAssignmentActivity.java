@@ -31,7 +31,7 @@ public class StudentAssignmentActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             //Toast.makeText(this, "TeacherActivity", Toast.LENGTH_SHORT).show();
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container_exam,
-                    new StudentAssignChoiceFragment()).commit();
+                    new StudentAssignWriteFragment()).commit();
         }
     }
 

@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white">
 
     <ScrollView
@@ -104,6 +105,44 @@
                         android:textSize="16dp" />
                 </RadioGroup>
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/btnReset"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/select_type_left"
+                    android:backgroundTint="@color/grey6"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:minHeight="48dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:textColor="@color/pinkRose"
+                    app:srcCompat="@drawable/ic_refresh" />
+
+                <Button
+                    android:id="@+id/btnSubmit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/select_type_right"
+                    android:backgroundTint="@color/bluegreen"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:minHeight="48dp"
+                    android:text="@string/submit"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 

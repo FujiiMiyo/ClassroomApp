@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -15,7 +17,7 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class StudentAssignChoiceFragment extends Fragment implements RadioGroup.OnCheckedChangeListener {
+public class StudentAssignChoiceFragment extends Fragment implements RadioGroup.OnCheckedChangeListener, View.OnClickListener {
 
     private View view;
     private TextView txtQuest;
@@ -29,6 +31,8 @@ public class StudentAssignChoiceFragment extends Fragment implements RadioGroup.
     private DatabaseReference table_quest;
     private String Username;
     private String sel = " ";
+    private ImageButton btnReset;
+    private Button btnSubmit;
 
 
     @Nullable
@@ -45,6 +49,7 @@ public class StudentAssignChoiceFragment extends Fragment implements RadioGroup.
 
         initInstance();
         initFirebase();
+        clickButton();
         onClickRadioButton();
         return view;
     }
@@ -64,11 +69,16 @@ public class StudentAssignChoiceFragment extends Fragment implements RadioGroup.
         radioC = view.findViewById(R.id.radioA);
         radioD = view.findViewById(R.id.radioA);*/
 
+        //---------- Button -------------//
+        btnReset = view.findViewById(R.id.btnReset);
+        btnSubmit = view.findViewById(R.id.btnSubmit);
     }
 
     private void initFirebase() {
 
     }
+
+
 
     //------------- Radio Button: Choice -----------------//
     private void onClickRadioButton() {
@@ -93,4 +103,20 @@ public class StudentAssignChoiceFragment extends Fragment implements RadioGroup.
         }
     }
     //--------------------------------------------------//
+
+
+    private void clickButton() {
+        btnReset.setOnClickListener(this);
+        btnSubmit.setOnClickListener(this);
+    }
+    @Override
+    public void onClick(View v) {
+        if (v == btnReset) {
+            Toast.makeText(getActivity(), "Reset this question", Toast.LENGTH_SHORT);
+            radioGroupChoice.clearCheck();
+        } else if (v == btnSubmit) {
+            Toast.makeText(getActivity(), "Submit assignment", Toast.LENGTH_SHORT);
+            //submitAns();
+        }
+    }
 }
