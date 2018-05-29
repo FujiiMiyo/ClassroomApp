@@ -4,15 +4,13 @@ public class Assign {
 
     private String assignname;
     private String subjectID;
-    private int assignnumber;
 
     public Assign() {
     }
 
-    public Assign(String assignname, String subjectID,int assignnumber) {
+    public Assign(String assignname, String subjectID) {
         this.assignname = assignname;
         this.subjectID = subjectID;
-        this.assignnumber = assignnumber;
     }
 
     public String getAssignname() {
@@ -31,11 +29,4 @@ public class Assign {
         this.subjectID = subjectID;
     }
 
-    public int getAssignnumber() {
-        return assignnumber;
-    }
-
-    public void setAssignnumber(int assignnumber) {
-        this.assignnumber = assignnumber;
-    }
 }
