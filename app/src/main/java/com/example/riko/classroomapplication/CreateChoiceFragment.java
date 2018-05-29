@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,12 +29,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-public class CreateChoiceFragment extends Fragment implements View.OnClickListener {
+public class CreateChoiceFragment extends Fragment implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
 
     private View view;
     private ImageButton btnAdd;
     private ImageButton btnReset;
     private Button btnSubmit;
+    private RadioGroup radioGroupChoice;
+    private RadioButton radioA;
+    private RadioButton radioB;
+    private RadioButton radioC;
+    private RadioButton radioD;
     private EditText edittextQuest;
     private EditText edittextA;
     private EditText edittextB;
@@ -45,12 +52,15 @@ public class CreateChoiceFragment extends Fragment implements View.OnClickListen
     private FirebaseDatabase database;
     private DatabaseReference table_assign;
     private Integer tmp;
+    private String sel = " ";
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_create_assign, container, false);
         initInstance();
+        onClickRadioButton();
         clickButton();
         //inputQuestionAns();
 
@@ -80,6 +90,13 @@ public class CreateChoiceFragment extends Fragment implements View.OnClickListen
         edittextB = view.findViewById(R.id.edittextB);
         edittextC = view.findViewById(R.id.edittextC);
         edittextD = view.findViewById(R.id.edittextD);
+
+        //---------- Radio Button ----------//
+        radioGroupChoice = view.findViewById(R.id.radioGroupChoice);
+        /*radioA = view.findViewById(R.id.radioA);
+        radioB = view.findViewById(R.id.radioA);
+        radioC = view.findViewById(R.id.radioA);
+        radioD = view.findViewById(R.id.radioA);*/
 
         //---------- Button -------------//
         btnAdd = view.findViewById(R.id.btnAdd);
@@ -114,12 +131,15 @@ public class CreateChoiceFragment extends Fragment implements View.OnClickListen
                 } else if (edittextD.getText().toString().isEmpty()) {
                     progressDialog.dismiss();
                     Toast.makeText(getActivity(), "Please enter answer D", Toast.LENGTH_SHORT).show();
+                } else if (radioGroupChoice.getCheckedRadioButtonId() == -1) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getActivity(), "Please select an answer", Toast.LENGTH_SHORT).show();
                 } else {
                     Choice choice = new Choice(txtNo.getText().toString(), edittextQuest.getText().toString(),
                             edittextA.getText().toString(), edittextB.getText().toString(), edittextC.getText().toString(), edittextD.getText().toString(),
-                            "choice", "A");
+                            "choice", sel);
                     table_assign.child(txtNo.getText().toString()).setValue(choice);
-                    Toast.makeText(getActivity(), "Add a question", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Add a question!", Toast.LENGTH_SHORT).show();
 
                 }
                 progressDialog.dismiss();
@@ -165,19 +185,16 @@ public class CreateChoiceFragment extends Fragment implements View.OnClickListen
                 } else if (edittextD.getText().toString().isEmpty()) {
                     progressDialog.dismiss();
                     Toast.makeText(getActivity(), "Please enter answer D", Toast.LENGTH_SHORT).show();
+                } else if (radioGroupChoice.getCheckedRadioButtonId() == -1) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getActivity(), "Please select an answer", Toast.LENGTH_SHORT).show();
                 } else {
                     Choice choice = new Choice(txtNo.getText().toString(), edittextQuest.getText().toString(),
                             edittextA.getText().toString(), edittextB.getText().toString(), edittextC.getText().toString(), edittextD.getText().toString(),
-                            "choice", "A");
+                            "choice", sel);
                     table_assign.child(txtNo.getText().toString()).setValue(choice);
-                    Toast.makeText(getActivity(), "Add a question", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Add a question!", Toast.LENGTH_SHORT).show();
                     showAddItemDialog();
-
-                    /*FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                    CreateSpaceFragment fragment = new CreateSpaceFragment();
-                    transaction.replace(R.id.fragment_container_exam, fragment);
-                    transaction.addToBackStack(null);
-                    transaction.commit();*/
                 }
                 progressDialog.dismiss();
             }
@@ -197,7 +214,29 @@ public class CreateChoiceFragment extends Fragment implements View.OnClickListen
     //---------------------------------------------------------------------------------//
 
 
+    //------------- Radio Button: Choice -----------------//
+    private void onClickRadioButton() {
+        radioGroupChoice.setOnCheckedChangeListener(this);
+    }
 
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+        switch (checkedId){
+            case R.id.radioA:
+                sel = "A";
+                break;
+            case R.id.radioB:
+                sel = "B";
+                break;
+            case R.id.radioC:
+                sel = "C";
+                break;
+            case R.id.radioD:
+                sel = "D";
+                break;
+        }
+    }
+    //--------------------------------------------------//
 
 
     private void clickButton() {

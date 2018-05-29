@@ -64,7 +64,7 @@
                 android:orientation="horizontal">
 
                 <RadioGroup
-                    android:id="@+id/radioGroupStatus"
+                    android:id="@+id/radioGroupChoice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -72,32 +72,31 @@
                     <RadioButton
                         android:id="@+id/radioA"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="onRadioButtonClicked"
+                        android:layout_height="match_parent"
                         android:textSize="16dp" />
+
 
                     <RadioButton
                         android:id="@+id/radioB"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_marginTop="5dp"
-                        android:onClick="onRadioButtonClicked"
                         android:textSize="16dp" />
 
                     <RadioButton
                         android:id="@+id/radioC"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_marginTop="5dp"
-                        android:onClick="onRadioButtonClicked"
                         android:textSize="16dp" />
 
                     <RadioButton
                         android:id="@+id/radioD"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_marginTop="5dp"
-                        android:onClick="onRadioButtonClicked"
+                        android:checked="false"
+                        android:duplicateParentState="false"
                         android:textSize="16dp" />
                 </RadioGroup>
 
@@ -114,7 +113,8 @@
                         android:hint="@string/enter_ans"
                         android:imeOptions="actionNext"
                         android:padding="5dp"
-                        android:textColor="@color/pinkRose1" />
+                        android:textColor="@color/pinkRose1"
+                        android:singleLine="true"/>
 
                     <EditText
                         android:id="@+id/edittextB"
@@ -125,7 +125,8 @@
                         android:hint="@string/enter_ans"
                         android:imeOptions="actionNext"
                         android:padding="5dp"
-                        android:textColor="@color/pinkRose1" />
+                        android:textColor="@color/pinkRose1"
+                        android:singleLine="true"/>
 
                     <EditText
                         android:id="@+id/edittextC"
@@ -136,7 +137,8 @@
                         android:hint="@string/enter_ans"
                         android:imeOptions="actionNext"
                         android:padding="5dp"
-                        android:textColor="@color/pinkRose1" />
+                        android:textColor="@color/pinkRose1"
+                        android:singleLine="true"/>
 
                     <EditText
                         android:id="@+id/edittextD"
@@ -147,7 +149,8 @@
                         android:hint="@string/enter_ans"
                         android:imeOptions="actionNext"
                         android:padding="5dp"
-                        android:textColor="@color/pinkRose1" />
+                        android:textColor="@color/pinkRose1"
+                        android:singleLine="true"/>
                 </LinearLayout>
             </LinearLayout>
 

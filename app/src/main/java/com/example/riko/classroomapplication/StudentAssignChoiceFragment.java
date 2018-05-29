@@ -15,7 +15,7 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class StudentAssignChoiceFragment extends Fragment {
+public class StudentAssignChoiceFragment extends Fragment implements RadioGroup.OnCheckedChangeListener {
 
     private View view;
     private TextView txtQuest;
@@ -28,6 +28,7 @@ public class StudentAssignChoiceFragment extends Fragment {
     private FirebaseDatabase database;
     private DatabaseReference table_quest;
     private String Username;
+    private String sel = " ";
 
 
     @Nullable
@@ -44,6 +45,7 @@ public class StudentAssignChoiceFragment extends Fragment {
 
         initInstance();
         initFirebase();
+        onClickRadioButton();
         return view;
     }
 
@@ -57,16 +59,38 @@ public class StudentAssignChoiceFragment extends Fragment {
         txtQuest = view.findViewById(R.id.txtQuest);
         txtNo = view.findViewById(R.id.txtNo);
         radioGroupChoice = view.findViewById(R.id.radioGroupChoice);
-        radioA = view.findViewById(R.id.radioA);
+        /*radioA = view.findViewById(R.id.radioA);
         radioB = view.findViewById(R.id.radioA);
         radioC = view.findViewById(R.id.radioA);
-        radioD = view.findViewById(R.id.radioA);
+        radioD = view.findViewById(R.id.radioA);*/
+
     }
 
     private void initFirebase() {
 
     }
 
+    //------------- Radio Button: Choice -----------------//
+    private void onClickRadioButton() {
+        radioGroupChoice.setOnCheckedChangeListener(this);
+    }
 
-
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+        switch (checkedId){
+            case R.id.radioA:
+                sel = "A";
+                break;
+            case R.id.radioB:
+                sel = "B";
+                break;
+            case R.id.radioC:
+                sel = "C";
+                break;
+            case R.id.radioD:
+                sel = "D";
+                break;
+        }
+    }
+    //--------------------------------------------------//
 }
