@@ -91,6 +91,10 @@ public class StudentAssignmentActivity extends AppCompatActivity {
                                 bundleChoice.putString("choiceB",choice.getChoiceB());
                                 bundleChoice.putString("choiceC",choice.getChoiceC());
                                 bundleChoice.putString("choiceD",choice.getChoiceD());
+                                bundleChoice.putString("answer",choice.getAnswer());
+                                bundleChoice.putString("Username",Username);
+                                bundleChoice.putString("subjectID",subjectID);
+                                bundleChoice.putString("assignname",assignname);
                                 bundleChoice.putLong("totalQuestion",totalQuestion);
                                 bundleChoice.putLong("countQuestion",1);
 
@@ -110,6 +114,10 @@ public class StudentAssignmentActivity extends AppCompatActivity {
                                 Bundle bundleWrite = new Bundle();
                                 bundleWrite.putString("numberQuestion", write.getNumberQuestion());
                                 bundleWrite.putString("question", write.getQuestion());
+                                bundleWrite.putString("answer",write.getAnswer());
+                                bundleWrite.putString("Username",Username);
+                                bundleWrite.putString("subjectID",subjectID);
+                                bundleWrite.putString("assignname",assignname);
                                 bundleWrite.putLong("totalQuestion",totalQuestion);
                                 bundleWrite.putLong("countQuestion",1);
 

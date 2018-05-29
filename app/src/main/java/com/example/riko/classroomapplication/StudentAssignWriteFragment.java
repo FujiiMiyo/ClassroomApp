@@ -28,6 +28,8 @@ public class StudentAssignWriteFragment extends Fragment implements View.OnClick
     private Button btnSubmit;
     private String numberQuestion;
     private String question;
+    private String Username;
+    private String answer;
     private long totalQuestion;
     private long countQuestion;
 
@@ -41,9 +43,11 @@ public class StudentAssignWriteFragment extends Fragment implements View.OnClick
 
             numberQuestion = getArguments().getString("numberQuestion");
             question = getArguments().getString("question");
+            Username = getArguments().getString("Username");
             totalQuestion = getArguments().getLong("totalQuestion");
             countQuestion = getArguments().getLong("countQuestion");
 
+            answer = getArguments().getString("answer");
             //Toast.makeText(getContext(), Username, Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getContext(), "Bundle == null", Toast.LENGTH_SHORT).show();

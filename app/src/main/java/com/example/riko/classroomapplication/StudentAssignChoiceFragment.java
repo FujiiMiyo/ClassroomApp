@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,15 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.riko.classroomapplication.Model.Answer;
+import com.example.riko.classroomapplication.Model.Assign;
+import com.example.riko.classroomapplication.Model.Choice;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class StudentAssignChoiceFragment extends Fragment implements RadioGroup.OnCheckedChangeListener, View.OnClickListener {
 
@@ -28,7 +36,9 @@ public class StudentAssignChoiceFragment extends Fragment implements RadioGroup.
     private RadioButton radioC;
     private RadioButton radioD;
     private FirebaseDatabase database;
-    private DatabaseReference table_quest;
+    private DatabaseReference table_ans;
+    private String assignname;
+    private String subjectID;
     private String Username;
     private String sel = " ";
     private ImageButton btnReset;
@@ -39,6 +49,7 @@ public class StudentAssignChoiceFragment extends Fragment implements RadioGroup.
     private String choiceB;
     private String choiceC;
     private String choiceD;
+    private String answer;
     private long totalQuestion;
     private long countQuestion;
 
@@ -56,6 +67,10 @@ public class StudentAssignChoiceFragment extends Fragment implements RadioGroup.
             choiceB = getArguments().getString("choiceB");
             choiceC = getArguments().getString("choiceC");
             choiceD = getArguments().getString("choiceD");
+            answer = getArguments().getString("answer");
+            Username = getArguments().getString("Username");
+            assignname = getArguments().getString("assignname");
+            Username = getArguments().getString("Username");
             totalQuestion = getArguments().getLong("totalQuestion");
             countQuestion = getArguments().getLong("countQuestion");
 
@@ -75,7 +90,7 @@ public class StudentAssignChoiceFragment extends Fragment implements RadioGroup.
 
         //----------- Firebase ---------------//
         database = FirebaseDatabase.getInstance();
-        table_quest = database.getReference("Assign");
+        table_ans = database.getReference("Student_answer");
 
         //----------- Question -----------//
         txtQuest = view.findViewById(R.id.txtQuest);
@@ -101,6 +116,38 @@ public class StudentAssignChoiceFragment extends Fragment implements RadioGroup.
 
     private void initFirebase() {
 
+    }
+
+    private void submitChoiceAns(){
+        Query searchQuery = table_ans.orderByChild("subjectID").equalTo(subjectID);
+        searchQuery.addListenerForSingleValueEvent(new ValueEventListener(){
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.e("tag",String.valueOf(dataSnapshot.hasChildren()));
+
+                /*
+                if(false){
+                    Toast.makeText(getActivity(), "Please Choose Answer", Toast.LENGTH_SHORT).show();
+                }else{
+                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        Answer answer = new Answer();
+                        answer = postSnapshot.getValue(Answer.class);
+
+                        if (answer.getAssignname().equals(assignname) && answer.getSubjectID().equals(Username)){
+                            //has data
+
+                        }else {
+
+                        }
+                    }
+                }*/
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 
@@ -141,7 +188,7 @@ public class StudentAssignChoiceFragment extends Fragment implements RadioGroup.
             radioGroupChoice.clearCheck();
         } else if (v == btnSubmit) {
             Toast.makeText(getActivity(), "Submit assignment", Toast.LENGTH_SHORT);
-            //submitAns();
+            submitChoiceAns();
         }
     }
 }
