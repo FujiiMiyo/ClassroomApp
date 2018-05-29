@@ -98,6 +98,31 @@ public class AddExamsActivity extends AppCompatActivity implements View.OnClickL
         });
     }
 
+    private void initWrite() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference table_assign = database.getReference().child("Assign");
+        table_assign.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //Member member = dataSnapshot.child(textUsername.getText().toString()).getValue(Member.class);
+                //Send data to courseFragment
+                Bundle writeFragment = new Bundle();
+                writeFragment.putString("subjectID", subjectID);
+                writeFragment.putString("assignname", assignname);
+                writeFragment.putString("subjectname", subjectname);
+                CreateWriteFragment myObj = new CreateWriteFragment();
+                myObj.setArguments(writeFragment);
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_exam,
+                        myObj).commit();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
+
     private void clickButton() {
         btnChoice.setOnClickListener(this);
         btnWrite.setOnClickListener(this);
@@ -147,8 +172,9 @@ public class AddExamsActivity extends AppCompatActivity implements View.OnClickL
                     new CreateChoiceFragment()).commit();*/
             initChoice();
         } else  if (v == btnWrite){
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_exam,
-                    new CreateWriteFragment()).commit();
+            /*getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_exam,
+                    new CreateWriteFragment()).commit();*/
+            initWrite();
         }
     }
 
