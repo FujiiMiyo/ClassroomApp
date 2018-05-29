@@ -41,6 +41,7 @@
             android:orientation="horizontal">
 
             <ImageButton
+                android:id="@+id/btnLeft"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/search_btn"
@@ -51,6 +52,7 @@
                 app:srcCompat="@drawable/ic_chevron_left" />
 
             <EditText
+                android:id="@+id/edittextNo"
                 android:layout_width="100dp"
                 android:layout_height="30dp"
                 android:layout_marginLeft="5dp"
@@ -67,6 +69,7 @@
                 android:textSize="20dp" />
 
             <ImageButton
+                android:id="@+id/btnRight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"

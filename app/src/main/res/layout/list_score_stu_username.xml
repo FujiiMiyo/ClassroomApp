@@ -7,7 +7,7 @@
     android:background="@color/white">
 
     <TextView
-        android:id="@+id/textSubjectId"
+        android:id="@+id/textUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
@@ -17,12 +17,12 @@
         android:textSize="14dp" />
 
     <TextView
-        android:id="@+id/textSubject"
+        android:id="@+id/textName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textSubjectId"
-        android:layout_alignStart="@+id/textSubjectId"
-        android:layout_below="@+id/textSubjectId"
+        android:layout_alignLeft="@+id/textUsername"
+        android:layout_alignStart="@+id/textUsername"
+        android:layout_below="@+id/textUsername"
         android:layout_marginBottom="10dp"
         android:layout_marginRight="80dp"
         android:paddingRight="10dp"
@@ -45,7 +45,7 @@
         android:text="@string/score"/>
 
     <TextView
-        android:id="@+id/txtScore"
+        android:id="@+id/textScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
