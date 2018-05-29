@@ -92,7 +92,8 @@
 
     <string name="save_success">Save successfully</string>
 
-    <!-- EditExamsActivity Teacher -->
+    <!-- CheckScoreActivity Teacher -->
+    <string name="score">Score</string>
 
 
 </resources>
