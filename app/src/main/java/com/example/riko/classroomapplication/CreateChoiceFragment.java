@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.riko.classroomapplication.Model.Assign;
 import com.example.riko.classroomapplication.Model.Choice;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -138,8 +140,18 @@ public class CreateChoiceFragment extends Fragment implements View.OnClickListen
                     Choice choice = new Choice(txtNo.getText().toString(), edittextQuest.getText().toString(),
                             edittextA.getText().toString(), edittextB.getText().toString(), edittextC.getText().toString(), edittextD.getText().toString(),
                             "choice", sel);
-                    table_assign.child(txtNo.getText().toString()).setValue(choice);
-                    Toast.makeText(getActivity(), "Add a question!", Toast.LENGTH_SHORT).show();
+                    //Add Question
+                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        Assign assign = new Assign();
+                        assign = postSnapshot.getValue(Assign.class);
+
+                        if (assign.getAssignname().equals(assignname)){
+                            //Log.e( "Key",postSnapshot.getKey());
+                            //Log.e( "Name",assign.getAssignname());
+                            table_assign.child(postSnapshot.getKey()).child("Question").child(txtNo.getText().toString()).setValue(choice);
+                        }
+                    }
+                    Toast.makeText(getActivity(), "Add a question", Toast.LENGTH_SHORT).show();
 
                 }
                 progressDialog.dismiss();
@@ -191,9 +203,20 @@ public class CreateChoiceFragment extends Fragment implements View.OnClickListen
                 } else {
                     Choice choice = new Choice(txtNo.getText().toString(), edittextQuest.getText().toString(),
                             edittextA.getText().toString(), edittextB.getText().toString(), edittextC.getText().toString(), edittextD.getText().toString(),
+
                             "choice", sel);
-                    table_assign.child(txtNo.getText().toString()).setValue(choice);
-                    Toast.makeText(getActivity(), "Add a question!", Toast.LENGTH_SHORT).show();
+                    //Add Question
+                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        Assign assign = new Assign();
+                        assign = postSnapshot.getValue(Assign.class);
+
+                        if (assign.getAssignname().equals(assignname)){
+                            //Log.e( "Key",postSnapshot.getKey());
+                            //Log.e( "Name",assign.getAssignname());
+                            table_assign.child(postSnapshot.getKey()).child("Question").child(txtNo.getText().toString()).setValue(choice);
+                        }
+                    }
+                    Toast.makeText(getActivity(), "Add a question", Toast.LENGTH_SHORT).show();
                     showAddItemDialog();
                 }
                 progressDialog.dismiss();
