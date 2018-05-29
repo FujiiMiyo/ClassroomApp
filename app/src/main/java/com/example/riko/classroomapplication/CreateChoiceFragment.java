@@ -137,18 +137,26 @@ public class CreateChoiceFragment extends Fragment implements View.OnClickListen
                     progressDialog.dismiss();
                     Toast.makeText(getActivity(), "Please select an answer", Toast.LENGTH_SHORT).show();
                 } else {
-                    Choice choice = new Choice(txtNo.getText().toString(), edittextQuest.getText().toString(),
-                            edittextA.getText().toString(), edittextB.getText().toString(), edittextC.getText().toString(), edittextD.getText().toString(),
-                            "choice", sel);
                     //Add Question
                     for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                         Assign assign = new Assign();
                         assign = postSnapshot.getValue(Assign.class);
 
                         if (assign.getAssignname().equals(assignname)){
+                            long questionNumber;
+                            if (postSnapshot.hasChild("Quest")) {
+                                questionNumber = postSnapshot.child("Quest").getChildrenCount()+1;
+                            }
+                            else{
+                                questionNumber = 1;
+                            }
                             //Log.e( "Key",postSnapshot.getKey());
                             //Log.e( "Name",assign.getAssignname());
-                            table_assign.child(postSnapshot.getKey()).child("Question").child(txtNo.getText().toString()).setValue(choice);
+                            // Log.e("Count",String.valueOf(count));
+                            Choice choice = new Choice(String.valueOf(questionNumber), edittextQuest.getText().toString(),
+                                    edittextA.getText().toString(), edittextB.getText().toString(), edittextC.getText().toString(), edittextD.getText().toString(),
+                                    "choice", sel);
+                            table_assign.child(postSnapshot.getKey()).child("Quest").child(String.valueOf(questionNumber)).setValue(choice);
                         }
                     }
                     Toast.makeText(getActivity(), "Add a question", Toast.LENGTH_SHORT).show();
@@ -201,19 +209,26 @@ public class CreateChoiceFragment extends Fragment implements View.OnClickListen
                     progressDialog.dismiss();
                     Toast.makeText(getActivity(), "Please select an answer", Toast.LENGTH_SHORT).show();
                 } else {
-                    Choice choice = new Choice(txtNo.getText().toString(), edittextQuest.getText().toString(),
-                            edittextA.getText().toString(), edittextB.getText().toString(), edittextC.getText().toString(), edittextD.getText().toString(),
-
-                            "choice", sel);
                     //Add Question
                     for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                         Assign assign = new Assign();
                         assign = postSnapshot.getValue(Assign.class);
 
                         if (assign.getAssignname().equals(assignname)){
+                            long questionNumber;
+                            if (postSnapshot.hasChild("Quest")) {
+                                questionNumber = postSnapshot.child("Quest").getChildrenCount()+1;
+                            }
+                            else{
+                                questionNumber = 1;
+                            }
                             //Log.e( "Key",postSnapshot.getKey());
                             //Log.e( "Name",assign.getAssignname());
-                            table_assign.child(postSnapshot.getKey()).child("Question").child(txtNo.getText().toString()).setValue(choice);
+                            // Log.e("Count",String.valueOf(count));
+                            Choice choice = new Choice(String.valueOf(questionNumber), edittextQuest.getText().toString(),
+                                    edittextA.getText().toString(), edittextB.getText().toString(), edittextC.getText().toString(), edittextD.getText().toString(),
+                                    "choice", sel);
+                            table_assign.child(postSnapshot.getKey()).child("Quest").child(String.valueOf(questionNumber)).setValue(choice);
                         }
                     }
                     Toast.makeText(getActivity(), "Add a question", Toast.LENGTH_SHORT).show();
