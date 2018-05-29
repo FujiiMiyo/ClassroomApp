@@ -33,6 +33,14 @@ public class StudentAssignChoiceFragment extends Fragment implements RadioGroup.
     private String sel = " ";
     private ImageButton btnReset;
     private Button btnSubmit;
+    private String numberQuestion;
+    private String question;
+    private String choiceA;
+    private String choiceB;
+    private String choiceC;
+    private String choiceD;
+    private long totalQuestion;
+    private long countQuestion;
 
 
     @Nullable
@@ -40,12 +48,21 @@ public class StudentAssignChoiceFragment extends Fragment implements RadioGroup.
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_assign_stu, container, false);
 
-        /*if (getArguments() != null) {
-            Username = getArguments().getString("Username");
+        if (getArguments() != null) {
+
+            numberQuestion = getArguments().getString("numberQuestion");
+            question = getArguments().getString("question");
+            choiceA = getArguments().getString("choiceA");
+            choiceB = getArguments().getString("choiceB");
+            choiceC = getArguments().getString("choiceC");
+            choiceD = getArguments().getString("choiceD");
+            totalQuestion = getArguments().getLong("totalQuestion");
+            countQuestion = getArguments().getLong("countQuestion");
+
             //Toast.makeText(getContext(), Username, Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getContext(), "Bundle == null", Toast.LENGTH_SHORT).show();
-        }*/
+        }
 
         initInstance();
         initFirebase();
@@ -64,14 +81,22 @@ public class StudentAssignChoiceFragment extends Fragment implements RadioGroup.
         txtQuest = view.findViewById(R.id.txtQuest);
         txtNo = view.findViewById(R.id.txtNo);
         radioGroupChoice = view.findViewById(R.id.radioGroupChoice);
-        /*radioA = view.findViewById(R.id.radioA);
-        radioB = view.findViewById(R.id.radioA);
-        radioC = view.findViewById(R.id.radioA);
-        radioD = view.findViewById(R.id.radioA);*/
+        radioA = view.findViewById(R.id.radioA);
+        radioB = view.findViewById(R.id.radioB);
+        radioC = view.findViewById(R.id.radioC);
+        radioD = view.findViewById(R.id.radioD);
 
         //---------- Button -------------//
         btnReset = view.findViewById(R.id.btnReset);
         btnSubmit = view.findViewById(R.id.btnSubmit);
+
+        //----------- Set Up -----------//
+        txtQuest.setText(question);
+        txtNo.setText(String.valueOf(countQuestion));
+        radioA.setText(choiceA);
+        radioB.setText(choiceB);
+        radioC.setText(choiceC);
+        radioD.setText(choiceD);
     }
 
     private void initFirebase() {

@@ -45,6 +45,7 @@ public class ChangepwFragment extends Fragment implements View.OnClickListener {
         if (getArguments() != null) {
             Username = getArguments().getString("Username");
             Password = getArguments().getString("Password");
+
             //Toast.makeText(getContext(), Username+" "+Password, Toast.LENGTH_SHORT).show();
         }
         else {

@@ -26,12 +26,28 @@ public class StudentAssignWriteFragment extends Fragment implements View.OnClick
     private DatabaseReference table_quest;
     private ImageButton btnReset;
     private Button btnSubmit;
+    private String numberQuestion;
+    private String question;
+    private long totalQuestion;
+    private long countQuestion;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_assign_write_stu, container, false);
+
+        if (getArguments() != null) {
+
+            numberQuestion = getArguments().getString("numberQuestion");
+            question = getArguments().getString("question");
+            totalQuestion = getArguments().getLong("totalQuestion");
+            countQuestion = getArguments().getLong("countQuestion");
+
+            //Toast.makeText(getContext(), Username, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getContext(), "Bundle == null", Toast.LENGTH_SHORT).show();
+        }
 
         initInstance();
         initFirebase();
@@ -58,6 +74,10 @@ public class StudentAssignWriteFragment extends Fragment implements View.OnClick
         //---------- Button -------------//
         btnReset = view.findViewById(R.id.btnReset);
         btnSubmit = view.findViewById(R.id.btnSubmit);
+
+        //----------- Set Up -----------//
+        txtQuest.setText(question);
+        txtNo.setText(String.valueOf(countQuestion));
 
     }
 
