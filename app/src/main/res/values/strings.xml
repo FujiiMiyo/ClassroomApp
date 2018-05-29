@@ -95,5 +95,8 @@
     <!-- CheckScoreActivity Teacher -->
     <string name="score">Score</string>
 
+    <!-- StudentAssignmentActivity Teacher -->
+    <string name="stu_assign_space">No Question in this Assignment</string>
+
 
 </resources>

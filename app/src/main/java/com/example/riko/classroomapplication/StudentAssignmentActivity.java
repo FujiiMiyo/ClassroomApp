@@ -123,6 +123,11 @@ public class StudentAssignmentActivity extends AppCompatActivity {
                         }
                         else {
                             Log.e( "Tag","No Question in this Assignment");
+                            Bundle bundleSpace = new Bundle();
+                            StudentAssignSpaceFragment myObj = new StudentAssignSpaceFragment();
+                            myObj.setArguments(bundleSpace);
+                            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container_exam,
+                                    myObj).commit();
                         }
                     }
 
