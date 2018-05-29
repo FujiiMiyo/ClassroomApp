@@ -101,7 +101,7 @@ public class StudentAssignmentActivity extends AppCompatActivity {
                                 StudentAssignChoiceFragment myObj = new StudentAssignChoiceFragment();
                                 myObj.setArguments(bundleChoice);
 
-                                getSupportFragmentManager().beginTransaction().add(R.id.fragment_container_exam,
+                                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_exam,
                                         myObj).commit();
                             }
                             // write type
@@ -124,7 +124,7 @@ public class StudentAssignmentActivity extends AppCompatActivity {
                                 StudentAssignWriteFragment myObj = new StudentAssignWriteFragment();
                                 myObj.setArguments(bundleWrite);
 
-                                getSupportFragmentManager().beginTransaction().add(R.id.fragment_container_exam,
+                                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_exam,
                                         myObj).commit();
                             }
 
@@ -134,7 +134,7 @@ public class StudentAssignmentActivity extends AppCompatActivity {
                             Bundle bundleSpace = new Bundle();
                             StudentAssignSpaceFragment myObj = new StudentAssignSpaceFragment();
                             myObj.setArguments(bundleSpace);
-                            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container_exam,
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_exam,
                                     myObj).commit();
                         }
                     }

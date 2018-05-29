@@ -178,6 +178,27 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(TeacherMenuExamsActivity. this, "Delete assignment", Toast.LENGTH_SHORT).show();
+                        /*DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                        Query assignQuery = ref.child("Assign").orderByChild("assignname").equalTo(assign.getAssignname());
+                        assignQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot assignSnapshot : dataSnapshot.getChildren()) {
+                                    assignSnapshot.getRef().removeValue();
+                                    listAssignName.remove(assign.getAssignname());
+                                    //listSubjectID.remove(assign.getSubjectID());
+                                    assignAdapter.notifyItemRemoved(listAssignName.indexOf(assign.getAssignname()));
+                                    assignAdapter.notifyItemRangeChanged(listAssignName.indexOf(assign.getAssignname()), listAssignName.size());
+                                    Log.d("Delete subject", "Assign has been deleted");
+                                    Toast.makeText(TeacherMenuExamsActivity.this, "Assign has been deleted.", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                Log.e(TAG, "onCancelled", databaseError.toException());
+                            }
+                        });*/
                         bottomSheetMenu.dismiss();
                     }
                 });

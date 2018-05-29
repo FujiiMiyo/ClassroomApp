@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/drawerLayout"
     android:fitsSystemWindows="true"
-    tools:context=".TeacherMenuExamsActivity"
-    tools:openDrawer="start">
+    tools:context=".TeacherMenuExamsActivity">
 
 
     <LinearLayout
