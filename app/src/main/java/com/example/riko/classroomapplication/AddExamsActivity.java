@@ -65,12 +65,6 @@ public class AddExamsActivity extends AppCompatActivity implements View.OnClickL
         btnWrite = findViewById(R.id.btnWrite);
         btnAdd = findViewById(R.id.btnAdd);
 
-        btnChoice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                initChoice();
-            }
-        });
     }
 
     private void initChoice() {

@@ -40,6 +40,11 @@ public class EditExamsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_exams);
         initInstance();
         backToolbar();
+        if (savedInstanceState == null) {
+            //Toast.makeText(this, "TeacherActivity", Toast.LENGTH_SHORT).show();
+            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container_exam,
+                    new EditWriteFragment()).commit();
+        }
     }
 
     private void initInstance() {
