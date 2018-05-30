@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -105,18 +106,22 @@ public class CreateWriteFragment extends Fragment implements View.OnClickListene
                         assign = postSnapshot.getValue(Assign.class);
 
                         if (assign.getAssignname().equals(assignname)){
-                            long questionNumber;
-                            if (postSnapshot.hasChild("Quest")) {
-                                questionNumber = postSnapshot.child("Quest").getChildrenCount()+1;
-                            }
-                            else{
-                                questionNumber = 1;
+                            //Count Question
+                            String totalQuest;
+                            if (postSnapshot.child("Quest").hasChild("totalQuest")){
+                                totalQuest = postSnapshot.child("Quest").child("totalQuest").getValue().toString();
+                                //Log.e( "QuestCount",totalQuest);
+                                totalQuest = String.valueOf(1 + Integer.parseInt(totalQuest));
+                                table_assign.child(postSnapshot.getKey()).child("Quest").child("totalQuest").setValue(totalQuest);
+                            }else {
+                                totalQuest = "1";
+                                table_assign.child(postSnapshot.getKey()).child("Quest").child("totalQuest").setValue(totalQuest);
                             }
                             //Log.e( "Key",postSnapshot.getKey());
                             //Log.e( "Name",assign.getAssignname());
                             // Log.e("Count",String.valueOf(count));
-                            Write write = new Write(String.valueOf(questionNumber), edittextQuest.getText().toString(), "write", edittextA.getText().toString());
-                            table_assign.child(postSnapshot.getKey()).child("Quest").child(String.valueOf(questionNumber)).setValue(write);
+                            Write write = new Write(totalQuest, edittextQuest.getText().toString(), "write", edittextA.getText().toString());
+                            table_assign.child(postSnapshot.getKey()).child("Quest").child(totalQuest).setValue(write);
                         }
                     }
                     Toast.makeText(getActivity(), "Add a question", Toast.LENGTH_SHORT).show();
@@ -158,18 +163,22 @@ public class CreateWriteFragment extends Fragment implements View.OnClickListene
                         assign = postSnapshot.getValue(Assign.class);
 
                         if (assign.getAssignname().equals(assignname)){
-                            long questionNumber;
-                            if (postSnapshot.hasChild("Quest")) {
-                                questionNumber = postSnapshot.child("Quest").getChildrenCount()+1;
-                            }
-                            else{
-                                questionNumber = 1;
+                            //Count Question
+                            String totalQuest;
+                            if (postSnapshot.child("Quest").hasChild("totalQuest")){
+                                totalQuest = postSnapshot.child("Quest").child("totalQuest").getValue().toString();
+                                //Log.e( "QuestCount",totalQuest);
+                                totalQuest = String.valueOf(1 + Integer.parseInt(totalQuest));
+                                table_assign.child(postSnapshot.getKey()).child("Quest").child("totalQuest").setValue(totalQuest);
+                            }else {
+                                totalQuest = "1";
+                                table_assign.child(postSnapshot.getKey()).child("Quest").child("totalQuest").setValue(totalQuest);
                             }
                             //Log.e( "Key",postSnapshot.getKey());
                             //Log.e( "Name",assign.getAssignname());
                             // Log.e("Count",String.valueOf(count));
-                            Write write = new Write(String.valueOf(questionNumber), edittextQuest.getText().toString(), "write", edittextA.getText().toString());
-                            table_assign.child(postSnapshot.getKey()).child("Quest").child(String.valueOf(questionNumber)).setValue(write);
+                            Write write = new Write(totalQuest, edittextQuest.getText().toString(), "write", edittextA.getText().toString());
+                            table_assign.child(postSnapshot.getKey()).child("Quest").child(totalQuest).setValue(write);
                         }
                     }
                     Toast.makeText(getActivity(), "Add question", Toast.LENGTH_SHORT).show();

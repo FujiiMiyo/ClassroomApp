@@ -9,10 +9,11 @@ public class Answer {
     public Answer(){
     }
 
-    public Answer(String username,String assignname,String subjectID){
+    public Answer(String username,String assignname,String subjectID,int score){
         this.Username = username;
         this.Assignname = assignname;
         this.SubjectID = subjectID;
+        this.Score = score;
     }
 
     public int getScore() {

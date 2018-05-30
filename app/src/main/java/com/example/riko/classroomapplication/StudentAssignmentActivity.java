@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.riko.classroomapplication.Model.Answer;
 import com.example.riko.classroomapplication.Model.Assign;
 import com.example.riko.classroomapplication.Model.Choice;
 import com.example.riko.classroomapplication.Model.Write;
@@ -33,6 +34,7 @@ public class StudentAssignmentActivity extends AppCompatActivity {
     private String Username;
     private FirebaseDatabase database;
     private DatabaseReference table_quest;
+    private DatabaseReference table_ans;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ public class StudentAssignmentActivity extends AppCompatActivity {
         //----------- Firebase ---------------//
         database = FirebaseDatabase.getInstance();
         table_quest = database.getReference("Assign");
+        table_ans = database.getReference("Student_answer");
 
         //-- Toolbar --***//
         toolbar = findViewById(R.id.toolbar);
@@ -82,7 +85,8 @@ public class StudentAssignmentActivity extends AppCompatActivity {
                                 Choice choice = new Choice();
                                 choice = postSnapshot.child("Quest").child("1").getValue(Choice.class);
                                 //Count Question
-                                long totalQuestion = postSnapshot.child("Quest").getChildrenCount();
+                                String totalQuest = postSnapshot.child("Quest").child("totalQuest").getValue().toString();
+                                long totalQuestion = Long.parseLong(totalQuest);
 
                                 Bundle bundleChoice = new Bundle();
                                 bundleChoice.putString("numberQuestion", choice.getNumberQuestion());
@@ -95,8 +99,13 @@ public class StudentAssignmentActivity extends AppCompatActivity {
                                 bundleChoice.putString("Username",Username);
                                 bundleChoice.putString("subjectID",subjectID);
                                 bundleChoice.putString("assignname",assignname);
+                                bundleChoice.putString("keyAssign",postSnapshot.getKey());
                                 bundleChoice.putLong("totalQuestion",totalQuestion);
                                 bundleChoice.putLong("countQuestion",1);
+
+                                //create answer Member
+                                //Answer answer = new Answer(Username,assignname,subjectID,0);
+                                //table_ans.push().setValue(answer);
 
                                 StudentAssignChoiceFragment myObj = new StudentAssignChoiceFragment();
                                 myObj.setArguments(bundleChoice);
@@ -120,6 +129,10 @@ public class StudentAssignmentActivity extends AppCompatActivity {
                                 bundleWrite.putString("assignname",assignname);
                                 bundleWrite.putLong("totalQuestion",totalQuestion);
                                 bundleWrite.putLong("countQuestion",1);
+
+                                //create answer Member
+                                //Answer answer = new Answer(Username,assignname,subjectID,0);
+                                //table_ans.push().setValue(answer);
 
                                 StudentAssignWriteFragment myObj = new StudentAssignWriteFragment();
                                 myObj.setArguments(bundleWrite);
