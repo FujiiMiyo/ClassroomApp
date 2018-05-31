@@ -64,9 +64,9 @@ public class CheckScoresActivity extends AppCompatActivity {
     private String subjectname;
     private String assignname;
     private RecyclerView recyclerViewScore;
-    private FirebaseRecyclerAdapter recyclerAdapter;
+    //private FirebaseRecyclerAdapter recyclerAdapter;
     private List<Answer> listStuUserName;
-    private List<Member> listName;
+    private List<Answer> listName;
     private List<Answer> listScore;
     private ScoreAdapter scoreAdapter;
     private FirebaseDatabase database;
@@ -111,7 +111,7 @@ public class CheckScoresActivity extends AppCompatActivity {
         recyclerViewScore.setLayoutManager(LM);
         recyclerViewScore.setItemAnimator(new DefaultItemAnimator());
         //recyclerViewSubject.addItemDecoration(new DividerItemDecoration(view.getContext(), LinearLayoutManager.VERTICAL));
-        recyclerViewScore.setAdapter(recyclerAdapter);
+        //recyclerViewScore.setAdapter(recyclerAdapter);
 
 
         //----------------- Score list -------------------------------//
@@ -155,8 +155,10 @@ public class CheckScoresActivity extends AppCompatActivity {
                     listStuUserName.add(answer);
                     //Add Score
                     listScore.add(answer);
+                    //Add name
+                    listName.add(answer);
 
-                    Query searchMember = table_member.orderByChild("username").equalTo(answer.getUsername());
+                    /*Query searchMember = table_member.orderByChild("username").equalTo(answer.getUsername());
                     searchMember.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -170,7 +172,7 @@ public class CheckScoresActivity extends AppCompatActivity {
                         public void onCancelled(DatabaseError databaseError) {
 
                         }
-                    });
+                    });*/
 
                 }
                 //Log.e("DataList",listStuUserName);
@@ -203,12 +205,12 @@ public class CheckScoresActivity extends AppCompatActivity {
     public static class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ScoreViewHolder>{
 
         List<Answer> listStuUserName;
-        List<Member> listName;
+        List<Answer> listName;
         List<Answer> listScore;
         final OnItemClickListener listener;
         private Context context;
 
-        public ScoreAdapter(Context context, List<Answer> listStuUserName,List<Member> listName, List<Answer> listScore, OnItemClickListener listener) {
+        public ScoreAdapter(Context context, List<Answer> listStuUserName,List<Answer> listName, List<Answer> listScore, OnItemClickListener listener) {
             this.listStuUserName = listStuUserName;
             this.listScore = listScore;
             this.listName = listName;
@@ -230,7 +232,7 @@ public class CheckScoresActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull ScoreAdapter.ScoreViewHolder holder, int position) {
             final Answer userName = listStuUserName.get(position);
-            final Member name = listName.get(position);
+            final Answer name = listName.get(position);
             final Answer score = listScore.get(position);
             holder.bind(userName, name ,score ,listener);
         }
@@ -253,7 +255,7 @@ public class CheckScoresActivity extends AppCompatActivity {
                 textScore = itemView.findViewById(R.id.textScore);
             }
 
-            public void bind(final Answer userName, Member name, Answer score, final OnItemClickListener listener) {
+            public void bind(final Answer userName, Answer name, Answer score, final OnItemClickListener listener) {
                 textUserName.setText(userName.getUsername());
                 textName.setText(name.getName());
                 textScore.setText(String.valueOf(score.getScore()));

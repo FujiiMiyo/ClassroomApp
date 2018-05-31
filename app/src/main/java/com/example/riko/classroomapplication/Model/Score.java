@@ -1,16 +1,16 @@
 package com.example.riko.classroomapplication.Model;
 
-public class Answer {
+public class Score {
     private String username;
     private String assignname;
     private String subjectID;
     private int score;
     private String name;
 
-    public Answer() {
+    public Score() {
     }
 
-    public Answer(String username, String assignname, String subjectID, int score, String name) {
+    public Score(String username, String assignname, String subjectID, int score, String name) {
         this.username = username;
         this.assignname = assignname;
         this.subjectID = subjectID;
