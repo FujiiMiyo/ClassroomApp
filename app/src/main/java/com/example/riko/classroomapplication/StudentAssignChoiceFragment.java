@@ -55,6 +55,7 @@ public class StudentAssignChoiceFragment extends Fragment implements RadioGroup.
     private String keyAssign;
     private long totalQuestion;
     private long countQuestion;
+    private String name;
 
 
     @Nullable
@@ -63,7 +64,6 @@ public class StudentAssignChoiceFragment extends Fragment implements RadioGroup.
         view = inflater.inflate(R.layout.fragment_assign_stu, container, false);
 
         if (getArguments() != null) {
-
             numberQuestion = getArguments().getString("numberQuestion");
             question = getArguments().getString("question");
             choiceA = getArguments().getString("choiceA");
@@ -72,6 +72,7 @@ public class StudentAssignChoiceFragment extends Fragment implements RadioGroup.
             choiceD = getArguments().getString("choiceD");
             answerChoice = getArguments().getString("answer");
             Username = getArguments().getString("Username");
+            name = getArguments().getString("name");
             assignname = getArguments().getString("assignname");
             subjectID = getArguments().getString("subjectID");
             keyAssign = getArguments().getString("keyAssign");
@@ -84,7 +85,6 @@ public class StudentAssignChoiceFragment extends Fragment implements RadioGroup.
         }
 
         initInstance();
-        initFirebase();
         clickButton();
         onClickRadioButton();
         return view;
@@ -119,9 +119,6 @@ public class StudentAssignChoiceFragment extends Fragment implements RadioGroup.
         radioD.setText(choiceD);
     }
 
-    private void initFirebase() {
-
-    }
 
     private void submitChoiceAns(){
 
@@ -163,7 +160,7 @@ public class StudentAssignChoiceFragment extends Fragment implements RadioGroup.
                     table_ans.child(dataKey).child("score").setValue(finalScore);
                 }else {
                     //create answer Member
-                    Answer answer = new Answer(Username,assignname,subjectID,0);
+                    Answer answer = new Answer(Username,assignname,subjectID,0, name);
                     String newKey = table_ans.push().getKey();
                     table_ans.child(newKey).setValue(answer);
                     table_ans.child(newKey).child("No_question").child(String.valueOf(countQuestion)).child("answer").setValue(sel);

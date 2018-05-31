@@ -38,6 +38,7 @@ public class StudentAssignmentActivity extends AppCompatActivity implements View
     private DatabaseReference table_ans;
     private Button btnChoice;
     private Button btnWrite;
+    private String name;
 
 
     @Override
@@ -65,13 +66,17 @@ public class StudentAssignmentActivity extends AppCompatActivity implements View
 
         //-- Toolbar --***//
         toolbar = findViewById(R.id.toolbar);
-        android.content.Intent intent = getIntent();
+        Intent intent = getIntent();
         assignname = intent.getStringExtra("assignname");
         subjectID = intent.getStringExtra("subjectID");
         Username = intent.getStringExtra("Username");
+        name = intent.getStringExtra("name");
         toolbar.setTitle(assignname);
         btnChoice = findViewById(R.id.btnChoice);
         btnWrite = findViewById(R.id.btnWrite);
+
+
+
     }
 
     private void onClickButtonType() {
@@ -111,6 +116,7 @@ public class StudentAssignmentActivity extends AppCompatActivity implements View
                                 bundleChoice.putString("choiceD", choice.getChoiceD());
                                 bundleChoice.putString("answer", choice.getAnswer());
                                 bundleChoice.putString("Username", Username);
+                                bundleChoice.putString("name", name);
                                 bundleChoice.putString("subjectID", subjectID);
                                 bundleChoice.putString("assignname", assignname);
                                 bundleChoice.putString("keyAssign", postSnapshot.getKey());
@@ -174,6 +180,7 @@ public class StudentAssignmentActivity extends AppCompatActivity implements View
                                 bundleWrite.putString("question", write.getQuestion());
                                 bundleWrite.putString("answer", write.getAnswer());
                                 bundleWrite.putString("Username", Username);
+                                bundleWrite.putString("name", name);
                                 bundleWrite.putString("subjectID", subjectID);
                                 bundleWrite.putString("assignname", assignname);
                                 bundleWrite.putLong("totalQuestion", totalQuestion);

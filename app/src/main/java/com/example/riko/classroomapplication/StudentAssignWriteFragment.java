@@ -32,6 +32,7 @@ public class StudentAssignWriteFragment extends Fragment implements View.OnClick
     private String answer;
     private long totalQuestion;
     private long countQuestion;
+    private String name;
 
 
     @Nullable
@@ -44,6 +45,7 @@ public class StudentAssignWriteFragment extends Fragment implements View.OnClick
             numberQuestion = getArguments().getString("numberQuestion");
             question = getArguments().getString("question");
             Username = getArguments().getString("Username");
+            name = getArguments().getString("name");
             totalQuestion = getArguments().getLong("totalQuestion");
             countQuestion = getArguments().getLong("countQuestion");
 
@@ -54,7 +56,6 @@ public class StudentAssignWriteFragment extends Fragment implements View.OnClick
         }
 
         initInstance();
-        initFirebase();
         clickButton();
 
         return view;
@@ -82,12 +83,8 @@ public class StudentAssignWriteFragment extends Fragment implements View.OnClick
         //----------- Set Up -----------//
         txtQuest.setText(question);
         txtNo.setText(String.valueOf(countQuestion));
-
     }
 
-    private void initFirebase() {
-
-    }
 
     private void clickButton() {
         btnReset.setOnClickListener(this);

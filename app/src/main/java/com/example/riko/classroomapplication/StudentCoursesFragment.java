@@ -59,6 +59,7 @@ public class StudentCoursesFragment extends Fragment implements View.OnClickList
     private Dialog addSubjectDialog;
     private SubjectAdapter.OnItemClickListener listener;
     private String Username;
+    private String name;
 
     public StudentCoursesFragment() {
     }
@@ -70,6 +71,7 @@ public class StudentCoursesFragment extends Fragment implements View.OnClickList
 
         if (getArguments() != null) {
             Username = getArguments().getString("Username");
+            name = getArguments().getString("name");
             //Toast.makeText(getContext(), Username, Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getContext(), "Bundle == null", Toast.LENGTH_SHORT).show();
@@ -120,6 +122,7 @@ public class StudentCoursesFragment extends Fragment implements View.OnClickList
                 isubject.putExtra("subjectID", subject.getSubjectID());
                 isubject.putExtra("subjectname", subject.getSubjectname());
                 isubject.putExtra("Username", Username);
+                isubject.putExtra("name", name);
                 startActivity(isubject);
                 //Toast.makeText(getContext(), "Assignment", Toast.LENGTH_SHORT).show();
             }

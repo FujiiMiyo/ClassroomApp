@@ -63,6 +63,7 @@ public class StudentExamsActivity extends AppCompatActivity implements View.OnCl
     private LinearLayout checkScore;
     private LinearLayout delete;
     private Intent iassign;
+    private String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +82,7 @@ public class StudentExamsActivity extends AppCompatActivity implements View.OnCl
         subjectID = intent.getStringExtra("subjectID");
         subjectname = intent.getStringExtra("subjectname");
         Username = intent.getStringExtra("Username");
+        name = intent.getStringExtra("name");
         toolbar.setTitle(subjectname);
 
         //----- Firebase ------//
@@ -107,10 +109,12 @@ public class StudentExamsActivity extends AppCompatActivity implements View.OnCl
         assignAdapter = new AssignAdapter(listAssignName, new AssignAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Assign assign) {
+                //Intent iassign = new Intent(StudentExamsActivity.this, StudentAssignmentActivity.class);
                 Intent iassign = new Intent(StudentExamsActivity.this, StudentAssignmentActivity.class);
                 iassign.putExtra("assignname", assign.getAssignname());
                 iassign.putExtra("subjectID", subjectID);
                 iassign.putExtra("Username", Username);
+                iassign.putExtra("name", name);
                 startActivity(iassign);
                 //displaySelectMenu();
             }

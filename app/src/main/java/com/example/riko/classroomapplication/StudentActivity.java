@@ -41,10 +41,11 @@ public class StudentActivity extends AppCompatActivity implements NavigationView
     private View headerView;
 
     private String userName;
+    private String name;
     //<------------------------------------------------>
 
-
     private boolean doubleBackToExitPressedOnce;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +95,7 @@ public class StudentActivity extends AppCompatActivity implements NavigationView
                 Intent intent = getIntent();
                 userName = intent.getStringExtra("Username");
                 String status = intent.getStringExtra("Status");
-                String name = intent.getStringExtra("Name");
+                name = intent.getStringExtra("Name");
                 String password = intent.getStringExtra("Password");
                 //HeaderView in Drawer Layout
                 textUsername.setText(userName);
@@ -144,6 +145,7 @@ public class StudentActivity extends AppCompatActivity implements NavigationView
                 //Send data to courseFragment
                 Bundle courseFragment = new Bundle();
                 courseFragment.putString("Username", userName);
+                courseFragment.putString("name", name);
                 StudentCoursesFragment myObj = new StudentCoursesFragment();
                 myObj.setArguments(courseFragment);
 
@@ -222,16 +224,5 @@ public class StudentActivity extends AppCompatActivity implements NavigationView
     }
     //-----------------------------------------------//
     //<---------------------------------------------------------------------------------------------------->//
-    /*
-     *
-     *
-     *
-     *
-     *
-     */
-    //--------- Send data to fragment ---------------------------//
-    private void sendData(){
-
-    }
 
 }
