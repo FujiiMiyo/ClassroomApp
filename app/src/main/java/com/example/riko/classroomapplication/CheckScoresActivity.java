@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.riko.classroomapplication.Model.Answer;
+import com.example.riko.classroomapplication.Model.Member;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -30,6 +31,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,11 +66,12 @@ public class CheckScoresActivity extends AppCompatActivity {
     private RecyclerView recyclerViewScore;
     private FirebaseRecyclerAdapter recyclerAdapter;
     private List<Answer> listStuUserName;
-    //private List<Answer> listName;
+    private List<Member> listName;
     private List<Answer> listScore;
     private ScoreAdapter scoreAdapter;
     private FirebaseDatabase database;
     private DatabaseReference table_answer;
+    private DatabaseReference table_member;
 
 
     @Override
@@ -83,6 +86,7 @@ public class CheckScoresActivity extends AppCompatActivity {
         //--------------------- Firebase ----------------------------//
         database = FirebaseDatabase.getInstance();
         table_answer = database.getReference("Student_answer");
+        table_member = database.getReference("Member");
 
         //-- Toolbar --***//
         toolbar = findViewById(R.id.toolbar);
@@ -112,9 +116,9 @@ public class CheckScoresActivity extends AppCompatActivity {
 
         //----------------- Score list -------------------------------//
         listStuUserName = new ArrayList<>();
-        //listName = new ArrayList<>();
+        listName = new ArrayList<>();
         listScore = new ArrayList<>();
-        scoreAdapter = new ScoreAdapter(this, listStuUserName, listScore, new ScoreAdapter.OnItemClickListener() {
+        scoreAdapter = new ScoreAdapter(this, listStuUserName,listName ,listScore ,new ScoreAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Answer answer) {
                 Toast.makeText(CheckScoresActivity.this, "Check score", Toast.LENGTH_SHORT).show();
@@ -133,11 +137,11 @@ public class CheckScoresActivity extends AppCompatActivity {
 
         //Clear ListSubject
         listStuUserName.clear();
-        //listName.clear();
+        listName.clear();
         listScore.clear();
         Log.e("subjectID",subjectID.toString());
 
-        Query searchQuery = table_answer.orderByChild("subjectID").equalTo(subjectID);
+        final Query searchQuery = table_answer.orderByChild("subjectID").equalTo(subjectID);
         searchQuery.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -146,20 +150,31 @@ public class CheckScoresActivity extends AppCompatActivity {
                 Answer answer = new Answer();
                 answer = dataSnapshot.getValue(Answer.class);
 
+                if (answer.getAssignname().equals(assignname)) {
+                    //Add to ArrayList
+                    listStuUserName.add(answer);
+                    //Add Score
+                    listScore.add(answer);
 
+                    Query searchMember = table_member.orderByChild("username").equalTo(answer.getUsername());
+                    searchMember.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            Member member = new Member();
+                            member = dataSnapshot.getValue(Member.class);
+                            listName.add(member);
+                            //Log.e("name",dataSnapshot2.toString());
+                        }
 
-                //for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
+                        }
+                    });
 
-                    if (answer.getAssignname().equals(assignname)) {
-                        //Add to ArrayList
-                        listStuUserName.add(answer);
-                        //listName.add(answer);
-                        listScore.add(answer);
-                        Log.e("Data",answer.getUsername().toString());
-                    }
+                }
                 //Log.e("DataList",listStuUserName);
-                //}
+
                 //Log.e("Tag",listStuUserName.toString());
                 //Add List into Adapter/RecyclerView
                 recyclerViewScore.setAdapter(scoreAdapter);
@@ -188,14 +203,15 @@ public class CheckScoresActivity extends AppCompatActivity {
     public static class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ScoreViewHolder>{
 
         List<Answer> listStuUserName;
-        //List<Answer> listName;
+        List<Member> listName;
         List<Answer> listScore;
         final OnItemClickListener listener;
         private Context context;
 
-        public ScoreAdapter(Context context, List<Answer> listStuUserName, List<Answer> listScore, OnItemClickListener listener) {
+        public ScoreAdapter(Context context, List<Answer> listStuUserName,List<Member> listName, List<Answer> listScore, OnItemClickListener listener) {
             this.listStuUserName = listStuUserName;
             this.listScore = listScore;
+            this.listName = listName;
             this.context = context;
             this.listener = listener;
         }
@@ -214,9 +230,9 @@ public class CheckScoresActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull ScoreAdapter.ScoreViewHolder holder, int position) {
             final Answer userName = listStuUserName.get(position);
-            //final Answer name = listName.get(position);
+            final Member name = listName.get(position);
             final Answer score = listScore.get(position);
-            holder.bind(userName, score, listener);
+            holder.bind(userName, name ,score ,listener);
         }
 
         @Override
@@ -227,19 +243,19 @@ public class CheckScoresActivity extends AppCompatActivity {
         public class ScoreViewHolder extends RecyclerView.ViewHolder {
             RelativeLayout list_item_score_stu;
             TextView textUserName;
-            //TextView textName;
+            TextView textName;
             TextView textScore;
 
             public ScoreViewHolder(View itemView) {
                 super(itemView);
                 textUserName = itemView.findViewById(R.id.textUsername);
-                //textName = itemView.findViewById(R.id.textName);
+                textName = itemView.findViewById(R.id.textName);
                 textScore = itemView.findViewById(R.id.textScore);
             }
 
-            public void bind(final Answer userName, Answer score, final OnItemClickListener listener) {
+            public void bind(final Answer userName, Member name, Answer score, final OnItemClickListener listener) {
                 textUserName.setText(userName.getUsername());
-                //textName.setText(name.getName());
+                textName.setText(name.getName());
                 textScore.setText(String.valueOf(score.getScore()));
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
