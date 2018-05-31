@@ -15,12 +15,40 @@
       },
       "oauth_client": [
         {
+          "client_id": "349010391559-fjkagg7a1omqf6i1g73c1tqglcohvomc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.riko.classroomapplication",
+            "certificate_hash": "1c7c3538da44db8c80bf18b33153dec59e5dcbde"
+          }
+        },
+        {
+          "client_id": "349010391559-incfqsuoa5bot2h5sdsfnccm611el5a6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.riko.classroomapplication",
+            "certificate_hash": "8fa141e258e020e4cfc7514c5b21bc627439f68d"
+          }
+        },
+        {
+          "client_id": "349010391559-qpfjj6l2qd6ab2lc5s6msbffcsthtphu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.riko.classroomapplication",
+            "certificate_hash": "de919db10a281e1bcdb070a400327121dc7f001f"
+          }
+        },
+        {
           "client_id": "349010391559-25dqvhnqudbbvva81vujpprootckuabp.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.riko.classroomapplication",
             "certificate_hash": "42c57df92883d8d6d8b66460a56b47118afbdf33"
           }
+        },
+        {
+          "client_id": "349010391559-2vtal6ltqng94i201lccdlk5hjot5ff8.apps.googleusercontent.com",
+          "client_type": 3
         },
         {
           "client_id": "349010391559-2vtal6ltqng94i201lccdlk5hjot5ff8.apps.googleusercontent.com",
@@ -65,6 +93,10 @@
             "package_name": "com.example.test",
             "certificate_hash": "42c57df92883d8d6d8b66460a56b47118afbdf33"
           }
+        },
+        {
+          "client_id": "349010391559-2vtal6ltqng94i201lccdlk5hjot5ff8.apps.googleusercontent.com",
+          "client_type": 3
         },
         {
           "client_id": "349010391559-2vtal6ltqng94i201lccdlk5hjot5ff8.apps.googleusercontent.com",
