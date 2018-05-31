@@ -12,6 +12,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,6 +88,7 @@ public class CheckScoresActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         Intent intent = getIntent();
         assignname = intent.getStringExtra("assignname");
+        subjectID = intent.getStringExtra("subjectID");
         toolbar.setTitle(assignname);
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.nav_view);
@@ -123,29 +125,42 @@ public class CheckScoresActivity extends AppCompatActivity {
                 startActivity(chkscore);*/
             }
         });
-        //GetSubjectFirebase();
+        GetScoreFirebase();
     }
 
     //TODO;
-    /*void GetSearchFirebase(final String searchText) {
+    void GetScoreFirebase() {
 
         //Clear ListSubject
         listStuUserName.clear();
         //listName.clear();
         listScore.clear();
-        Query searchQuery = table_answer.orderByChild("username").equalTo(listStuUserName;
+        Log.e("subjectID",subjectID.toString());
+
+        Query searchQuery = table_answer.orderByChild("subjectID").equalTo(subjectID);
         searchQuery.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                //Log.e("Data",dataSnapshot.toString());
+                //Key Function to Add Score List
                 Answer answer = new Answer();
                 answer = dataSnapshot.getValue(Answer.class);
 
-                if (answer.getSubjectID().contains(searchText)){
-                    //Add to ArrayList
-                    listStuUserName.add(answer);
-                    //listName.add(answer);
-                    listScore.add(answer);
-                }
+
+
+                //for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+
+
+                    if (answer.getAssignname().equals(assignname)) {
+                        //Add to ArrayList
+                        listStuUserName.add(answer);
+                        //listName.add(answer);
+                        listScore.add(answer);
+                        Log.e("Data",answer.getUsername().toString());
+                    }
+                //Log.e("DataList",listStuUserName);
+                //}
+                //Log.e("Tag",listStuUserName.toString());
                 //Add List into Adapter/RecyclerView
                 recyclerViewScore.setAdapter(scoreAdapter);
             }
@@ -167,7 +182,7 @@ public class CheckScoresActivity extends AppCompatActivity {
             }
 
         });
-    }*/
+    }
 
     //---------------- Score List -------------------------------------------------//
     public static class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ScoreViewHolder>{
@@ -212,20 +227,20 @@ public class CheckScoresActivity extends AppCompatActivity {
         public class ScoreViewHolder extends RecyclerView.ViewHolder {
             RelativeLayout list_item_score_stu;
             TextView textUserName;
-            TextView textName;
+            //TextView textName;
             TextView textScore;
 
             public ScoreViewHolder(View itemView) {
                 super(itemView);
                 textUserName = itemView.findViewById(R.id.textUsername);
-                textName = itemView.findViewById(R.id.textName);
+                //textName = itemView.findViewById(R.id.textName);
                 textScore = itemView.findViewById(R.id.textScore);
             }
 
             public void bind(final Answer userName, Answer score, final OnItemClickListener listener) {
                 textUserName.setText(userName.getUsername());
                 //textName.setText(name.getName());
-                textScore.setText(score.getScore());
+                textScore.setText(String.valueOf(score.getScore()));
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
