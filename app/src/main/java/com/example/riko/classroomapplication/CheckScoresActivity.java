@@ -158,21 +158,6 @@ public class CheckScoresActivity extends AppCompatActivity {
                     //Add name
                     listName.add(answer);
 
-                    /*Query searchMember = table_member.orderByChild("username").equalTo(answer.getUsername());
-                    searchMember.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            Member member = new Member();
-                            member = dataSnapshot.getValue(Member.class);
-                            listName.add(member);
-                            //Log.e("name",dataSnapshot2.toString());
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });*/
 
                 }
                 //Log.e("DataList",listStuUserName);
