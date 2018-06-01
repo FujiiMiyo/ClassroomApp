@@ -97,6 +97,7 @@ public class EditExamsActivity extends AppCompatActivity {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     Assign assign = new Assign();
                     assign = postSnapshot.getValue(Assign.class);
+                    //numberQusetion
                     String numberQusetion = "1";
                     String questionType = "";
                     if (assign.getAssignname().equals(assignname)){
@@ -129,8 +130,22 @@ public class EditExamsActivity extends AppCompatActivity {
                             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container_exam,
                                     myObj).commit();
                         }else {
+                            //Set up Question Data
+                            String question = postSnapshot.child("Quest").child(numberQusetion).child("question").getValue().toString();
+                            String answer = postSnapshot.child("Quest").child(numberQusetion).child("answer").getValue().toString();
+
+                            //Send to Fragment
+                            Bundle questionFragment = new Bundle();
+                            questionFragment.putString("question", question);
+                            questionFragment.putString("answerWrite", answer);
+                            questionFragment.putString("numberQusetion", numberQusetion);
+                            questionFragment.putString("subjectID", subjectID);
+                            questionFragment.putString("assignname", assignname);
+                            EditWriteFragment myObj = new EditWriteFragment();
+                            myObj.setArguments(questionFragment);
+
                             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container_exam,
-                                    new EditWriteFragment()).commit();
+                                    myObj).commit();
                         }
                     }
 
