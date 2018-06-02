@@ -36,12 +36,72 @@
                 android:textSize="30dp"
                 android:textStyle="bold|italic" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="80dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/search_btn"
+                    android:backgroundTint="@color/grey6"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:padding="5dp"
+                    app:srcCompat="@drawable/ic_chevron_left" />
+
+                <EditText
+                    android:layout_width="100dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/edittext_assign_layout"
+                    android:backgroundTint="@color/grey6"
+                    android:gravity="center"
+                    android:hint="@string/no"
+                    android:imeOptions="actionDone"
+                    android:inputType="numberDecimal"
+                    android:maxLines="1"
+                    android:padding="3dp"
+                    android:textColor="@color/black1"
+                    android:textColorHint="@color/grey3"
+                    android:textSize="20dp" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/search_btn"
+                    android:backgroundTint="@color/grey6"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:padding="5dp"
+                    app:srcCompat="@drawable/ic_chevron_right" />
+
+                <ImageButton
+                    android:id="@+id/searchBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:background="@drawable/search_btn"
+                    android:backgroundTint="@color/pinkRose"
+                    android:cropToPadding="false"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:padding="8dp"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/ic_search" />
+
+            </LinearLayout>
+
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerViewNoQuestion"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="150dp"
                 android:scrollbars="vertical"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"

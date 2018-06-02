@@ -62,7 +62,9 @@
         <activity
             android:name=".CheckScoresActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".StudentAssignNoQuestionActivity"></activity>
+        <activity
+            android:name=".StudentAssignNoQuestionActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
