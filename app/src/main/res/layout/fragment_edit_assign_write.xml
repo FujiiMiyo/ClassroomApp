@@ -69,7 +69,7 @@
                 android:background="@drawable/edittext_assign_layout"
                 android:hint="@string/enter_ans"
                 android:padding="5dp"
-                android:textColor="@color/pinkRose1"
+                android:textColor="@color/grey"
                 android:inputType="text"/>
 
             <LinearLayout

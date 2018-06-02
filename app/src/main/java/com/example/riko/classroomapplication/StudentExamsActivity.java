@@ -103,14 +103,14 @@ public class StudentExamsActivity extends AppCompatActivity implements View.OnCl
         //recyclerViewAssign.addItemDecoration(new DividerItemDecoration(view.getContext(), LinearLayoutManager.VERTICAL));
         //recyclerViewAssign.setAdapter(recyclerAdapter);
 
-        //----------------- Subject list -------------------------------//
+        //----------------- Assignment list -------------------------------//
         listSubjectID = new ArrayList<>();
         listAssignName = new ArrayList<>();
         assignAdapter = new AssignAdapter(listAssignName, new AssignAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Assign assign) {
                 //Intent iassign = new Intent(StudentExamsActivity.this, StudentAssignmentActivity.class);
-                Intent iassign = new Intent(StudentExamsActivity.this, StudentAssignmentActivity.class);
+                Intent iassign = new Intent(StudentExamsActivity.this, StudentAssignNoQuestionActivity.class);
                 iassign.putExtra("assignname", assign.getAssignname());
                 iassign.putExtra("subjectID", subjectID);
                 iassign.putExtra("Username", Username);
