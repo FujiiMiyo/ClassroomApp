@@ -50,6 +50,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edittext_assign_layout"
+                    android:backgroundTint="@color/grey6"
                     android:hint="@string/enter_quest"
                     android:padding="5dp"
                     android:singleLine="true"
@@ -66,9 +67,10 @@
                 android:layout_marginRight="30dp"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/edittext_assign_layout"
+                android:backgroundTint="@color/grey6"
                 android:hint="@string/enter_ans"
                 android:padding="5dp"
-                android:textColor="@color/pinkRose1"
+                android:textColor="@color/grey"
                 android:inputType="text"/>
 
             <LinearLayout

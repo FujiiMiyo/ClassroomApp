@@ -12,28 +12,34 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="80dp"
+        android:layout_marginRight="150dp"
         android:layout_marginTop="15dp"
         android:singleLine="true"
-        android:text="CHAPTER 1"
+        android:text="CHAPTER 1oooooooooooolllllllllllllll"
         android:textColor="@color/grey2"
         android:textSize="16dp"
         android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="60dp"
+        android:text="Date"
+        android:textColor="@color/orangeLight"
+        android:textSize="14dp" />
 
 
     <ImageView
         android:id="@+id/imgNext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        app:srcCompat="@drawable/ic_select_menu1"/>
-
-
+        app:srcCompat="@drawable/ic_select_menu1" />
 
 
 </RelativeLayout>

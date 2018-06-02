@@ -4,13 +4,15 @@ public class Assign {
 
     private String assignname;
     private String subjectID;
+    private String time;
 
     public Assign() {
     }
 
-    public Assign(String assignname, String subjectID) {
+    public Assign(String assignname, String subjectID, String time) {
         this.assignname = assignname;
         this.subjectID = subjectID;
+        this.time = time;
     }
 
     public String getAssignname() {
@@ -29,4 +31,11 @@ public class Assign {
         this.subjectID = subjectID;
     }
 
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
 }

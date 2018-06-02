@@ -17,6 +17,17 @@
         android:textSize="14dp" />
 
     <TextView
+        android:id="@+id/textDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="80dp"
+        android:layout_alignParentRight="true"
+        android:text="Date"
+        android:textColor="@color/orangeLight"
+        android:textSize="14dp" />
+
+    <TextView
         android:id="@+id/textSubject"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,8 +37,8 @@
         android:layout_marginBottom="10dp"
         android:layout_marginRight="80dp"
         android:paddingRight="10dp"
-        android:text="OBJECT-ORIENTED PROGRAMMING"
         android:singleLine="true"
+        android:text="OBJECT-ORIENTED PROGRAMMING"
         android:textColor="@color/grey2"
         android:textSize="16dp"
         android:textStyle="bold" />
@@ -40,9 +51,9 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:background="@color/black1"
-        app:srcCompat="@drawable/ic_delete_white"
         android:focusable="true"
-        android:foreground="?android:attr/selectableItemBackground"/>
+        android:foreground="?android:attr/selectableItemBackground"
+        app:srcCompat="@drawable/ic_delete_white" />
 
 
 </RelativeLayout>

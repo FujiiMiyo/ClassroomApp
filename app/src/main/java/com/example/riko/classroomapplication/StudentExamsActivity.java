@@ -52,6 +52,7 @@ public class StudentExamsActivity extends AppCompatActivity implements View.OnCl
     private DatabaseReference table_assign;
     private List<Subject> listSubjectID;
     private List<Assign> listAssignName;
+    private List<Assign> listAssignDate;
     private AssignAdapter assignAdapter;
     private String subjectID;
     private String subjectname;
@@ -106,7 +107,8 @@ public class StudentExamsActivity extends AppCompatActivity implements View.OnCl
         //----------------- Assignment list -------------------------------//
         listSubjectID = new ArrayList<>();
         listAssignName = new ArrayList<>();
-        assignAdapter = new AssignAdapter(listAssignName, new AssignAdapter.OnItemClickListener() {
+        listAssignDate = new ArrayList<>();
+        assignAdapter = new AssignAdapter(listAssignName, listAssignDate, new AssignAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Assign assign) {
                 //Intent iassign = new Intent(StudentExamsActivity.this, StudentAssignmentActivity.class);
@@ -129,6 +131,7 @@ public class StudentExamsActivity extends AppCompatActivity implements View.OnCl
 
         //Clear ListSubject
         listAssignName.clear();
+        listAssignDate.clear();
 
         Query searchQuery = table_assign.orderByChild("subjectID").equalTo(subjectID);
         searchQuery.addChildEventListener(new ChildEventListener() {
@@ -138,6 +141,7 @@ public class StudentExamsActivity extends AppCompatActivity implements View.OnCl
                 assign = dataSnapshot.getValue(Assign.class);
                 //Add to ArrayList
                 listAssignName.add(assign);
+                listAssignDate.add(assign);
                 //Add List into Adapter/RecyclerView
                 recyclerViewAssign.setAdapter(assignAdapter);
             }
@@ -168,6 +172,7 @@ public class StudentExamsActivity extends AppCompatActivity implements View.OnCl
 
         //Clear ListSubject
         listAssignName.clear();
+        listAssignDate.clear();
 
         Query searchQuery = table_assign.orderByChild("subjectID").equalTo(subjectID);
         searchQuery.addChildEventListener(new ChildEventListener() {
@@ -178,6 +183,7 @@ public class StudentExamsActivity extends AppCompatActivity implements View.OnCl
                 if (assign.getAssignname().contains(searchText) ){
                     //Add to ArrayList
                     listAssignName.add(assign);
+                    listAssignDate.add(assign);
                 }
                 //Add List into Adapter/RecyclerView
                 recyclerViewAssign.setAdapter(assignAdapter);
@@ -206,6 +212,7 @@ public class StudentExamsActivity extends AppCompatActivity implements View.OnCl
     public static class AssignAdapter extends RecyclerView.Adapter<StudentExamsActivity.AssignAdapter.AssignHolder> {
 
         List<Assign> listAssignName;
+        List<Assign> listAssignDate;
         final OnItemClickListener listener;
         private Context context;
 
@@ -213,8 +220,9 @@ public class StudentExamsActivity extends AppCompatActivity implements View.OnCl
             void onItemClick(Assign assign);
         }
 
-        public AssignAdapter(List<Assign> listAssignName, OnItemClickListener listener) {
+        public AssignAdapter(List<Assign> listAssignName, List<Assign> listAssignDate, OnItemClickListener listener) {
             this.listAssignName = listAssignName;
+            this.listAssignDate = listAssignDate;
             this.listener = listener;
         }
 
@@ -228,7 +236,8 @@ public class StudentExamsActivity extends AppCompatActivity implements View.OnCl
         @Override
         public void onBindViewHolder(@NonNull AssignAdapter.AssignHolder holder, int position) {
             Assign assignname = listAssignName.get(position);
-            holder.bind(assignname, listener);
+            Assign assigndate = listAssignDate.get(position);
+            holder.bind(assignname, assigndate, listener);
         }
 
         @Override
@@ -238,16 +247,19 @@ public class StudentExamsActivity extends AppCompatActivity implements View.OnCl
 
         public class AssignHolder extends RecyclerView.ViewHolder {
             TextView textAssignName;
+            TextView textDate;
             RelativeLayout list_assign_names;
 
             public AssignHolder(View itemView) {
                 super(itemView);
                 list_assign_names = itemView.findViewById(R.id.list_item_assign_name);
                 textAssignName = itemView.findViewById(R.id.textAssignName);
+                textDate = itemView.findViewById(R.id.textDate);
             }
 
-            public void bind(final Assign assignname, final OnItemClickListener listener) {
+            public void bind(final Assign assignname, Assign assigndate, final OnItemClickListener listener) {
                 textAssignName.setText(assignname.getAssignname());
+                textDate.setText(assigndate.getTime());
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

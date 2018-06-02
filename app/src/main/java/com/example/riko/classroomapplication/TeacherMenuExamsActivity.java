@@ -41,7 +41,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class TeacherMenuExamsActivity extends AppCompatActivity implements View.OnClickListener {
@@ -72,6 +74,7 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
     private DatabaseReference table_assign;
     private List<Subject> listSubjectID;
     private List<Assign> listAssignName;
+    private List<Assign> listAssignDate;
     private AssignAdapter assignAdapter;
     private String subjectID;
     private String subjectname;
@@ -137,7 +140,8 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
         //----------------- Subject list -------------------------------//
         listSubjectID = new ArrayList<>();
         listAssignName = new ArrayList<>();
-        assignAdapter = new AssignAdapter(listAssignName, new AssignAdapter.OnItemClickListener() {
+        listAssignDate = new ArrayList<>();
+        assignAdapter = new AssignAdapter(listAssignName, listAssignDate, new AssignAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(final Assign assign) {
                 bottomSheetSelectMenu();
@@ -218,6 +222,7 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
 
         //Clear ListSubject
         listAssignName.clear();
+        listAssignDate.clear();
 
         Query searchQuery = table_assign.orderByChild("subjectID").equalTo(subjectID);
         searchQuery.addChildEventListener(new ChildEventListener() {
@@ -227,6 +232,7 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
                 assign = dataSnapshot.getValue(Assign.class);
                 //Add to ArrayList
                 listAssignName.add(assign);
+                listAssignDate.add(assign);
                 //Add List into Adapter/RecyclerView
                 recyclerViewAssign.setAdapter(assignAdapter);
             }
@@ -257,6 +263,7 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
 
         //Clear ListSubject
         listAssignName.clear();
+        listAssignDate.clear();
 
         Query searchQuery = table_assign.orderByChild("subjectID").equalTo(subjectID);
         searchQuery.addChildEventListener(new ChildEventListener() {
@@ -268,6 +275,7 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
                 if (assign.getAssignname().contains(searchText) ){
                     //Add to ArrayList
                     listAssignName.add(assign);
+                    listAssignDate.add(assign);
                 }
 
                 //Add List into Adapter/RecyclerView
@@ -297,6 +305,7 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
     public static class AssignAdapter extends RecyclerView.Adapter<TeacherMenuExamsActivity.AssignAdapter.AssignHolder> {
 
         List<Assign> listAssignName;
+        List<Assign> listAssignDate;
         final OnItemClickListener listener;
         private Context context;
 
@@ -304,8 +313,9 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
             void onItemClick(Assign assign);
         }
 
-        public AssignAdapter(List<Assign> listAssignName, OnItemClickListener listener) {
+        public AssignAdapter(List<Assign> listAssignName, List<Assign> listAssignDate, OnItemClickListener listener) {
             this.listAssignName = listAssignName;
+            this.listAssignDate = listAssignDate;
             this.listener = listener;
         }
 
@@ -319,7 +329,8 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
         @Override
         public void onBindViewHolder(@NonNull AssignAdapter.AssignHolder holder, int position) {
             Assign assignname = listAssignName.get(position);
-            holder.bind(assignname, listener);
+            Assign assigndate = listAssignDate.get(position);
+            holder.bind(assignname, assigndate, listener);
         }
 
         @Override
@@ -329,16 +340,19 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
 
         public class AssignHolder extends RecyclerView.ViewHolder {
             TextView textAssignName;
+            TextView textDate;
             RelativeLayout list_assign_names;
 
             public AssignHolder(View itemView) {
                 super(itemView);
                 list_assign_names = itemView.findViewById(R.id.list_item_assign_name);
                 textAssignName = itemView.findViewById(R.id.textAssignName);
+                textDate = itemView.findViewById(R.id.textDate);
             }
 
-            public void bind(final Assign assignname, final OnItemClickListener listener) {
+            public void bind(final Assign assignname, Assign assigndate, final OnItemClickListener listener) {
                 textAssignName.setText(assignname.getAssignname());
+                textDate.setText(assigndate.getTime());
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -380,6 +394,9 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
             public void onClick(View v) {
                 /*Toast.makeText(c, "Assignment already is added", Toast.LENGTH_SHORT).show();
                 addAssignDialog.dismiss();*/
+                Calendar calendar = Calendar.getInstance();
+                final String currentDate = DateFormat.getDateInstance().format(calendar.getTime());
+
                 table_assign.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -389,7 +406,7 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
                         }  else if (dataSnapshot.child(editextAssignName.getText().toString()).exists()) {
                             Toast.makeText(c, "Assignment name has existed", Toast.LENGTH_SHORT).show();
                         } else {
-                            Assign assign = new Assign(editextAssignName.getText().toString().toUpperCase(), subjectID);
+                            Assign assign = new Assign(editextAssignName.getText().toString().toUpperCase(), subjectID, currentDate);
                             table_assign.push().setValue(assign);
                             Toast.makeText(c, "Assignment already is added", Toast.LENGTH_SHORT).show();
                             /*Intent signUp = new Intent(Signup1Activity.this, MainActivity.class);

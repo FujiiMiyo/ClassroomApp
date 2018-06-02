@@ -34,7 +34,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -55,6 +57,7 @@ public class StudentCoursesFragment extends Fragment implements View.OnClickList
     private SubjectAdapter subjectAdapter;
     private List<Subject> listSubjectID;
     private List<Subject> listSubjectName;
+    private List<Subject> listDate;
     private FirebaseRecyclerAdapter recyclerAdapter;
     private Dialog addSubjectDialog;
     private SubjectAdapter.OnItemClickListener listener;
@@ -112,8 +115,9 @@ public class StudentCoursesFragment extends Fragment implements View.OnClickList
         //----------------- Subject list -------------------------------//
         listSubjectID = new ArrayList<>();
         listSubjectName = new ArrayList<>();
+        listDate = new ArrayList<>();
         //subjectAdapter = new SubjectAdapter(listSubjectID, listSubjectName, listener);
-        subjectAdapter = new SubjectAdapter(getContext(), listSubjectID, listSubjectName, new SubjectAdapter.OnItemClickListener() {
+        subjectAdapter = new SubjectAdapter(getContext(), listSubjectID, listSubjectName, listDate, new SubjectAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Subject subject) {
                 //selectSubject();
@@ -138,6 +142,7 @@ public class StudentCoursesFragment extends Fragment implements View.OnClickList
         //Clear ListSubject
         listSubjectID.clear();
         listSubjectName.clear();
+        listDate.clear();
 
         //Query searchQuery = table_subject.orderByChild("subjectname").startAt(searchText).endAt(searchText + "\uf8ff");
         Query searchQuery = table_subject.orderByChild("username").equalTo(Username);
@@ -149,6 +154,7 @@ public class StudentCoursesFragment extends Fragment implements View.OnClickList
                 //Add to ArrayList
                 listSubjectID.add(subject);
                 listSubjectName.add(subject);
+                listDate.add(subject);
                 //Add List into Adapter/RecyclerView
                 recyclerViewSubject.setAdapter(subjectAdapter);
             }
@@ -181,6 +187,7 @@ public class StudentCoursesFragment extends Fragment implements View.OnClickList
         //Clear ListSubject
         listSubjectID.clear();
         listSubjectName.clear();
+        listDate.clear();
 
         Query searchQuery = table_subject.orderByChild("username").equalTo(Username);
         searchQuery.addChildEventListener(new ChildEventListener() {
@@ -192,6 +199,7 @@ public class StudentCoursesFragment extends Fragment implements View.OnClickList
                     //Add to ArrayList
                     listSubjectID.add(subject);
                     listSubjectName.add(subject);
+                    listDate.add(subject);
                 }
                 //Add List into Adapter/RecyclerView
                 recyclerViewSubject.setAdapter(subjectAdapter);
@@ -222,6 +230,7 @@ public class StudentCoursesFragment extends Fragment implements View.OnClickList
 
         List<Subject> listArrayID;
         List<Subject> listArrayName;
+        List<Subject> listDate;
         final OnItemClickListener listener;
         private Context context;
 
@@ -229,10 +238,11 @@ public class StudentCoursesFragment extends Fragment implements View.OnClickList
             void onItemClick(Subject subject);
         }
 
-        public SubjectAdapter(Context context, List<Subject> ListID, List<Subject> ListName, OnItemClickListener listener) {
+        public SubjectAdapter(Context context, List<Subject> ListID, List<Subject> ListName, List<Subject> ListDate, OnItemClickListener listener) {
             this.context = context;
             this.listArrayID = ListID;
             this.listArrayName = ListName;
+            this.listDate = ListDate;
             this.listener = listener;
         }
 
@@ -247,12 +257,13 @@ public class StudentCoursesFragment extends Fragment implements View.OnClickList
         public void onBindViewHolder(@NonNull SubjectAdapter.SubjectViewHolder holder, final int position) {
             final Subject subjectID = listArrayID.get(position);
             final Subject subjectname = listArrayName.get(position);
-            holder.bind(subjectID, subjectname, listener);
+            final Subject date = listDate.get(position);
+            holder.bind(subjectID, subjectname, date, listener);
             holder.btnDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //Toast.makeText(v.getContext(), "This subject already deleted!", Toast.LENGTH_SHORT).show();
-                    deleteSubject(subjectID.getSubjectID(), subjectname.getSubjectname(), position);
+                    deleteSubject(subjectID.getSubjectID(), subjectname.getSubjectname(), date.getTime(), position);
                 }
             });
         }
@@ -261,6 +272,7 @@ public class StudentCoursesFragment extends Fragment implements View.OnClickList
             RelativeLayout list_item_subject_id;
             TextView textSubjectId;
             TextView textSubject;
+            TextView textDate;
             ImageButton btnDelete;
 
             public SubjectViewHolder(View itemView) {
@@ -268,12 +280,14 @@ public class StudentCoursesFragment extends Fragment implements View.OnClickList
                 list_item_subject_id = itemView.findViewById(R.id.list_item_subject_id);
                 textSubjectId = itemView.findViewById(R.id.textSubjectId);
                 textSubject = itemView.findViewById(R.id.textSubject);
+                textDate = itemView.findViewById(R.id.textDate);
                 btnDelete = itemView.findViewById(R.id.btnDelete);
             }
 
-            public void bind(final Subject subjectID, Subject subjectname, final OnItemClickListener listener) {
+            public void bind(final Subject subjectID, Subject subjectname, Subject date, final OnItemClickListener listener) {
                 textSubjectId.setText(subjectID.getSubjectID());
                 textSubject.setText(subjectname.getSubjectname());
+                textDate.setText(date.getTime());
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -289,7 +303,7 @@ public class StudentCoursesFragment extends Fragment implements View.OnClickList
         }
 
         //--------------------- Delete subject button ------------------------------//
-        private void deleteSubject(final String subjectID, String subjectname, final int position) {
+        private void deleteSubject(final String subjectID, String subjectname, String date, final int position) {
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
             Query subjectQuery = ref.child("Subject_student").orderByChild("subjectID").equalTo(subjectID);
             subjectQuery.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -299,6 +313,7 @@ public class StudentCoursesFragment extends Fragment implements View.OnClickList
                         subjectSnapshot.getRef().removeValue();
                         listArrayID.remove(position);
                         listArrayName.remove(position);
+                        listDate.remove(position);
                         notifyItemRemoved(position);
                         notifyItemRangeChanged(position, listArrayID.size());
                         Log.d("Delete subject", "Subject has been deleted");
@@ -388,6 +403,8 @@ public class StudentCoursesFragment extends Fragment implements View.OnClickList
             public void onClick(View v) {
                 //table_subject.addValueEventListener(new ValueEventListener() {
                 //addListenerForSingleValueEvent reads data just 1 times only
+                Calendar calendar = Calendar.getInstance();
+                final String currentDate = DateFormat.getDateInstance().format(calendar.getTime());
                 table_subject.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -401,7 +418,7 @@ public class StudentCoursesFragment extends Fragment implements View.OnClickList
                         } else if (dataSnapshot.child(editextSubjectName.getText().toString()).exists()) {
                             Toast.makeText(c, "Subject name has existed", Toast.LENGTH_SHORT).show();
                         }*/ else {
-                            Subject subject = new Subject(editextSubjectID.getText().toString().toUpperCase(), editextSubjectName.getText().toString().toUpperCase(), Username);
+                            Subject subject = new Subject(editextSubjectID.getText().toString().toUpperCase(), editextSubjectName.getText().toString().toUpperCase(), Username, currentDate);
                             table_subject.push().setValue(subject);
                             Toast.makeText(c, "Subject already is added", Toast.LENGTH_SHORT).show();
                             /*Intent signUp = new Intent(Signup1Activity.this, MainActivity.class);
