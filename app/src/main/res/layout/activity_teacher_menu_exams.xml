@@ -2,9 +2,9 @@
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/drawerLayout"
     android:fitsSystemWindows="true"
     tools:context=".TeacherMenuExamsActivity">
 
@@ -16,18 +16,19 @@
         android:orientation="vertical">
 
         <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
             android:background="@color/colorPrimary"
-            app:titleTextColor="@color/white"
-            android:id="@+id/toolbar"
+            android:elevation="2dp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            android:elevation="2dp"/>
+            app:titleTextColor="@color/white" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <TextView
                 android:id="@+id/heading_assign"
                 android:layout_width="wrap_content"
@@ -46,18 +47,19 @@
                 android:layout_alignLeft="@+id/heading_assign"
                 android:layout_alignParentTop="true"
                 android:layout_marginRight="80dp"
-                android:layout_marginTop="98dp"
+                android:layout_marginTop="90dp"
                 android:background="@drawable/search_layout"
+                android:backgroundTint="@color/grey6"
                 android:hint="@string/search_assign"
+                android:imeOptions="actionDone"
                 android:inputType="text"
+                android:maxLines="1"
                 android:paddingBottom="10dp"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:paddingTop="10dp"
                 android:textColor="@color/colorPrimary"
-                android:textSize="16dp"
-                android:imeOptions="actionDone"
-                android:maxLines="1" />
+                android:textSize="16dp" />
 
             <ImageButton
                 android:id="@+id/searchBtn"
@@ -79,11 +81,11 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/search_field"
-                android:layout_marginTop="50dp"
-                android:scrollbars="vertical"
+                android:layout_marginTop="30dp"
+                android:background="@color/white"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:background="@color/white"/>
+                android:scrollbars="vertical" />
 
             <!--FabButton: Insert assign-->
             <android.support.design.widget.FloatingActionButton
@@ -108,13 +110,12 @@
 
     <!-- Navigation Bar -->
     <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:id="@+id/nav_view"
+        android:scrollbars="vertical"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/drawer_menu"
-        android:scrollbars="vertical">
-    </android.support.design.widget.NavigationView>
+        app:menu="@menu/drawer_menu"></android.support.design.widget.NavigationView>
 
 </android.support.v4.widget.DrawerLayout>

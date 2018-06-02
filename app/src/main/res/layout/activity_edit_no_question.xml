@@ -32,7 +32,7 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="30dp"
                 android:text="@string/question"
-                android:textColor="@color/pinkRose"
+                android:textColor="@color/pinkRose1"
                 android:textSize="30dp"
                 android:textStyle="bold|italic" />
 
@@ -65,8 +65,7 @@
                     android:inputType="numberDecimal"
                     android:maxLines="1"
                     android:padding="3dp"
-                    android:textColor="@color/black1"
-                    android:textColorHint="@color/grey3"
+                    android:textColor="@color/pinkRose"
                     android:textSize="20dp" />
 
                 <ImageButton
