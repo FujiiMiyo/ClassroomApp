@@ -71,7 +71,7 @@
 
     <!-- Bottom sheet: AssignActivity Teacher -->
     <string name="select_menu">SELECT MENU</string>
-    <string name="assignment">ASSIGNMENT</string>
+    <string name="assignment">Assignment</string>
     <string name="create_assignment">CREATE ASSIGNMENT</string>
     <string name="edit_assignment">EDIT ASSIGNMENT</string>
     <string name="check_score">CHECK SCORES</string>

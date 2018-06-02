@@ -65,6 +65,7 @@
         <activity
             android:name=".StudentAssignNoQuestionActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".EditNoQuestionActivity"></activity>
     </application>
 
 </manifest>

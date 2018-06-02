@@ -6,9 +6,6 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -18,7 +15,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.riko.classroomapplication.Model.Assign;
 import com.example.riko.classroomapplication.Model.Choice;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -30,7 +26,7 @@ import com.google.firebase.database.Query;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentAssignNoQuestionActivity extends AppCompatActivity {
+public class EditNoQuestionActivity extends AppCompatActivity {
 
     //<------------------------------------------------>
     final String TAG = "TTwTT";
@@ -42,10 +38,10 @@ public class StudentAssignNoQuestionActivity extends AppCompatActivity {
     private String assignname;
     private String subjectID;
     private String Username;
+
     private FirebaseDatabase database;
     private DatabaseReference table_quest;
     private RecyclerView recyclerViewNoQuestion;
-    private String name;
     private List<Choice> listNoQuestion;
     private NoQuestionAdapter noQuestionAdapter;
     private List<Choice> listQuestion;
@@ -53,21 +49,18 @@ public class StudentAssignNoQuestionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_student_assign_no_question);
+        setContentView(R.layout.activity_edit_no_question);
 
-        initInstance();
+        initInstances();
         backToolbar();
-
     }
 
-    private void initInstance() {
+    private void initInstances() {
         //-- Toolbar --***//
         toolbar = findViewById(R.id.toolbar);
         Intent intent = getIntent();
         assignname = intent.getStringExtra("assignname");
         subjectID = intent.getStringExtra("subjectID");
-        Username = intent.getStringExtra("Username");
-        name = intent.getStringExtra("name");
         toolbar.setTitle(assignname);
 
         //----- Firebase ------//
@@ -76,31 +69,24 @@ public class StudentAssignNoQuestionActivity extends AppCompatActivity {
 
         //--------------- RecyclerView --------------------//
         recyclerViewNoQuestion = findViewById(R.id.recyclerViewNoQuestion);
-        recyclerViewNoQuestion.setHasFixedSize(true);
-        RecyclerView.LayoutManager LM = new LinearLayoutManager(this);
-        recyclerViewNoQuestion.setLayoutManager(LM);
-        recyclerViewNoQuestion.setItemAnimator(new DefaultItemAnimator());
-        recyclerViewNoQuestion.addItemDecoration(new DividerItemDecoration(StudentAssignNoQuestionActivity.this, LinearLayoutManager.VERTICAL));
 
         //----------------- Question list -------------------------------//
         listNoQuestion = new ArrayList<>();
         listQuestion = new ArrayList<>();
-        noQuestionAdapter = new NoQuestionAdapter(StudentAssignNoQuestionActivity.this, listNoQuestion, listQuestion, new NoQuestionAdapter.OnItemClickListener() {
+        noQuestionAdapter = new NoQuestionAdapter(EditNoQuestionActivity.this, listNoQuestion, listQuestion, new NoQuestionAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Choice choice) {
-                Intent iassign = new Intent(StudentAssignNoQuestionActivity.this, StudentAssignmentActivity.class);
+                Intent iassign = new Intent(EditNoQuestionActivity.this, EditExamsActivity.class);
                 iassign.putExtra("assignname", assignname);
                 iassign.putExtra("subjectID", subjectID);
-                iassign.putExtra("Username", Username);
-                iassign.putExtra("name", name);
+                //iassign.putExtra("Username", Username);
                 startActivity(iassign);
             }
         });
         GetNoQuestionFirebase();
+
     }
 
-    //***************************************************** No question lists ********************************************************************************//
-    //<------------------------ Firebase search field and display list ------------------------------------>//
     private void GetNoQuestionFirebase() {
         //Clear ListSubject
         listNoQuestion.clear();
@@ -144,9 +130,8 @@ public class StudentAssignNoQuestionActivity extends AppCompatActivity {
         });
     }
 
-
     //---------------- No. question List -------------------------------------------------//
-    public static class NoQuestionAdapter extends RecyclerView.Adapter<NoQuestionAdapter.NoQuestionViewHolder> {
+    public static class NoQuestionAdapter extends RecyclerView.Adapter<NoQuestionAdapter.NoQuestionViewHolder>{
 
         List<Choice> listNoQuestion;
         List<Choice> listQuestion;
@@ -163,7 +148,6 @@ public class StudentAssignNoQuestionActivity extends AppCompatActivity {
         public interface OnItemClickListener {
             void onItemClick(Choice choice);
         }
-
 
         @NonNull
         @Override
@@ -185,6 +169,7 @@ public class StudentAssignNoQuestionActivity extends AppCompatActivity {
         }
 
         public class NoQuestionViewHolder extends RecyclerView.ViewHolder {
+
             private final TextView txtNo;
             private final TextView txtQuest;
             RelativeLayout list_item_no_quest;
@@ -205,11 +190,9 @@ public class StudentAssignNoQuestionActivity extends AppCompatActivity {
                         listener.onItemClick(no_quest);
                     }
                 });
-
             }
         }
     }
-
 
     //--------------------- Back press Toolbar -----------------------//
     private void backToolbar() {

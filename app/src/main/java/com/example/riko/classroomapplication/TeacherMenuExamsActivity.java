@@ -158,7 +158,8 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(TeacherMenuExamsActivity. this, "Edit assignment", Toast.LENGTH_SHORT).show();
-                        Intent iassign = new Intent(TeacherMenuExamsActivity.this, EditExamsActivity.class);
+                        //Intent iassign = new Intent(TeacherMenuExamsActivity.this, EditExamsActivity.class);
+                        Intent iassign = new Intent(TeacherMenuExamsActivity.this, EditNoQuestionActivity.class);
                         iassign.putExtra("assignname", assign.getAssignname());
                         iassign.putExtra("subjectID", subjectID);
                         startActivity(iassign);
