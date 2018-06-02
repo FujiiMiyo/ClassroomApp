@@ -43,7 +43,7 @@ public class StudentAssignNoQuestionActivity extends AppCompatActivity {
     private String subjectID;
     private String Username;
     private FirebaseDatabase database;
-    private DatabaseReference table_assign;
+    private DatabaseReference table_quest;
     private RecyclerView recyclerViewNoQuestion;
     private String name;
     private List<Choice> listNoQuestion;
@@ -73,7 +73,7 @@ public class StudentAssignNoQuestionActivity extends AppCompatActivity {
 
         //----- Firebase ------//
         database = FirebaseDatabase.getInstance();
-        table_assign = database.getReference().child("Assign");
+        table_quest = database.getReference("Assign");
 
         //--------------- RecyclerView --------------------//
         recyclerViewNoQuestion = findViewById(R.id.recyclerViewNoQuestion);
@@ -107,12 +107,20 @@ public class StudentAssignNoQuestionActivity extends AppCompatActivity {
         listNoQuestion.clear();
         listQuestion.clear();
 
-        Query searchQuery = table_assign.orderByChild("subjectID").equalTo(subjectID);
+        Query searchQuery = table_quest.orderByChild("subjectID").equalTo(subjectID);
         searchQuery.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Choice choice = new Choice();
-                choice = dataSnapshot.getValue(Choice.class);
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()){
+                    Assign assign = new Assign();
+                    assign = postSnapshot.getValue(Assign.class);
+                    if (assign.getAssignname().equals(assignname)){
+                        if (postSnapshot.hasChild("Quest")) {
+                           //TODO;
+                        }
+                    }
+                }
+
             }
 
             @Override
