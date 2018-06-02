@@ -65,7 +65,7 @@
                     android:inputType="numberDecimal"
                     android:maxLines="1"
                     android:padding="3dp"
-                    android:textColor="@color/pinkRose"
+                    android:textColor="@color/black1"
                     android:textSize="20dp" />
 
                 <ImageButton
