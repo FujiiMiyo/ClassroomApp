@@ -110,7 +110,7 @@ public class StudentAssignNoQuestionActivity extends AppCompatActivity {
         searchQuery.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                /*for (DataSnapshot postSnapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()){
                     Assign assign = new Assign();
                     assign = postSnapshot.getValue(Assign.class);
                     if (assign.getAssignname().equals(assignname)){
@@ -118,7 +118,7 @@ public class StudentAssignNoQuestionActivity extends AppCompatActivity {
                            //TODO;
                         }
                     }
-                }*/
+                }
 
             }
 

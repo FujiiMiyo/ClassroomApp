@@ -11,6 +11,7 @@ public class Choice {
     private String type;
     private String answer;
 
+
     public Choice() {
     }
 
@@ -22,6 +23,12 @@ public class Choice {
         this.choiceC = choiceC;
         this.choiceD = choiceD;
         this.type = type;
+        this.answer = answer;
+    }
+
+    public Choice(String numberQuestion, String question, String answer) {
+        this.numberQuestion = numberQuestion;
+        this.question = question;
         this.answer = answer;
     }
 

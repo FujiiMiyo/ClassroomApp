@@ -5,6 +5,7 @@ public class Assign {
     private String assignname;
     private String subjectID;
     private String time;
+    private String totalQuest;
 
     public Assign() {
     }
@@ -13,6 +14,14 @@ public class Assign {
         this.assignname = assignname;
         this.subjectID = subjectID;
         this.time = time;
+        this.totalQuest = "0";
+    }
+
+    public Assign(String assignname, String subjectID, String time,String totalQuest) {
+        this.assignname = assignname;
+        this.subjectID = subjectID;
+        this.time = time;
+        this.time = totalQuest;
     }
 
     public String getAssignname() {
@@ -37,5 +46,13 @@ public class Assign {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getTotalQuest(){
+        return  totalQuest;
+    }
+
+    public void setTotalQuest(String totalQuest) {
+        this.totalQuest = totalQuest;
     }
 }

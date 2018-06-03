@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.riko.classroomapplication.Model.Assign;
 import com.example.riko.classroomapplication.Model.Choice;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -96,16 +98,25 @@ public class EditNoQuestionActivity extends AppCompatActivity {
         searchQuery.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                /*for (DataSnapshot postSnapshot : dataSnapshot.getChildren()){
-                    Assign assign = new Assign();
-                    assign = postSnapshot.getValue(Assign.class);
-                    if (assign.getAssignname().equals(assignname)){
-                        if (postSnapshot.hasChild("Quest")) {
-                           //TODO;
+                //Log.e("CheckQuest",dataSnapshot.toString());
+                Assign assign = new Assign();
+                assign = dataSnapshot.getValue(Assign.class);
+                if (assign.getAssignname().equals(assignname)){
+                    if (dataSnapshot.hasChild("Quest")) {
+                        for (DataSnapshot postSnapshot : dataSnapshot.child("Quest").getChildren()){
+                            Choice choice = new Choice();
+                            choice = postSnapshot.getValue(Choice.class);
+                            //Log.e("Quest",postSnapshot.toString());
+                            listNoQuestion.add(choice);
+                            listQuestion.add(choice);
                         }
                     }
-                }*/
-
+                }
+                else{
+                    //TODO NoQuest;
+                }
+                //Log.e("List",listNoQuestion.toString());
+                recyclerViewNoQuestion.setAdapter(noQuestionAdapter);
             }
 
             @Override
@@ -184,6 +195,7 @@ public class EditNoQuestionActivity extends AppCompatActivity {
             public void bind(final Choice no_quest, Choice question, final OnItemClickListener listener) {
                 txtNo.setText(no_quest.getNumberQuestion());
                 txtQuest.setText(question.getQuestion());
+                Log.e("No_Question",no_quest.getNumberQuestion());
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
