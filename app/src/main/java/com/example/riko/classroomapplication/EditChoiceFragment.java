@@ -45,7 +45,7 @@ public class EditChoiceFragment extends Fragment implements View.OnClickListener
     private TextView txtNo;
     private String sel = " ";
 
-    private String numberQusetion;
+    private String numberQuestion;
     private String question;
     private String choiceA;
     private String choiceB;
@@ -62,7 +62,7 @@ public class EditChoiceFragment extends Fragment implements View.OnClickListener
         view = inflater.inflate(R.layout.fragment_edit_assign, container, false);
 
         if (getArguments() != null) {
-            numberQusetion = getArguments().getString("numberQusetion");
+            numberQuestion = getArguments().getString("numberQuestion");
             question = getArguments().getString("question");
             choiceA = getArguments().getString("choiceA");
             choiceB = getArguments().getString("choiceB");
@@ -109,7 +109,7 @@ public class EditChoiceFragment extends Fragment implements View.OnClickListener
         btnSubmit = view.findViewById(R.id.btnSubmit);
         //----------- Set Up -----------//
         edittextQuest.setText(question);
-        txtNo.setText(numberQusetion);
+        txtNo.setText(numberQuestion);
         edittextA.setText(choiceA);
         edittextB.setText(choiceB);
         edittextC.setText(choiceC);
@@ -187,10 +187,10 @@ public class EditChoiceFragment extends Fragment implements View.OnClickListener
                             //Log.e( "Key",postSnapshot.getKey());
                             //Log.e( "Name",assign.getAssignname());
                             //Log.e("Count",numberQuestion.toString());
-                            Choice choice = new Choice(numberQusetion, edittextQuest.getText().toString(),
+                            Choice choice = new Choice(numberQuestion, edittextQuest.getText().toString(),
                                     edittextA.getText().toString(), edittextB.getText().toString(), edittextC.getText().toString(), edittextD.getText().toString(),
                                     "choice", sel);
-                            table_assign.child(postSnapshot.getKey()).child("Quest").child(numberQusetion).setValue(choice);
+                            table_assign.child(postSnapshot.getKey()).child("Quest").child(numberQuestion).setValue(choice);
                         }
                     }
                     Toast.makeText(getActivity(), "Add question", Toast.LENGTH_SHORT).show();

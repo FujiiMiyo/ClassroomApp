@@ -131,7 +131,6 @@ public class CreateChoiceFragment extends Fragment implements View.OnClickListen
                     progressDialog.dismiss();
                     Toast.makeText(getActivity(), "Please enter answer C", Toast.LENGTH_SHORT).show();
                 } else if (edittextD.getText().toString().isEmpty()) {
-                    progressDialog.dismiss();
                     Toast.makeText(getActivity(), "Please enter answer D", Toast.LENGTH_SHORT).show();
                 } else if (radioGroupChoice.getCheckedRadioButtonId() == -1) {
                     progressDialog.dismiss();

@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -77,7 +78,7 @@ public class EditNoQuestionActivity extends AppCompatActivity {
         RecyclerView.LayoutManager LM = new LinearLayoutManager(this);
         recyclerViewNoQuestion.setLayoutManager(LM);
         recyclerViewNoQuestion.setItemAnimator(new DefaultItemAnimator());
-        //recyclerViewSubject.addItemDecoration(new DividerItemDecoration(view.getContext(), LinearLayoutManager.VERTICAL));
+        //recyclerViewNoQuestion.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         recyclerViewNoQuestion.setAdapter(noQuestionAdapter);
 
         //----------------- Question list -------------------------------//
@@ -89,6 +90,7 @@ public class EditNoQuestionActivity extends AppCompatActivity {
                 Intent iassign = new Intent(EditNoQuestionActivity.this, EditExamsActivity.class);
                 iassign.putExtra("assignname", assignname);
                 iassign.putExtra("subjectID", subjectID);
+                iassign.putExtra("numberQuestion", choice.getNumberQuestion());
                 //iassign.putExtra("Username", Username);
                 startActivity(iassign);
             }

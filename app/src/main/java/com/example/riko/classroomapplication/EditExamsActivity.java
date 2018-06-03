@@ -42,8 +42,10 @@ public class EditExamsActivity extends AppCompatActivity {
     private String subjectID;
     private String subjectname;
     private String assignname;
+    private String numberQuestion;
     private FirebaseDatabase database;
     private DatabaseReference table_assign;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +67,8 @@ public class EditExamsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         assignname = intent.getStringExtra("assignname");
         subjectID = intent.getStringExtra("subjectID");
-        toolbar.setTitle(assignname);
+        numberQuestion = intent.getStringExtra("numberQuestion");
+        toolbar.setTitle(numberQuestion);
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.nav_view);
         //----- Firebase ------//
@@ -121,7 +124,7 @@ public class EditExamsActivity extends AppCompatActivity {
                             questionFragment.putString("choiceB", choiceB);
                             questionFragment.putString("choiceC", choiceC);
                             questionFragment.putString("choiceD", choiceD);
-                            questionFragment.putString("numberQusetion", numberQusetion);
+                            questionFragment.putString("numberQuestion", numberQuestion);
                             questionFragment.putString("subjectID", subjectID);
                             questionFragment.putString("assignname", assignname);
                             EditChoiceFragment myObj = new EditChoiceFragment();

@@ -165,21 +165,20 @@ public class CreateWriteFragment extends Fragment implements View.OnClickListene
                         if (assign.getAssignname().equals(assignname)){
                             //Count Question
                             String totalQuest;
-                            if (Integer.parseInt(assign.getTotalQuest()) >= 0){
-                                totalQuest = assign.getTotalQuest();
+                            if (postSnapshot.child("Quest").hasChild("totalQuest")){
+                                totalQuest = postSnapshot.child("Quest").child("totalQuest").getValue().toString();
                                 //Log.e( "QuestCount",totalQuest);
                                 totalQuest = String.valueOf(1 + Integer.parseInt(totalQuest));
-                                assign.setTotalQuest(totalQuest);
-                                table_assign.child(postSnapshot.getKey()).child("totalQuest").setValue(totalQuest);
+                                table_assign.child(postSnapshot.getKey()).child("Quest").child("totalQuest").setValue(totalQuest);
                             }else {
-                                assign.setTotalQuest("1");
-                                table_assign.child(postSnapshot.getKey()).child("totalQuest").setValue("1");
+                                totalQuest = "1";
+                                table_assign.child(postSnapshot.getKey()).child("Quest").child("totalQuest").setValue(totalQuest);
                             }
                             //Log.e( "Key",postSnapshot.getKey());
                             //Log.e( "Name",assign.getAssignname());
                             // Log.e("Count",String.valueOf(count));
-                            Write write = new Write(assign.getTotalQuest(), edittextQuest.getText().toString(), "write", edittextA.getText().toString());
-                            table_assign.child(postSnapshot.getKey()).child("Quest").child(assign.getTotalQuest()).setValue(write);
+                            Write write = new Write(totalQuest, edittextQuest.getText().toString(), "write", edittextA.getText().toString());
+                            table_assign.child(postSnapshot.getKey()).child("Quest").child(totalQuest).setValue(write);
                         }
                     }
                     Toast.makeText(getActivity(), "Add question", Toast.LENGTH_SHORT).show();
