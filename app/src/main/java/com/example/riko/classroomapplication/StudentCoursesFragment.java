@@ -263,7 +263,25 @@ public class StudentCoursesFragment extends Fragment implements View.OnClickList
                 @Override
                 public void onClick(View v) {
                     //Toast.makeText(v.getContext(), "This subject already deleted!", Toast.LENGTH_SHORT).show();
-                    deleteSubject(subjectID.getSubjectID(), subjectname.getSubjectname(), date.getTime(), position);
+                    //deleteSubject(subjectID.getSubjectID(), subjectname.getSubjectname(), date.getTime(), position);
+                    final Dialog deleteDialog = new Dialog(context);
+                    deleteDialog.setContentView(R.layout.dialog_delete_subject);
+                    ImageButton btnConfirm = deleteDialog.findViewById(R.id.btnConfirm);
+                    ImageButton btnCancel = deleteDialog.findViewById(R.id.btnCancel);
+                    btnConfirm.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            deleteSubject(subjectID.getSubjectID(), subjectname.getSubjectname(), date.getTime(), position);
+                            deleteDialog.dismiss();
+                        }
+                    });
+                    btnCancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            deleteDialog.cancel();
+                        }
+                    });
+                    deleteDialog.show();
                 }
             });
         }
@@ -326,28 +344,6 @@ public class StudentCoursesFragment extends Fragment implements View.OnClickList
                     Log.e(TAG, "onCancelled", databaseError.toException());
                 }
             });
-            /*FirebaseDatabase.getInstance().getReference().child("Subject")
-                    .child(subjectID).removeValue()
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                //remove item from list alos and refresh recyclerview
-                                listArrayID.remove(position);
-                                listArrayName.remove(position);
-                                notifyItemRemoved(position);
-                                notifyItemRangeChanged(position, listArrayID.size());
-                                Log.d("Delete subject", "Subject has been deleted");
-                                Toast.makeText(context, "Subject has been deleted.", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Log.d("Delete subject", "Subject couldn't be deleted");
-                                Toast.makeText(context, "Subject could not be deleted!", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-
-            Log.d("Delete subject", "Subject has been deleted");
-            notifyDataSetChanged();*/
         }
     }
 

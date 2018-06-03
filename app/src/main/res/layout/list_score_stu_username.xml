@@ -40,7 +40,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
-        android:textColor="@color/pinkRoseLight"
+        android:textColor="@color/pinkRose"
         android:textSize="14dp"
         android:text="@string/score"/>
 
@@ -58,6 +58,18 @@
         android:textStyle="bold"
         android:textSize="25dp"
         android:text="7"/>
+
+    <ImageView
+        android:elevation="-2dp"
+        android:layout_width="80dp"
+        android:layout_height="60dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:backgroundTint="@color/pinkRoseLight1"
+        android:background="@drawable/select_type_right"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"/>
 
 
 </RelativeLayout>
