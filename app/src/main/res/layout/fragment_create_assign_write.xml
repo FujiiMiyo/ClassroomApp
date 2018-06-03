@@ -53,7 +53,6 @@
                     android:backgroundTint="@color/grey6"
                     android:hint="@string/enter_quest"
                     android:padding="5dp"
-                    android:singleLine="true"
                     android:textColor="@color/pinkRose1"
                     android:inputType="text" />
             </LinearLayout>

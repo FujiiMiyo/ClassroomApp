@@ -50,6 +50,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edittext_assign_layout"
+                    android:backgroundTint="@color/grey6"
                     android:hint="@string/enter_quest"
                     android:padding="5dp"
                     android:textColor="@color/pinkRose1" />
@@ -110,10 +111,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edittext_assign_layout"
+                        android:backgroundTint="@color/grey6"
                         android:hint="@string/enter_ans"
                         android:imeOptions="actionNext"
                         android:padding="5dp"
-                        android:textColor="@color/pinkRose1"
+                        android:textColor="@color/grey"
                         android:maxLines="1"
                         android:inputType="text"/>
 
@@ -123,10 +125,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:background="@drawable/edittext_assign_layout"
+                        android:backgroundTint="@color/grey6"
                         android:hint="@string/enter_ans"
                         android:imeOptions="actionNext"
                         android:padding="5dp"
-                        android:textColor="@color/pinkRose1"
+                        android:textColor="@color/grey"
                         android:maxLines="1"
                         android:inputType="text"/>
 
@@ -136,10 +139,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:background="@drawable/edittext_assign_layout"
+                        android:backgroundTint="@color/grey6"
                         android:hint="@string/enter_ans"
                         android:imeOptions="actionNext"
                         android:padding="5dp"
-                        android:textColor="@color/pinkRose1"
+                        android:textColor="@color/grey"
                         android:maxLines="1"
                         android:inputType="text"/>
 
@@ -149,10 +153,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:background="@drawable/edittext_assign_layout"
+                        android:backgroundTint="@color/grey6"
                         android:hint="@string/enter_ans"
                         android:imeOptions="actionDone"
                         android:padding="5dp"
-                        android:textColor="@color/pinkRose1"
+                        android:textColor="@color/grey"
                         android:maxLines="1"
                         android:inputType="text"/>
                 </LinearLayout>
