@@ -17,13 +17,6 @@ public class Assign {
         this.totalQuest = "0";
     }
 
-    public Assign(String assignname, String subjectID, String time,String totalQuest) {
-        this.assignname = assignname;
-        this.subjectID = subjectID;
-        this.time = time;
-        this.time = totalQuest;
-    }
-
     public String getAssignname() {
         return assignname;
     }

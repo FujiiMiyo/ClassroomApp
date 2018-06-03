@@ -6,6 +6,8 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -71,6 +73,12 @@ public class EditNoQuestionActivity extends AppCompatActivity {
 
         //--------------- RecyclerView --------------------//
         recyclerViewNoQuestion = findViewById(R.id.recyclerViewNoQuestion);
+        recyclerViewNoQuestion.setHasFixedSize(true);
+        RecyclerView.LayoutManager LM = new LinearLayoutManager(this);
+        recyclerViewNoQuestion.setLayoutManager(LM);
+        recyclerViewNoQuestion.setItemAnimator(new DefaultItemAnimator());
+        //recyclerViewSubject.addItemDecoration(new DividerItemDecoration(view.getContext(), LinearLayoutManager.VERTICAL));
+        recyclerViewNoQuestion.setAdapter(noQuestionAdapter);
 
         //----------------- Question list -------------------------------//
         listNoQuestion = new ArrayList<>();
@@ -101,21 +109,23 @@ public class EditNoQuestionActivity extends AppCompatActivity {
                 //Log.e("CheckQuest",dataSnapshot.toString());
                 Assign assign = new Assign();
                 assign = dataSnapshot.getValue(Assign.class);
-                if (assign.getAssignname().equals(assignname)){
+                if (assign.getAssignname().equals(assignname)) {
                     if (dataSnapshot.hasChild("Quest")) {
-                        for (DataSnapshot postSnapshot : dataSnapshot.child("Quest").getChildren()){
-                            Choice choice = new Choice();
-                            choice = postSnapshot.getValue(Choice.class);
-                            //Log.e("Quest",postSnapshot.toString());
-                            listNoQuestion.add(choice);
-                            listQuestion.add(choice);
+                        for (DataSnapshot postSnapshot : dataSnapshot.child("Quest").getChildren()) {
+                            //for (int i = 1; i < Integer.parseInt(assign.getTotalQuest()); i++) {
+                                Choice choice = new Choice();
+                                //choice = postSnapshot.child(String.valueOf(i)).getValue(Choice.class);
+                                choice = postSnapshot.getValue(Choice.class);
+                                Log.e("Quest", postSnapshot.toString());
+                                listNoQuestion.add(choice);
+                                listQuestion.add(choice);
+                            //}
                         }
                     }
-                }
-                else{
+                } else {
                     //TODO NoQuest;
                 }
-                //Log.e("List",listNoQuestion.toString());
+                Log.e("List", listNoQuestion.toString());
                 recyclerViewNoQuestion.setAdapter(noQuestionAdapter);
             }
 
@@ -142,17 +152,17 @@ public class EditNoQuestionActivity extends AppCompatActivity {
     }
 
     //---------------- No. question List -------------------------------------------------//
-    public static class NoQuestionAdapter extends RecyclerView.Adapter<NoQuestionAdapter.NoQuestionViewHolder>{
+    public static class NoQuestionAdapter extends RecyclerView.Adapter<NoQuestionAdapter.NoQuestionViewHolder> {
 
-        List<Choice> listNoQuestion;
-        List<Choice> listQuestion;
+        List<Choice> listAssignNoQuestion;
+        List<Choice> listAssignQuestion;
         final OnItemClickListener listener;
         private Context context;
 
-        public NoQuestionAdapter(Context context, List<Choice> listNoQuestion, List<Choice> listQuestion, OnItemClickListener listener) {
+        public NoQuestionAdapter(Context context, List<Choice> listAssignNoQuestion, List<Choice> listAssignQuestion, OnItemClickListener listener) {
             this.context = context;
-            this.listNoQuestion = listNoQuestion;
-            this.listQuestion = listQuestion;
+            this.listAssignNoQuestion = listAssignNoQuestion;
+            this.listAssignQuestion = listAssignQuestion;
             this.listener = listener;
         }
 
@@ -169,14 +179,14 @@ public class EditNoQuestionActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull NoQuestionAdapter.NoQuestionViewHolder holder, int position) {
-            Choice no_quest = listNoQuestion.get(position);
-            Choice question = listQuestion.get(position);
+            Choice no_quest = listAssignQuestion.get(position);
+            Choice question = listAssignQuestion.get(position);
             holder.bind(no_quest, question, listener);
         }
 
         @Override
         public int getItemCount() {
-            return listNoQuestion.size();
+            return listAssignQuestion.size();
         }
 
         public class NoQuestionViewHolder extends RecyclerView.ViewHolder {
@@ -195,7 +205,7 @@ public class EditNoQuestionActivity extends AppCompatActivity {
             public void bind(final Choice no_quest, Choice question, final OnItemClickListener listener) {
                 txtNo.setText(no_quest.getNumberQuestion());
                 txtQuest.setText(question.getQuestion());
-                Log.e("No_Question",no_quest.getNumberQuestion());
+                Log.e("No_Question", no_quest.getNumberQuestion());
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
