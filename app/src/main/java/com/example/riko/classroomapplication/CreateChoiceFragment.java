@@ -144,22 +144,23 @@ public class CreateChoiceFragment extends Fragment implements View.OnClickListen
                         if (assign.getAssignname().equals(assignname)){
                             //Count Question
                             String totalQuest;
-                            if (postSnapshot.child("Quest").hasChild("totalQuest")){
-                                totalQuest = postSnapshot.child("Quest").child("totalQuest").getValue().toString();
-                                Log.e( "QuestCount",totalQuest);
+                            if (Integer.parseInt(assign.getTotalQuest()) >= 0){
+                                totalQuest = assign.getTotalQuest();
+                                //Log.e( "QuestCount",totalQuest);
                                 totalQuest = String.valueOf(1 + Integer.parseInt(totalQuest));
-                                table_assign.child(postSnapshot.getKey()).child("Quest").child("totalQuest").setValue(totalQuest);
+                                assign.setTotalQuest(totalQuest);
+                                table_assign.child(postSnapshot.getKey()).child("totalQuest").setValue(totalQuest);
                             }else {
-                                totalQuest = "1";
-                                table_assign.child(postSnapshot.getKey()).child("Quest").child("totalQuest").setValue(totalQuest);
+                                assign.setTotalQuest("1");
+                                table_assign.child(postSnapshot.getKey()).child("totalQuest").setValue("1");
                             }
                             //Log.e( "Key",postSnapshot.getKey());
                             //Log.e( "Name",assign.getAssignname());
                             // Log.e("Count",String.valueOf(count));
-                            Choice choice = new Choice(totalQuest, edittextQuest.getText().toString(),
+                            Choice choice = new Choice(assign.getTotalQuest(), edittextQuest.getText().toString(),
                                     edittextA.getText().toString(), edittextB.getText().toString(), edittextC.getText().toString(), edittextD.getText().toString(),
                                     "choice", sel);
-                            table_assign.child(postSnapshot.getKey()).child("Quest").child(totalQuest).setValue(choice);
+                            table_assign.child(postSnapshot.getKey()).child("Quest").child(assign.getTotalQuest()).setValue(choice);
 
                         }
                     }
