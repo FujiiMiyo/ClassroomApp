@@ -115,6 +115,7 @@ public class StudentAssignmentActivity extends AppCompatActivity implements View
                             questionFragment.putString("subjectID", subjectID);
                             questionFragment.putString("assignname", assignname);
                             questionFragment.putString("Username", Username);
+                            questionFragment.putString("name", name);
                             StudentAssignChoiceFragment myObj = new StudentAssignChoiceFragment();
                             myObj.setArguments(questionFragment);
 
@@ -133,6 +134,7 @@ public class StudentAssignmentActivity extends AppCompatActivity implements View
                             questionFragment.putString("subjectID", subjectID);
                             questionFragment.putString("assignname", assignname);
                             questionFragment.putString("Username", Username);
+                            questionFragment.putString("name", name);
                             StudentAssignWriteFragment myObj = new StudentAssignWriteFragment();
                             myObj.setArguments(questionFragment);
 

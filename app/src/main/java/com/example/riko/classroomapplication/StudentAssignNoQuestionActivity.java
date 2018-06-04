@@ -182,7 +182,7 @@ public class StudentAssignNoQuestionActivity extends AppCompatActivity {
         @NonNull
         @Override
         public NoQuestionAdapter.NoQuestionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_assign_no_quest, parent, false);
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_assign_no_quest_stu, parent, false);
             return new NoQuestionViewHolder(v);
         }
 

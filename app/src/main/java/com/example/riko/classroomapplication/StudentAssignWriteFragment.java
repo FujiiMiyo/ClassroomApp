@@ -71,8 +71,6 @@ public class StudentAssignWriteFragment extends Fragment implements View.OnClick
     }
 
     private void initInstance() {
-
-
         //----------- Firebase ---------------//
         database = FirebaseDatabase.getInstance();
         table_ans = database.getReference("Student_answer");
@@ -96,8 +94,8 @@ public class StudentAssignWriteFragment extends Fragment implements View.OnClick
         txtNo.setText(numberQuestion);
     }
 
-    private void submitChoiceAns(){
 
+    private void submitChoiceAns(){
         Query searchQuery = table_ans.orderByChild("subjectID").equalTo(subjectID);
         //Log.e("tag",searchQuery.toString());
         searchQuery.addListenerForSingleValueEvent(new ValueEventListener(){
@@ -144,6 +142,7 @@ public class StudentAssignWriteFragment extends Fragment implements View.OnClick
                     //Log.e("Testkey",newKey);
                 }
                 CheckScore();
+                getActivity().finish();
             }
 
             @Override

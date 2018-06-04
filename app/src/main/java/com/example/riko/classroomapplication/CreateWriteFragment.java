@@ -1,6 +1,6 @@
 package com.example.riko.classroomapplication;
 
-import android.app.Dialog;
+
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -184,7 +184,7 @@ public class CreateWriteFragment extends Fragment implements View.OnClickListene
                         }
                     }
                     Toast.makeText(getActivity(), "Add question", Toast.LENGTH_SHORT).show();
-                    showAddItemDialog();
+                    getActivity().finish();
                 }
                 progressDialog.dismiss();
             }
@@ -193,12 +193,6 @@ public class CreateWriteFragment extends Fragment implements View.OnClickListene
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-    }
-
-    private void showAddItemDialog() {
-        Dialog addSubjectDialog = new Dialog(getContext());
-        addSubjectDialog.setContentView(R.layout.dialog_createassign__success);
-        addSubjectDialog.show();
     }
     //---------------------------------------------------------------------------------//
 

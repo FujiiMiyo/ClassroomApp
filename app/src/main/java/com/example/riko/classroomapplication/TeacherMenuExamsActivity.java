@@ -185,6 +185,7 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
                 delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        //TODO;
                         Toast.makeText(TeacherMenuExamsActivity. this, "Delete assignment", Toast.LENGTH_SHORT).show();
                         /*DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
                         Query assignQuery = ref.child("Assign").orderByChild("assignname").equalTo(assign.getAssignname());

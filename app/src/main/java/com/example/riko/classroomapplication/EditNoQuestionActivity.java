@@ -1,5 +1,6 @@
 package com.example.riko.classroomapplication;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +30,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -170,6 +173,7 @@ public class EditNoQuestionActivity extends AppCompatActivity {
         List<Choice> listAssignQuestion;
         final OnItemClickListener listener;
         private Context context;
+        private String TAG = "TT3TT";
 
         public NoQuestionAdapter(Context context, List<Choice> listAssignNoQuestion, List<Choice> listAssignQuestion, OnItemClickListener listener) {
             this.context = context;
@@ -190,10 +194,35 @@ public class EditNoQuestionActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull NoQuestionAdapter.NoQuestionViewHolder holder, int position) {
-            Choice no_quest = listAssignQuestion.get(position);
-            Choice question = listAssignQuestion.get(position);
+        public void onBindViewHolder(@NonNull NoQuestionAdapter.NoQuestionViewHolder holder, final int position) {
+            final Choice no_quest = listAssignQuestion.get(position);
+            final Choice question = listAssignQuestion.get(position);
             holder.bind(no_quest, question, listener);
+            holder.btnDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Toast.makeText(v.getContext(), "This subject already deleted!", Toast.LENGTH_SHORT).show();
+                    //deleteSubject(subjectID.getSubjectID(), subjectname.getSubjectname(), date.getTime(), position);
+                    final Dialog deleteDialog = new Dialog(context);
+                    deleteDialog.setContentView(R.layout.dialog_delete_no_quest);
+                    ImageButton btnConfirm = deleteDialog.findViewById(R.id.btnConfirm);
+                    ImageButton btnCancel = deleteDialog.findViewById(R.id.btnCancel);
+                    btnConfirm.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            deleteSubject(no_quest.getNumberQuestion(), question.getQuestion(), position);
+                            deleteDialog.dismiss();
+                        }
+                    });
+                    btnCancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            deleteDialog.cancel();
+                        }
+                    });
+                    deleteDialog.show();
+                }
+            });
         }
 
         @Override
@@ -205,6 +234,7 @@ public class EditNoQuestionActivity extends AppCompatActivity {
 
             private final TextView txtNo;
             private final TextView txtQuest;
+            private final ImageButton btnDelete;
             RelativeLayout list_item_no_quest;
 
             public NoQuestionViewHolder(View itemView) {
@@ -212,6 +242,7 @@ public class EditNoQuestionActivity extends AppCompatActivity {
                 list_item_no_quest = itemView.findViewById(R.id.list_item_no_quest);
                 txtNo = itemView.findViewById(R.id.txtNo);
                 txtQuest = itemView.findViewById(R.id.txtQuest);
+                btnDelete = itemView.findViewById(R.id.btnDelete);
             }
 
             public void bind(final Choice no_quest, Choice question, final OnItemClickListener listener) {
@@ -224,6 +255,32 @@ public class EditNoQuestionActivity extends AppCompatActivity {
                     }
                 });
             }
+        }
+
+        //--------------------- Delete subject button ------------------------------//
+        private void deleteSubject(final String no_quest, String question, final int position) {
+            //TODO;
+            /*DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Assign");
+            Query subjectQuery = ref.child("Quest").orderByChild("subjectID").equalTo(subjectID);
+            subjectQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot subjectSnapshot : dataSnapshot.getChildren()) {
+                        subjectSnapshot.getRef().removeValue();
+                        listAssignNoQuestion.remove(position);
+                        listAssignQuestion.remove(position);
+                        notifyItemRemoved(position);
+                        notifyItemRangeChanged(position, listAssignNoQuestion.size());
+                        Log.d("Delete subject", "Subject has been deleted");
+                        Toast.makeText(context, "Subject has been deleted.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.e(TAG, "onCancelled", databaseError.toException());
+                }
+            });*/
         }
     }
 

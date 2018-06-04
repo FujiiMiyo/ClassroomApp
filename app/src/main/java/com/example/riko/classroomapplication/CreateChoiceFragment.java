@@ -242,7 +242,7 @@ public class CreateChoiceFragment extends Fragment implements View.OnClickListen
                         }
                     }
                     Toast.makeText(getActivity(), "Add question", Toast.LENGTH_SHORT).show();
-                    showAddItemDialog();
+                    getActivity().finish();
                 }
                 progressDialog.dismiss();
             }
@@ -252,12 +252,6 @@ public class CreateChoiceFragment extends Fragment implements View.OnClickListen
 
             }
         });
-    }
-
-    private void showAddItemDialog() {
-        Dialog addSubjectDialog = new Dialog(getContext());
-        addSubjectDialog.setContentView(R.layout.dialog_createassign__success);
-        addSubjectDialog.show();
     }
     //---------------------------------------------------------------------------------//
 

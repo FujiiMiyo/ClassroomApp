@@ -134,7 +134,7 @@ public class EditWriteFragment extends Fragment implements View.OnClickListener 
                         }
                     }
                     Toast.makeText(getActivity(), "Add question", Toast.LENGTH_SHORT).show();
-                    showAddItemDialog();
+                    getActivity().finish();
                 }
                 progressDialog.dismiss();
             }
@@ -143,12 +143,6 @@ public class EditWriteFragment extends Fragment implements View.OnClickListener 
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-    }
-
-    private void showAddItemDialog() {
-        Dialog addSubjectDialog = new Dialog(getContext());
-        addSubjectDialog.setContentView(R.layout.dialog_createassign__success);
-        addSubjectDialog.show();
     }
     //---------------------------------------------------------------------------------//
     private void clickButton() {

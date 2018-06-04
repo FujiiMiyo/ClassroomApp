@@ -77,8 +77,8 @@ public class EditChoiceFragment extends Fragment implements View.OnClickListener
             Toast.makeText(getContext(), "Bundle == null", Toast.LENGTH_SHORT).show();
         }
         initInstance();
+        onClickRadioButton();
         clickButton();
-
 
         return view;
     }
@@ -194,7 +194,7 @@ public class EditChoiceFragment extends Fragment implements View.OnClickListener
                         }
                     }
                     Toast.makeText(getActivity(), "Add question", Toast.LENGTH_SHORT).show();
-                    showAddItemDialog();
+                    getActivity().finish();
                 }
                 progressDialog.dismiss();
             }
@@ -205,12 +205,8 @@ public class EditChoiceFragment extends Fragment implements View.OnClickListener
             }
         });
     }
+    //------------------------------------------------------------------------------//
 
-    private void showAddItemDialog() {
-        Dialog addSubjectDialog = new Dialog(getContext());
-        addSubjectDialog.setContentView(R.layout.dialog_createassign__success);
-        addSubjectDialog.show();
-    }
 
     private void clickButton() {
         btnReset.setOnClickListener(this);

@@ -169,6 +169,7 @@ public class StudentAssignChoiceFragment extends Fragment implements RadioGroup.
                     //Log.e("Testkey",newKey);
                 }
                 CheckScore();
+                getActivity().finish();
             }
 
             @Override
