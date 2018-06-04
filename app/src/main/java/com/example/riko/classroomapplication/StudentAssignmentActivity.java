@@ -14,6 +14,7 @@ import com.example.riko.classroomapplication.Model.Answer;
 import com.example.riko.classroomapplication.Model.Assign;
 import com.example.riko.classroomapplication.Model.Choice;
 import com.example.riko.classroomapplication.Model.Write;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,9 +34,10 @@ public class StudentAssignmentActivity extends AppCompatActivity implements View
     private String assignname;
     private String subjectID;
     private String Username;
+    private String numberQuestion;
     private FirebaseDatabase database;
-    private DatabaseReference table_quest;
-    private DatabaseReference table_ans;
+    private DatabaseReference table_assign;
+    private DatabaseReference table_answer;
     private Button btnChoice;
     private Button btnWrite;
     private String name;
@@ -51,9 +53,10 @@ public class StudentAssignmentActivity extends AppCompatActivity implements View
 
         if (savedInstanceState == null) {
             //Toast.makeText(this, "Here", Toast.LENGTH_SHORT).show();
-            //selectFragment();
+            selectQuestion();
+            /*
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container_exam,
-                    new CreateSpaceFragment()).commit(); //*** Fragment: select Type ***//
+                    new CreateSpaceFragment()).commit(); //*** Fragment: select Type ***/
         }
     }
 
@@ -61,8 +64,8 @@ public class StudentAssignmentActivity extends AppCompatActivity implements View
 
         //----------- Firebase ---------------//
         database = FirebaseDatabase.getInstance();
-        table_quest = database.getReference("Assign");
-        table_ans = database.getReference("Student_answer");
+        table_assign = database.getReference("Assign");
+        table_answer = database.getReference("Student_answer");
 
         //-- Toolbar --***//
         toolbar = findViewById(R.id.toolbar);
@@ -71,11 +74,82 @@ public class StudentAssignmentActivity extends AppCompatActivity implements View
         subjectID = intent.getStringExtra("subjectID");
         Username = intent.getStringExtra("Username");
         name = intent.getStringExtra("name");
+        numberQuestion = intent.getStringExtra("numberQuestion");
         toolbar.setTitle(assignname);
         btnChoice = findViewById(R.id.btnChoice);
         btnWrite = findViewById(R.id.btnWrite);
 
 
+
+    }
+    private void selectQuestion(){
+        Query searchQuery = table_assign.orderByChild("subjectID").equalTo(subjectID);
+        searchQuery.addListenerForSingleValueEvent(new ValueEventListener(){
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Assign assign = new Assign();
+                    assign = postSnapshot.getValue(Assign.class);
+                    String questionType = "";
+                    if (assign.getAssignname().equals(assignname)) {
+                        questionType = postSnapshot.child("Quest").child(numberQuestion).child("type").getValue().toString();
+                        Log.e("Type", questionType);
+                        if (questionType.equals("choice")){
+                            //Set up Question Data
+                            String question = postSnapshot.child("Quest").child(numberQuestion).child("question").getValue().toString();
+                            String answer = postSnapshot.child("Quest").child(numberQuestion).child("answer").getValue().toString();
+                            String choiceA = postSnapshot.child("Quest").child(numberQuestion).child("choiceA").getValue().toString();
+                            String choiceB = postSnapshot.child("Quest").child(numberQuestion).child("choiceB").getValue().toString();
+                            String choiceC = postSnapshot.child("Quest").child(numberQuestion).child("choiceC").getValue().toString();
+                            String choiceD = postSnapshot.child("Quest").child(numberQuestion).child("choiceD").getValue().toString();
+                            //Send to Fragment
+                            Bundle questionFragment = new Bundle();
+                            questionFragment.putString("question", question);
+                            questionFragment.putString("answerChoice", answer);
+                            questionFragment.putString("choiceA", choiceA);
+                            questionFragment.putString("choiceB", choiceB);
+                            questionFragment.putString("choiceC", choiceC);
+                            questionFragment.putString("choiceD", choiceD);
+                            questionFragment.putString("numberQuestion", numberQuestion);
+                            questionFragment.putString("subjectID", subjectID);
+                            questionFragment.putString("assignname", assignname);
+                            questionFragment.putString("Username", Username);
+                            StudentAssignChoiceFragment myObj = new StudentAssignChoiceFragment();
+                            myObj.setArguments(questionFragment);
+
+                            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container_exam,
+                                    myObj).commit();
+                        }else {
+                            //Set up Question Data
+                            String question = postSnapshot.child("Quest").child(numberQuestion).child("question").getValue().toString();
+                            String answer = postSnapshot.child("Quest").child(numberQuestion).child("answer").getValue().toString();
+
+                            //Send to Fragment
+                            Bundle questionFragment = new Bundle();
+                            questionFragment.putString("question", question);
+                            questionFragment.putString("answerWrite", answer);
+                            questionFragment.putString("numberQuestion", numberQuestion);
+                            questionFragment.putString("subjectID", subjectID);
+                            questionFragment.putString("assignname", assignname);
+                            questionFragment.putString("Username", Username);
+                            StudentAssignWriteFragment myObj = new StudentAssignWriteFragment();
+                            myObj.setArguments(questionFragment);
+
+                            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container_exam,
+                                    myObj).commit();
+                        }
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        });
 
     }
 
@@ -84,9 +158,9 @@ public class StudentAssignmentActivity extends AppCompatActivity implements View
         btnWrite.setOnClickListener(this);
     }
 
-
+    /*
     private void selectChoiceFragment() {
-        Query searchQuery = table_quest.orderByChild("subjectID").equalTo(subjectID);
+        Query searchQuery = table_assign.orderByChild("subjectID").equalTo(subjectID);
         searchQuery.addListenerForSingleValueEvent(new ValueEventListener() {
 
             //TODO;
@@ -154,7 +228,7 @@ public class StudentAssignmentActivity extends AppCompatActivity implements View
     }
 
     private void selectWriteFragment() {
-        Query searchQuery = table_quest.orderByChild("subjectID").equalTo(subjectID);
+        Query searchQuery = table_assign.orderByChild("subjectID").equalTo(subjectID);
         searchQuery.addListenerForSingleValueEvent(new ValueEventListener() {
 
             //TODO;
@@ -216,7 +290,7 @@ public class StudentAssignmentActivity extends AppCompatActivity implements View
             }
         });
     }
-
+    */
     /*private void selectFragment(){
         Query searchQuery = table_quest.orderByChild("subjectID").equalTo(subjectID);
         searchQuery.addListenerForSingleValueEvent(new ValueEventListener(){
@@ -353,9 +427,9 @@ public class StudentAssignmentActivity extends AppCompatActivity implements View
     @Override
     public void onClick(View v) {
         if (v == btnChoice) {
-            selectChoiceFragment();
+            //selectChoiceFragment();
         } else if (v == btnWrite) {
-            selectWriteFragment();
+            //selectWriteFragment();
         }
     }
 }

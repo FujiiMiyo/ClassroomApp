@@ -94,6 +94,8 @@ public class StudentAssignNoQuestionActivity extends AppCompatActivity {
                 iassign.putExtra("subjectID", subjectID);
                 iassign.putExtra("Username", Username);
                 iassign.putExtra("name", name);
+                Log.e("Send NumberQuestion",choice.getNumberQuestion());
+                iassign.putExtra("numberQuestion", choice.getNumberQuestion());
                 startActivity(iassign);
             }
         });
@@ -130,7 +132,7 @@ public class StudentAssignNoQuestionActivity extends AppCompatActivity {
                 } else {
                     //TODO NoQuest;
                 }
-                Log.e("List", listNoQuestion.toString());
+                //Log.e("List", listNoQuestion.toString());
                 recyclerViewNoQuestion.setAdapter(noQuestionAdapter);
             }
 

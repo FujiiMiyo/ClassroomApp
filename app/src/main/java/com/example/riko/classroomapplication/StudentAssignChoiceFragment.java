@@ -53,8 +53,7 @@ public class StudentAssignChoiceFragment extends Fragment implements RadioGroup.
     private String choiceD;
     private String answerChoice;
     private String keyAssign;
-    private long totalQuestion;
-    private long countQuestion;
+
     private String name;
 
 
@@ -70,15 +69,15 @@ public class StudentAssignChoiceFragment extends Fragment implements RadioGroup.
             choiceB = getArguments().getString("choiceB");
             choiceC = getArguments().getString("choiceC");
             choiceD = getArguments().getString("choiceD");
-            answerChoice = getArguments().getString("answer");
+            answerChoice = getArguments().getString("answerChoice");
             Username = getArguments().getString("Username");
             name = getArguments().getString("name");
             assignname = getArguments().getString("assignname");
             subjectID = getArguments().getString("subjectID");
             keyAssign = getArguments().getString("keyAssign");
-            totalQuestion = getArguments().getLong("totalQuestion");
-            countQuestion = getArguments().getLong("countQuestion");
-            //Log.e("In_subjectID",subjectID);
+
+            Log.e("answerChoice",answerChoice);
+            //Log.e("Stud_choice_Username",Username);
             //Toast.makeText(getContext(), Username, Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getContext(), "Bundle == null", Toast.LENGTH_SHORT).show();
@@ -112,7 +111,7 @@ public class StudentAssignChoiceFragment extends Fragment implements RadioGroup.
 
         //----------- Set Up -----------//
         txtQuest.setText(question);
-        txtNo.setText(String.valueOf(countQuestion));
+        txtNo.setText(numberQuestion);
         radioA.setText(choiceA);
         radioB.setText(choiceB);
         radioC.setText(choiceC);
@@ -127,64 +126,90 @@ public class StudentAssignChoiceFragment extends Fragment implements RadioGroup.
         searchQuery.addListenerForSingleValueEvent(new ValueEventListener(){
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.e("data", dataSnapshot.toString());
-                int checkDataStuAnswer = 0;
-                long finalScore = 0;
-                String dataKey = "fail";
-                ///MARK radiochoicegri
-
+                //Log.e("data", dataSnapshot.toString());
+                String checkDataStuAnswer = "False";
+                String dataKey = "";
+                String checkAnswer = "False";
                 //Setup Data Answer
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     //Log.e("data", postSnapshot.toString());
                     Answer answer = new Answer();
                     answer = postSnapshot.getValue(Answer.class);
 
+                    //Log.e("Answer_assignname",answer.getAssignname());
+                    //Log.e("Answer_Username",answer.getUsername());
+
                     if (answer.getAssignname().equals(assignname) && answer.getUsername().equals(Username)) {
                         //Check data in Student_answer
-                        checkDataStuAnswer++;
+                        checkDataStuAnswer = "True";
                         //getKey for Setup
                         dataKey = postSnapshot.getKey();
-                        //First Question or Not
-                        if(countQuestion == 0){
-                            answer.setScore(0);
-                        }
-                        //Add Score
-                        if (sel.equals(answerChoice)){
-                            finalScore = answer.getScore()+1;
-                        }
                     }
                 }
+                //Check Answer
+
+                Log.e("answerChoice",answerChoice);
+                Log.e("sel",sel);
+                if (sel.equals(answerChoice)){
+                    checkAnswer = "True";
+                }
                 //Add Answer
-                if (checkDataStuAnswer > 0){
-                    table_ans.child(dataKey).child("No_question").child(String.valueOf(countQuestion)).child("answer").setValue(sel);
-                    table_ans.child(dataKey).child("score").setValue(finalScore);
+                if (checkDataStuAnswer.equals("True")){
+                    //Set Valuse No_Question
+                    table_ans.child(dataKey).child("No_question").child(numberQuestion).child("answer").setValue(sel);
+                    table_ans.child(dataKey).child("No_question").child(numberQuestion).child("check").setValue(checkAnswer);
                 }else {
                     //create answer Member
                     Answer answer = new Answer(Username,assignname,subjectID,0, name);
                     String newKey = table_ans.push().getKey();
                     table_ans.child(newKey).setValue(answer);
-                    table_ans.child(newKey).child("No_question").child(String.valueOf(countQuestion)).child("answer").setValue(sel);
+                    //Set Valuse No_Question
+                    table_ans.child(newKey).child("No_question").child(numberQuestion).child("answer").setValue(sel);
+                    table_ans.child(dataKey).child("No_question").child(numberQuestion).child("check").setValue(checkAnswer);
                     //Log.e("Testkey",newKey);
                 }
-                //End Add Data
+                CheckScore();
+            }
 
-                //Next Question
-                Log.e("keyAssign",keyAssign);
-                Query assignQuery = table_quest;
-                assignQuery.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        //Log.e("assign",dataSnapshot.toString());
-                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()){
-                            Log.e("assign",postSnapshot.child(keyAssign).child("Quest").getValue().toString());
-                        }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    void CheckScore(){
+        Log.e("CheckScore","Runing");
+        Query searchQuery = table_ans.orderByChild("subjectID").equalTo(subjectID);
+        searchQuery.addChildEventListener(new ChildEventListener(){
+
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Answer answer = new Answer();
+                answer = dataSnapshot.getValue(Answer.class);
+                int countAnswer = 0;
+                for (DataSnapshot postSnapshot : dataSnapshot.child("No_question").getChildren()) {
+                    //Log.e("Snapshot",postSnapshot.child("check").getValue().toString());
+                    if (postSnapshot.child("check").getValue().toString().equals("True")){
+                        countAnswer++;
                     }
+                }
+                table_ans.child(dataSnapshot.getKey()).child("score").setValue(countAnswer);
+            }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-                    }
-                });
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
             }
 
@@ -193,9 +218,7 @@ public class StudentAssignChoiceFragment extends Fragment implements RadioGroup.
 
             }
         });
-        //Log.e("TestRun","Running");
     }
-
 
 
     //------------- Radio Button: Choice -----------------//
@@ -235,6 +258,7 @@ public class StudentAssignChoiceFragment extends Fragment implements RadioGroup.
         } else if (v == btnSubmit) {
             Toast.makeText(getActivity(), "Submit assignment", Toast.LENGTH_SHORT);
             submitChoiceAns();
+
         }
     }
 }

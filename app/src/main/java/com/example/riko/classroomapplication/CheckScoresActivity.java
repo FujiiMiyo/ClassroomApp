@@ -78,15 +78,20 @@ public class CheckScoresActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_scores);
+
         initInstance();
+        GetScoreFirebase();
         backToolbar();
     }
 
     private void initInstance() {
+
         //--------------------- Firebase ----------------------------//
         database = FirebaseDatabase.getInstance();
         table_answer = database.getReference("Student_answer");
         table_member = database.getReference("Member");
+
+
 
         //-- Toolbar --***//
         toolbar = findViewById(R.id.toolbar);
@@ -103,6 +108,7 @@ public class CheckScoresActivity extends AppCompatActivity {
         btnRight = findViewById(R.id.btnRight);
         edittextNo = findViewById(R.id.edittextNo);
         searchBtn = findViewById(R.id.searchBtn);
+
 
         //--------------- RecyclerView --------------------//
         recyclerViewScore = findViewById(R.id.recyclerViewSubject);
@@ -129,7 +135,8 @@ public class CheckScoresActivity extends AppCompatActivity {
                 startActivity(chkscore);*/
             }
         });
-        GetScoreFirebase();
+
+
     }
 
     //TODO;
@@ -140,8 +147,8 @@ public class CheckScoresActivity extends AppCompatActivity {
         listName.clear();
         listScore.clear();
         Log.e("subjectID",subjectID.toString());
-
-        final Query searchQuery = table_answer.orderByChild("subjectID").equalTo(subjectID);
+        //Display Score
+        Query searchQuery = table_answer.orderByChild("subjectID").equalTo(subjectID);
         searchQuery.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
