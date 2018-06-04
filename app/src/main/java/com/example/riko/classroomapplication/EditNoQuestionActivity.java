@@ -79,7 +79,7 @@ public class EditNoQuestionActivity extends AppCompatActivity {
         recyclerViewNoQuestion.setLayoutManager(LM);
         recyclerViewNoQuestion.setItemAnimator(new DefaultItemAnimator());
         //recyclerViewNoQuestion.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-        recyclerViewNoQuestion.setAdapter(noQuestionAdapter);
+        //recyclerViewNoQuestion.setAdapter(noQuestionAdapter);
 
         //----------------- Question list -------------------------------//
         listNoQuestion = new ArrayList<>();

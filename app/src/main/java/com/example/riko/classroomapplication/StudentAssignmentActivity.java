@@ -47,7 +47,7 @@ public class StudentAssignmentActivity extends AppCompatActivity implements View
         setContentView(R.layout.activity_student_assignment);
         initInstance();
         backToolbar();
-        onClickButtonType();
+        //onClickButtonType();
 
         if (savedInstanceState == null) {
             //Toast.makeText(this, "Here", Toast.LENGTH_SHORT).show();

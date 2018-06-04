@@ -11,6 +11,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,7 +81,7 @@ public class StudentAssignNoQuestionActivity extends AppCompatActivity {
         RecyclerView.LayoutManager LM = new LinearLayoutManager(this);
         recyclerViewNoQuestion.setLayoutManager(LM);
         recyclerViewNoQuestion.setItemAnimator(new DefaultItemAnimator());
-        recyclerViewNoQuestion.addItemDecoration(new DividerItemDecoration(StudentAssignNoQuestionActivity.this, LinearLayoutManager.VERTICAL));
+        //recyclerViewNoQuestion.addItemDecoration(new DividerItemDecoration(StudentAssignNoQuestionActivity.this, LinearLayoutManager.VERTICAL));
 
         //----------------- Question list -------------------------------//
         listNoQuestion = new ArrayList<>();
@@ -110,16 +111,27 @@ public class StudentAssignNoQuestionActivity extends AppCompatActivity {
         searchQuery.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()){
-                    Assign assign = new Assign();
-                    assign = postSnapshot.getValue(Assign.class);
-                    if (assign.getAssignname().equals(assignname)){
-                        if (postSnapshot.hasChild("Quest")) {
-                           //TODO;
+                //Log.e("CheckQuest",dataSnapshot.toString());
+                Assign assign = new Assign();
+                assign = dataSnapshot.getValue(Assign.class);
+                if (assign.getAssignname().equals(assignname)) {
+                    if (dataSnapshot.hasChild("Quest")) {
+                        for (DataSnapshot postSnapshot : dataSnapshot.child("Quest").getChildren()) {
+                            //for (int i = 1; i < Integer.parseInt(assign.getTotalQuest()); i++) {
+                            Choice choice = new Choice();
+                            //choice = postSnapshot.child(String.valueOf(i)).getValue(Choice.class);
+                            choice = postSnapshot.getValue(Choice.class);
+                            Log.e("Quest", postSnapshot.toString());
+                            listNoQuestion.add(choice);
+                            listQuestion.add(choice);
+                            //}
                         }
                     }
+                } else {
+                    //TODO NoQuest;
                 }
-
+                Log.e("List", listNoQuestion.toString());
+                recyclerViewNoQuestion.setAdapter(noQuestionAdapter);
             }
 
             @Override
