@@ -39,6 +39,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -364,7 +365,8 @@ public class TeacherCoursesFragment extends Fragment implements View.OnClickList
                 //table_subject.addValueEventListener(new ValueEventListener() {
                 //addListenerForSingleValueEvent reads data just 1 times only
                 Calendar calendar = Calendar.getInstance();
-                final String currentDate = DateFormat.getDateInstance().format(calendar.getTime());
+                SimpleDateFormat simpleDataFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                final String currentDate = simpleDataFormat.format(calendar.getTime());
 
                 table_subject.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override

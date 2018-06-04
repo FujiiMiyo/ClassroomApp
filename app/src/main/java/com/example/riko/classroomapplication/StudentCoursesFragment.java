@@ -35,6 +35,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -352,40 +353,6 @@ public class StudentCoursesFragment extends Fragment implements View.OnClickList
 
 
     //*************************************************************************************************************************************************//
-    //-------------------- Dialog Add Subject -----------------------------------------//
-    /*private void showAddItemDialog(final Context c) {
-        final Dialog addSubjectDialog = new Dialog(c);
-        addSubjectDialog.setContentView(R.layout.dialog_add_subject_stu);
-        /*final EditText editextSubjectID = addSubjectDialog.findViewById(R.id.editextSubjectID);
-        final EditText editextSubjectName = addSubjectDialog.findViewById(R.id.editextSubjectName);*/
-        /*ImageButton btnAddSubject = addSubjectDialog.findViewById(R.id.btnAddSubject);
-        ImageButton btnCancel = addSubjectDialog.findViewById(R.id.btnCancel);
-        //SAVE
-        btnAddSubject.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //table_subject.addValueEventListener(new ValueEventListener() {
-                //addListenerForSingleValueEvent reads data just 1 times only
-                table_subject.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                    }
-                });
-            }
-        });
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addSubjectDialog.cancel();
-            }
-        });
-        addSubjectDialog.show();
-    }*/
-
     private void showAddItemDialog(final Context c) {
         final Dialog addSubjectDialog = new Dialog(c);
         addSubjectDialog.setContentView(R.layout.dialog_add_subject);
@@ -400,7 +367,8 @@ public class StudentCoursesFragment extends Fragment implements View.OnClickList
                 //table_subject.addValueEventListener(new ValueEventListener() {
                 //addListenerForSingleValueEvent reads data just 1 times only
                 Calendar calendar = Calendar.getInstance();
-                final String currentDate = DateFormat.getDateInstance().format(calendar.getTime());
+                SimpleDateFormat simpleDataFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                final String currentDate = simpleDataFormat.format(calendar.getTime());
                 table_subject.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {

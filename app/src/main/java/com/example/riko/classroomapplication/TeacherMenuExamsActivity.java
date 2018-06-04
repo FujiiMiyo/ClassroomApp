@@ -42,6 +42,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -395,7 +396,8 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
                 /*Toast.makeText(c, "Assignment already is added", Toast.LENGTH_SHORT).show();
                 addAssignDialog.dismiss();*/
                 Calendar calendar = Calendar.getInstance();
-                final String currentDate = DateFormat.getDateInstance().format(calendar.getTime());
+                SimpleDateFormat simpleDataFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                final String currentDate = simpleDataFormat.format(calendar.getTime());
 
                 table_assign.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override

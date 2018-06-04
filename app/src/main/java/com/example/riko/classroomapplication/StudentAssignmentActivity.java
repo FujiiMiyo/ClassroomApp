@@ -75,7 +75,7 @@ public class StudentAssignmentActivity extends AppCompatActivity implements View
         Username = intent.getStringExtra("Username");
         name = intent.getStringExtra("name");
         numberQuestion = intent.getStringExtra("numberQuestion");
-        toolbar.setTitle(assignname);
+        toolbar.setTitle(numberQuestion);
         btnChoice = findViewById(R.id.btnChoice);
         btnWrite = findViewById(R.id.btnWrite);
 
