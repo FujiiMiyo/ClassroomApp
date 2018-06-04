@@ -40,7 +40,7 @@ public class EditWriteFragment extends Fragment implements View.OnClickListener 
     private ImageButton btnReset;
     private Button btnSubmit;
 
-    private String numberQusetion;
+    private String numberQuestion;
     private String question;
     private String answerWrite;
 
@@ -49,7 +49,7 @@ public class EditWriteFragment extends Fragment implements View.OnClickListener 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_edit_assign_write, container, false);
         if (getArguments() != null) {
-            numberQusetion = getArguments().getString("numberQusetion");
+            numberQuestion = getArguments().getString("numberQuestion");
             question = getArguments().getString("question");
             subjectID = getArguments().getString("subjectID");
             assignname = getArguments().getString("assignname");
@@ -84,7 +84,7 @@ public class EditWriteFragment extends Fragment implements View.OnClickListener 
 
         //----------- Set Up -----------//
         edittextQuest.setText(question);
-        txtNo.setText(numberQusetion);
+        txtNo.setText(numberQuestion);
         edittextA.setText(answerWrite);
 
     }
@@ -129,8 +129,8 @@ public class EditWriteFragment extends Fragment implements View.OnClickListener 
                             //Log.e( "Key",postSnapshot.getKey());
                             //Log.e( "Name",assign.getAssignname());
                             // Log.e("Count",String.valueOf(count));
-                            Write write = new Write(numberQusetion, edittextQuest.getText().toString(), "write", edittextA.getText().toString());
-                            table_assign.child(postSnapshot.getKey()).child("Quest").child(numberQusetion).setValue(write);
+                            Write write = new Write(numberQuestion, edittextQuest.getText().toString(), "write", edittextA.getText().toString());
+                            table_assign.child(postSnapshot.getKey()).child("Quest").child(numberQuestion).setValue(write);
                         }
                     }
                     Toast.makeText(getActivity(), "Add question", Toast.LENGTH_SHORT).show();

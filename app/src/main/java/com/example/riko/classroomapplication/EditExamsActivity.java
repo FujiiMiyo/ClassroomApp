@@ -101,21 +101,21 @@ public class EditExamsActivity extends AppCompatActivity {
                     Assign assign = new Assign();
                     assign = postSnapshot.getValue(Assign.class);
                     //numberQusetion
-                    String numberQusetion = "1";
+                    //String numberQusetion = "1";
                     String questionType = "";
                     if (assign.getAssignname().equals(assignname)){
-                        questionType = postSnapshot.child("Quest").child(numberQusetion).child("type").getValue().toString();
+                        questionType = postSnapshot.child("Quest").child(numberQuestion).child("type").getValue().toString();
                         Log.e("Type",questionType);
 
                         //Choose Question Type
                         if (questionType.equals("choice")){
                             //Set up Question Data
-                            String question = postSnapshot.child("Quest").child(numberQusetion).child("question").getValue().toString();
-                            String answer = postSnapshot.child("Quest").child(numberQusetion).child("answer").getValue().toString();
-                            String choiceA = postSnapshot.child("Quest").child(numberQusetion).child("choiceA").getValue().toString();
-                            String choiceB = postSnapshot.child("Quest").child(numberQusetion).child("choiceB").getValue().toString();
-                            String choiceC = postSnapshot.child("Quest").child(numberQusetion).child("choiceC").getValue().toString();
-                            String choiceD = postSnapshot.child("Quest").child(numberQusetion).child("choiceD").getValue().toString();
+                            String question = postSnapshot.child("Quest").child(numberQuestion).child("question").getValue().toString();
+                            String answer = postSnapshot.child("Quest").child(numberQuestion).child("answer").getValue().toString();
+                            String choiceA = postSnapshot.child("Quest").child(numberQuestion).child("choiceA").getValue().toString();
+                            String choiceB = postSnapshot.child("Quest").child(numberQuestion).child("choiceB").getValue().toString();
+                            String choiceC = postSnapshot.child("Quest").child(numberQuestion).child("choiceC").getValue().toString();
+                            String choiceD = postSnapshot.child("Quest").child(numberQuestion).child("choiceD").getValue().toString();
                             //Send to Fragment
                             Bundle questionFragment = new Bundle();
                             questionFragment.putString("question", question);
@@ -134,14 +134,14 @@ public class EditExamsActivity extends AppCompatActivity {
                                     myObj).commit();
                         }else {
                             //Set up Question Data
-                            String question = postSnapshot.child("Quest").child(numberQusetion).child("question").getValue().toString();
-                            String answer = postSnapshot.child("Quest").child(numberQusetion).child("answer").getValue().toString();
+                            String question = postSnapshot.child("Quest").child(numberQuestion).child("question").getValue().toString();
+                            String answer = postSnapshot.child("Quest").child(numberQuestion).child("answer").getValue().toString();
 
                             //Send to Fragment
                             Bundle questionFragment = new Bundle();
                             questionFragment.putString("question", question);
                             questionFragment.putString("answerWrite", answer);
-                            questionFragment.putString("numberQusetion", numberQusetion);
+                            questionFragment.putString("numberQuestion", numberQuestion);
                             questionFragment.putString("subjectID", subjectID);
                             questionFragment.putString("assignname", assignname);
                             EditWriteFragment myObj = new EditWriteFragment();
