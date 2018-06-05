@@ -61,7 +61,7 @@
                 android:background="@drawable/search_layout"
                 android:backgroundTint="@color/grey6"
                 android:gravity="center"
-                android:hint="@string/no"
+                android:hint="@string/search_student_id"
                 android:imeOptions="actionDone"
                 android:inputType="numberDecimal"
                 android:maxLines="1"

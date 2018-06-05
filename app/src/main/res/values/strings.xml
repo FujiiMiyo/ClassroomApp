@@ -104,6 +104,7 @@
 
     <!-- CheckScoreActivity Teacher -->
     <string name="score">Score</string>
+    <string name="search_student_id">Search student ID...</string>
 
     <!-- StudentAssignmentActivity Teacher -->
     <string name="stu_assign_space">No Question in this Assignment</string>
