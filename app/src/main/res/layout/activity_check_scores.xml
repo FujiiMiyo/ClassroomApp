@@ -42,7 +42,7 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <ImageButton
+            <!-- ImageButton
                 android:id="@+id/btnLeft"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -51,26 +51,28 @@
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:padding="5dp"
-                app:srcCompat="@drawable/ic_chevron_left" />
+                app:srcCompat="@drawable/ic_chevron_left" /-->
 
             <EditText
                 android:id="@+id/edittextNo"
-                android:layout_width="100dp"
-                android:layout_height="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
                 android:layout_marginLeft="5dp"
-                android:background="@drawable/edittext_assign_layout"
+                android:background="@drawable/search_layout"
                 android:backgroundTint="@color/grey6"
                 android:gravity="center"
                 android:hint="@string/no"
                 android:imeOptions="actionDone"
                 android:inputType="numberDecimal"
                 android:maxLines="1"
-                android:padding="3dp"
-                android:textColor="@color/black1"
-                android:textColorHint="@color/grey3"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:textColor="@color/colorAccent"
                 android:textSize="20dp" />
 
-            <ImageButton
+            <!--ImageButton
                 android:id="@+id/btnRight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -80,7 +82,7 @@
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:padding="5dp"
-                app:srcCompat="@drawable/ic_chevron_right" />
+                app:srcCompat="@drawable/ic_chevron_right" /-->
 
             <ImageButton
                 android:id="@+id/searchBtn"

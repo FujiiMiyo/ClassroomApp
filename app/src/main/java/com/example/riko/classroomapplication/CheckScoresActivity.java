@@ -104,8 +104,8 @@ public class CheckScoresActivity extends AppCompatActivity {
         //-----------------------------------------------//
 
         //------- Search No. ------------//
-        btnLeft = findViewById(R.id.btnLeft);
-        btnRight = findViewById(R.id.btnRight);
+        /*btnLeft = findViewById(R.id.btnLeft);
+        btnRight = findViewById(R.id.btnRight);*/
         edittextNo = findViewById(R.id.edittextNo);
         searchBtn = findViewById(R.id.searchBtn);
 

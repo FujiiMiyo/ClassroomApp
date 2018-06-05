@@ -144,7 +144,7 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
         listAssignDate = new ArrayList<>();
         assignAdapter = new AssignAdapter(listAssignName, listAssignDate, new AssignAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(final Assign assign) {
+            public void onItemClick(final Assign assign, final int position) {
                 bottomSheetSelectMenu();
                 displaySelectMenu();
                 createAssign.setOnClickListener(new View.OnClickListener() {
@@ -185,19 +185,46 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
                 delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //TODO;
                         Toast.makeText(TeacherMenuExamsActivity. this, "Delete assignment", Toast.LENGTH_SHORT).show();
-                        /*DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                        final Dialog deleteDialog = new Dialog(TeacherMenuExamsActivity.this);
+                        deleteDialog.setContentView(R.layout.dialog_delete_assign);
+                        ImageButton btnConfirm = deleteDialog.findViewById(R.id.btnConfirm);
+                        ImageButton btnCancel = deleteDialog.findViewById(R.id.btnCancel);
+                        btnConfirm.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                deleteAssign(assign.getAssignname(), assign.getTime(), position);
+                                deleteDialog.dismiss();
+                            }
+                        });
+                        btnCancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                deleteDialog.cancel();
+                            }
+                        });
+                        deleteDialog.show();
+
+                        bottomSheetMenu.dismiss();
+                    }
+
+                    //------------------ Delete Assign -----------------//
+                    private void deleteAssign(String assignname, String time, final int position) {
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
                         Query assignQuery = ref.child("Assign").orderByChild("assignname").equalTo(assign.getAssignname());
                         assignQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 for (DataSnapshot assignSnapshot : dataSnapshot.getChildren()) {
                                     assignSnapshot.getRef().removeValue();
-                                    listAssignName.remove(assign.getAssignname());
+                                    listAssignName.remove(position);
+                                    listAssignDate.remove(position);
                                     //listSubjectID.remove(assign.getSubjectID());
-                                    assignAdapter.notifyItemRemoved(listAssignName.indexOf(assign.getAssignname()));
-                                    assignAdapter.notifyItemRangeChanged(listAssignName.indexOf(assign.getAssignname()), listAssignName.size());
+                                    //assignAdapter.notifyItemRemoved(listAssignName.indexOf(assign.getAssignname()));
+                                    //assignAdapter.notifyItemRangeChanged(listAssignName.indexOf(assign.getAssignname()), listAssignName.size());
+                                    assignAdapter.notifyItemRemoved(position);
+                                    assignAdapter.notifyItemRangeChanged(position, listAssignName.size());
                                     Log.d("Delete subject", "Assign has been deleted");
                                     Toast.makeText(TeacherMenuExamsActivity.this, "Assign has been deleted.", Toast.LENGTH_SHORT).show();
                                 }
@@ -207,9 +234,9 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
                             public void onCancelled(DatabaseError databaseError) {
                                 Log.e(TAG, "onCancelled", databaseError.toException());
                             }
-                        });*/
-                        bottomSheetMenu.dismiss();
+                        });
                     }
+                    //--------------------------------------------------------------//
                 });
 
             }
@@ -312,7 +339,7 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
         private Context context;
 
         public interface OnItemClickListener {
-            void onItemClick(Assign assign);
+            void onItemClick(Assign assign, int position);
         }
 
         public AssignAdapter(List<Assign> listAssignName, List<Assign> listAssignDate, OnItemClickListener listener) {
@@ -332,7 +359,7 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
         public void onBindViewHolder(@NonNull AssignAdapter.AssignHolder holder, int position) {
             Assign assignname = listAssignName.get(position);
             Assign assigndate = listAssignDate.get(position);
-            holder.bind(assignname, assigndate, listener);
+            holder.bind(assignname, assigndate, listener, position);
         }
 
         @Override
@@ -352,13 +379,13 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
                 textDate = itemView.findViewById(R.id.textDate);
             }
 
-            public void bind(final Assign assignname, Assign assigndate, final OnItemClickListener listener) {
+            public void bind(final Assign assignname, Assign assigndate, final OnItemClickListener listener, final int position) {
                 textAssignName.setText(assignname.getAssignname());
                 textDate.setText(assigndate.getTime());
                 itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
+                                        @Override
                     public void onClick(View v) {
-                        listener.onItemClick(assignname);
+                        listener.onItemClick(assignname, position);
                     }
                 });
             }

@@ -71,6 +71,9 @@
     <!-- Dialog: add subject CourseFragment -->
     <string name="add_new_assign">ADD A NEW ASSIGNMENT</string>
     <string name="enter_new_assign">Enter new assignment</string>
+    <!-- Dialog: delete assignment -->
+    <string name="del_assign">DELETE ASSIGNMENT</string>
+    <string name="confirm_to_del_assign">Do you want to delete this assignment ?</string>
 
     <!-- Bottom sheet: AssignActivity Teacher -->
     <string name="select_menu">SELECT MENU</string>
@@ -79,6 +82,7 @@
     <string name="edit_assignment">EDIT ASSIGNMENT</string>
     <string name="check_score">CHECK SCORES</string>
     <string name="delete_assignment">DELETE ASSIGNMENT</string>
+
 
     <!-- AddExamsActivity Teacher -->
 
