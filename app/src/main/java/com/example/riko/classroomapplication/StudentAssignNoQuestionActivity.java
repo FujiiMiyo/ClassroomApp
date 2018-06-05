@@ -15,6 +15,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,13 +33,16 @@ import com.google.firebase.database.Query;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentAssignNoQuestionActivity extends AppCompatActivity {
+public class StudentAssignNoQuestionActivity extends AppCompatActivity implements View.OnClickListener {
 
     //<------------------------------------------------>
     final String TAG = "TTwTT";
     //-- Toolbar --***//
     private Toolbar toolbar;
     //<------------------------------------------------>
+
+    private EditText searchField;
+    private ImageButton searchBtn;
 
     private boolean doubleBackToExitPressedOnce;
     private String assignname;
@@ -70,6 +75,11 @@ public class StudentAssignNoQuestionActivity extends AppCompatActivity {
         Username = intent.getStringExtra("Username");
         name = intent.getStringExtra("name");
         toolbar.setTitle(assignname);
+
+        //------------- Search No. -------------------//
+        searchField = findViewById(R.id.search_field);
+        searchBtn = findViewById(R.id.searchBtn);
+        searchBtn.setOnClickListener(this);
 
         //----- Firebase ------//
         database = FirebaseDatabase.getInstance();
@@ -126,6 +136,65 @@ public class StudentAssignNoQuestionActivity extends AppCompatActivity {
                             Log.e("Quest", postSnapshot.toString());
                             listNoQuestion.add(choice);
                             listQuestion.add(choice);
+                            //}
+                        }
+                    }
+                } else {
+                    //TODO NoQuest;
+                }
+                //Log.e("List", listNoQuestion.toString());
+                recyclerViewNoQuestion.setAdapter(noQuestionAdapter);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void GetSearchNoQuestionFirebase(final String searchText) {
+        //Clear ListSubject
+        listNoQuestion.clear();
+        listQuestion.clear();
+
+        Query searchQuery = table_quest.orderByChild("subjectID").equalTo(subjectID);
+        searchQuery.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                //Log.e("CheckQuest",dataSnapshot.toString());
+                Assign assign = new Assign();
+                assign = dataSnapshot.getValue(Assign.class);
+                if (assign.getAssignname().equals(assignname)) {
+                    if (dataSnapshot.hasChild("Quest")) {
+                        for (DataSnapshot postSnapshot : dataSnapshot.child("Quest").getChildren()) {
+                            //for (int i = 1; i < Integer.parseInt(assign.getTotalQuest()); i++) {
+                            Choice choice = new Choice();
+                            //choice = postSnapshot.child(String.valueOf(i)).getValue(Choice.class);
+                            choice = postSnapshot.getValue(Choice.class);
+                            Log.e("Quest", postSnapshot.toString());
+                            if (choice.getNumberQuestion().contains(searchText)) {
+                                listNoQuestion.add(choice);
+                                listQuestion.add(choice);
+                            } else if (choice.getQuestion().contains(searchText)) {
+                                listNoQuestion.add(choice);
+                                listQuestion.add(choice);
+                            }
                             //}
                         }
                     }
@@ -261,5 +330,18 @@ public class StudentAssignNoQuestionActivity extends AppCompatActivity {
                 doubleBackToExitPressedOnce = false;
             }
         }, 2000);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == searchBtn){
+            if (searchField.getText().toString().isEmpty()){
+                GetNoQuestionFirebase();
+            } else {
+                Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show();
+                String searchText = searchField.getText().toString();
+                GetSearchNoQuestionFirebase(searchText);
+            }
+        }
     }
 }

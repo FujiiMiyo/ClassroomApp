@@ -234,7 +234,7 @@ public class EditNoQuestionActivity extends AppCompatActivity implements View.On
             }
         });
     }
-    //-------------------------------------------------------------------------------------------------------//
+    //**************************************************************************************************//
 
     //---------------- No. question List -------------------------------------------------//
     public static class NoQuestionAdapter extends RecyclerView.Adapter<NoQuestionAdapter.NoQuestionViewHolder> {
@@ -403,7 +403,7 @@ public class EditNoQuestionActivity extends AppCompatActivity implements View.On
                 GetNoQuestionFirebase();
             } else {
                 Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show();
-                String searchText = searchField.getText().toString().toUpperCase();
+                String searchText = searchField.getText().toString();
                 GetSearchNoQuestionFirebase(searchText);
             }
         }

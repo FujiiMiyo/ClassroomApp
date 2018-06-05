@@ -36,7 +36,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CheckScoresActivity extends AppCompatActivity {
+public class CheckScoresActivity extends AppCompatActivity implements View.OnClickListener {
 
     //<------------------------------------------------>
     final String TAG = "TTwTT";
@@ -54,11 +54,9 @@ public class CheckScoresActivity extends AppCompatActivity {
     private String userName;
 
     private boolean doubleBackToExitPressedOnce;
-
-    private ImageButton btnLeft;
-    private ImageButton btnRight;
-    private EditText edittextNo;
+    private EditText searchField;
     private ImageButton searchBtn;
+
 
     private String subjectID;
     private String subjectname;
@@ -80,7 +78,6 @@ public class CheckScoresActivity extends AppCompatActivity {
         setContentView(R.layout.activity_check_scores);
 
         initInstance();
-        GetScoreFirebase();
         backToolbar();
     }
 
@@ -103,11 +100,10 @@ public class CheckScoresActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.nav_view);
         //-----------------------------------------------//
 
-        //------- Search No. ------------//
-        /*btnLeft = findViewById(R.id.btnLeft);
-        btnRight = findViewById(R.id.btnRight);*/
-        edittextNo = findViewById(R.id.edittextNo);
+        //------------- Search No. -------------------//
+        searchField = findViewById(R.id.search_field);
         searchBtn = findViewById(R.id.searchBtn);
+        searchBtn.setOnClickListener(this);
 
 
         //--------------- RecyclerView --------------------//
@@ -136,12 +132,13 @@ public class CheckScoresActivity extends AppCompatActivity {
             }
         });
 
-
+        GetScoreFirebase();
     }
 
+    //***************************************************** No question lists ********************************************************************************//
+    //<------------------------ Firebase search field and display list ------------------------------------>//
     //TODO;
-    void GetScoreFirebase() {
-
+    private void GetScoreFirebase() {
         //Clear ListSubject
         listStuUserName.clear();
         listName.clear();
@@ -190,6 +187,65 @@ public class CheckScoresActivity extends AppCompatActivity {
 
         });
     }
+
+    private void GetSearchScoreFirebase(final String searchText) {
+        //Clear ListSubject
+        listStuUserName.clear();
+        listName.clear();
+        listScore.clear();
+        Log.e("subjectID",subjectID.toString());
+        //Display Score
+        Query searchQuery = table_answer.orderByChild("subjectID").equalTo(subjectID);
+        searchQuery.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                //Log.e("Data",dataSnapshot.toString());
+                //Key Function to Add Score List
+                Answer answer = new Answer();
+                answer = dataSnapshot.getValue(Answer.class);
+
+                if (answer.getAssignname().equals(assignname)) {
+                    if (answer.getUsername().contains(searchText)) {
+                        //Add to ArrayList
+                        listStuUserName.add(answer);
+                        //Add Score
+                        listScore.add(answer);
+                        //Add name
+                        listName.add(answer);
+                    } else if (answer.getName().contains(searchText)) {
+                        //Add to ArrayList
+                        listStuUserName.add(answer);
+                        //Add Score
+                        listScore.add(answer);
+                        //Add name
+                        listName.add(answer);
+                    }
+                }
+                //Log.e("DataList",listStuUserName);
+                //Log.e("Tag",listStuUserName.toString());
+                //Add List into Adapter/RecyclerView
+                recyclerViewScore.setAdapter(scoreAdapter);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+
+        });
+    }
+    //--------------------------------*********************----------------------------------//
 
     //---------------- Score List -------------------------------------------------//
     public static class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ScoreViewHolder>{
@@ -299,5 +355,17 @@ public class CheckScoresActivity extends AppCompatActivity {
         }, 2000);
     }
 
+    @Override
+    public void onClick(View v) {
+        if (v == searchBtn){
+            if (searchField.getText().toString().isEmpty()){
+                GetScoreFirebase();
+            } else {
+                Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show();
+                String searchText = searchField.getText().toString();
+                GetSearchScoreFirebase(searchText);
+            }
+        }
+    }
 
 }
