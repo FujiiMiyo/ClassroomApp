@@ -15,18 +15,19 @@
         android:orientation="vertical">
 
         <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
             android:background="@color/colorAccent"
-            app:titleTextColor="@color/colorPrimaryDark"
-            android:id="@+id/toolbar"
+            android:elevation="2dp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            android:elevation="2dp"/>
+            app:titleTextColor="@color/colorPrimaryDark" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <TextView
                 android:id="@+id/heading_question"
                 android:layout_width="wrap_content"
@@ -38,59 +39,42 @@
                 android:textSize="30dp"
                 android:textStyle="bold|italic" />
 
-            <LinearLayout
-                android:focusable="true"
-                android:focusableInTouchMode="true"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="90dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <!--ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/search_btn"
-                    android:backgroundTint="@color/grey6"
-                    android:focusable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:padding="5dp"
-                    app:srcCompat="@drawable/ic_chevron_left" /-->
+                android:focusable="true"
+                android:focusableInTouchMode="true">
 
                 <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="5dp"
+                    android:id="@+id/search_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="90dp"
                     android:background="@drawable/search_layout"
                     android:backgroundTint="@color/grey6"
-                    android:gravity="center"
-                    android:hint="@string/no"
+                    android:hint="@string/search_no_quest"
                     android:imeOptions="actionDone"
-                    android:inputType="numberDecimal"
+                    android:inputType="text"
                     android:maxLines="1"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
+                    android:paddingBottom="10dp"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="20dp" />
+                    android:paddingTop="10dp"
+                    android:textColor="@color/grey"
+                    android:textSize="16dp" />
 
-                <!--ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:background="@drawable/search_btn"
-                    android:backgroundTint="@color/grey6"
-                    android:focusable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:padding="5dp"
-                    app:srcCompat="@drawable/ic_chevron_right" /-->
 
                 <ImageButton
                     android:id="@+id/searchBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="30dp"
                     android:background="@drawable/search_btn"
                     android:backgroundTint="@color/pinkRose"
                     android:cropToPadding="false"
@@ -99,8 +83,7 @@
                     android:padding="8dp"
                     android:scaleType="fitXY"
                     app:srcCompat="@drawable/ic_search" />
-
-            </LinearLayout>
+            </RelativeLayout>
 
 
             <android.support.v7.widget.RecyclerView
@@ -108,11 +91,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="160dp"
-                android:scrollbars="vertical"
+                android:background="@color/white"
+                android:clickable="true"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:background="@color/white"/>
+                android:scrollbars="vertical" />
 
         </RelativeLayout>
     </LinearLayout>

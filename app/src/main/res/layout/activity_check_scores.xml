@@ -28,67 +28,47 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="30dp"
-            android:text="@string/check_score"
+            android:text="@string/chk_score"
             android:textColor="@color/pinkRose1"
             android:textSize="30dp"
             android:textStyle="bold|italic" />
 
-        <LinearLayout
-            android:focusable="true"
-            android:focusableInTouchMode="true"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <!-- ImageButton
-                android:id="@+id/btnLeft"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/search_btn"
-                android:backgroundTint="@color/grey6"
-                android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:padding="5dp"
-                app:srcCompat="@drawable/ic_chevron_left" /-->
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
             <EditText
-                android:id="@+id/edittextNo"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_marginLeft="5dp"
+                android:id="@+id/search_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="90dp"
                 android:background="@drawable/search_layout"
                 android:backgroundTint="@color/grey6"
-                android:gravity="center"
                 android:hint="@string/search_student_id"
                 android:imeOptions="actionDone"
-                android:inputType="numberDecimal"
+                android:inputType="text"
                 android:maxLines="1"
-                android:paddingTop="6dp"
-                android:paddingBottom="6dp"
+                android:paddingBottom="10dp"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
-                android:textColor="@color/colorAccent"
-                android:textSize="20dp" />
+                android:paddingTop="10dp"
+                android:textColor="@color/grey"
+                android:textSize="16dp" />
 
-            <!--ImageButton
-                android:id="@+id/btnRight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:background="@drawable/search_btn"
-                android:backgroundTint="@color/grey6"
-                android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:padding="5dp"
-                app:srcCompat="@drawable/ic_chevron_right" /-->
 
             <ImageButton
                 android:id="@+id/searchBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="30dp"
                 android:background="@drawable/search_btn"
                 android:backgroundTint="@color/pinkRose"
                 android:cropToPadding="false"
@@ -97,8 +77,8 @@
                 android:padding="8dp"
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/ic_search" />
+        </RelativeLayout>
 
-        </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerViewSubject"

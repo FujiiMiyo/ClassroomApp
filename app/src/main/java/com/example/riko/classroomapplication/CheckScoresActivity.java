@@ -164,8 +164,6 @@ public class CheckScoresActivity extends AppCompatActivity {
                     listScore.add(answer);
                     //Add name
                     listName.add(answer);
-
-
                 }
                 //Log.e("DataList",listStuUserName);
 

@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -35,13 +36,16 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EditNoQuestionActivity extends AppCompatActivity {
+public class EditNoQuestionActivity extends AppCompatActivity implements View.OnClickListener {
 
     //<------------------------------------------------>
     final String TAG = "TTwTT";
     //-- Toolbar --***//
     private Toolbar toolbar;
     //<------------------------------------------------>
+
+    private EditText searchField;
+    private ImageButton searchBtn;
 
     private boolean doubleBackToExitPressedOnce;
     private String assignname;
@@ -53,8 +57,8 @@ public class EditNoQuestionActivity extends AppCompatActivity {
     private RecyclerView recyclerViewNoQuestion;
     private FirebaseRecyclerAdapter recyclerAdapter;
     private List<Choice> listNoQuestion;
-    private NoQuestionAdapter noQuestionAdapter;
     private List<Choice> listQuestion;
+    private NoQuestionAdapter noQuestionAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +82,11 @@ public class EditNoQuestionActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         table_quest = database.getReference("Assign");
 
+        //------------- Search No. -------------------//
+        searchField = findViewById(R.id.search_field);
+        searchBtn = findViewById(R.id.searchBtn);
+        searchBtn.setOnClickListener(this);
+
         //--------------- RecyclerView --------------------//
         recyclerViewNoQuestion = findViewById(R.id.recyclerViewNoQuestion);
         recyclerViewNoQuestion.setHasFixedSize(true);
@@ -86,8 +95,6 @@ public class EditNoQuestionActivity extends AppCompatActivity {
         recyclerViewNoQuestion.setItemAnimator(new DefaultItemAnimator());
         //recyclerViewNoQuestion.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         //recyclerViewNoQuestion.setAdapter(noQuestionAdapter);
-
-        //recyclerViewNoQuestion.setAdapter(recyclerAdapter);
 
         //----------------- Question list -------------------------------//
         listNoQuestion = new ArrayList<>();
@@ -100,8 +107,6 @@ public class EditNoQuestionActivity extends AppCompatActivity {
                 iassign.putExtra("subjectID", subjectID);
                 Log.e("Send NumberQuestion",choice.getNumberQuestion());
                 iassign.putExtra("numberQuestion", choice.getNumberQuestion());
-
-                //iassign.putExtra("Username", Username);
                 startActivity(iassign);
             }
         });
@@ -110,6 +115,7 @@ public class EditNoQuestionActivity extends AppCompatActivity {
 
     }
 
+    //***************************************************** No. Question lists ********************************************************************************//
     private void GetNoQuestionFirebase() {
         //Clear ListSubject
         listNoQuestion.clear();
@@ -165,6 +171,70 @@ public class EditNoQuestionActivity extends AppCompatActivity {
             }
         });
     }
+
+    //<------------------------ Firebase search field and display list ------------------------------------>//
+    private void GetSearchNoQuestionFirebase(final String searchText) {
+        //Clear ListSubject
+        listNoQuestion.clear();
+        listQuestion.clear();
+        Log.e("QuestionList_Clear",listNoQuestion.toString());
+        Query searchQuery = table_quest.orderByChild("subjectID").equalTo(subjectID);
+        searchQuery.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                //Log.e("CheckQuest",dataSnapshot.toString());
+                Assign assign = new Assign();
+                assign = dataSnapshot.getValue(Assign.class);
+                if (assign.getAssignname().equals(assignname)){
+                    if (dataSnapshot.hasChild("Quest")) {
+                        for (DataSnapshot postSnapshot : dataSnapshot.child("Quest").getChildren()){
+                            Choice choice = new Choice();
+                            choice = postSnapshot.getValue(Choice.class);
+                            if (choice.getNumberQuestion().contains(searchText)) {
+                                //Log.e("Quest",postSnapshot.toString());
+                                listNoQuestion.add(choice);
+                                listQuestion.add(choice);
+                            } else if (choice.getQuestion().contains(searchText)) {
+                                //Log.e("Quest",postSnapshot.toString());
+                                listNoQuestion.add(choice);
+                                listQuestion.add(choice);
+                            }
+                        }
+
+                        Log.e("QuestionList_1",listNoQuestion.toString());
+
+                    }
+                }
+                else{
+                    //TODO NoQuest;
+                }
+                recyclerViewNoQuestion.setAdapter(noQuestionAdapter);
+
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+    //-------------------------------------------------------------------------------------------------------//
 
     //---------------- No. question List -------------------------------------------------//
     public static class NoQuestionAdapter extends RecyclerView.Adapter<NoQuestionAdapter.NoQuestionViewHolder> {
@@ -273,7 +343,9 @@ public class EditNoQuestionActivity extends AppCompatActivity {
                         notifyItemRangeChanged(position, listAssignNoQuestion.size());
                         Log.d("Delete subject", "Subject has been deleted");
                         Toast.makeText(context, "Subject has been deleted.", Toast.LENGTH_SHORT).show();
+                        //Log.e("CheckQuest",dataSnapshot.toString());
                     }
+                    //Log.e("CheckQuest",dataSnapshot.toString());
                 }
 
                 @Override
@@ -286,7 +358,6 @@ public class EditNoQuestionActivity extends AppCompatActivity {
 
     //--------------------- Back press Toolbar -----------------------//
     private void backToolbar() {
-        //toolbar.setTitle(getString(R.string.assignment));
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -320,5 +391,21 @@ public class EditNoQuestionActivity extends AppCompatActivity {
                 doubleBackToExitPressedOnce = false;
             }
         }, 2000);
+    }
+
+
+    //------------ Onclick --------------//
+    @Override
+    public void onClick(View v) {
+        if (v == searchBtn){
+            if (searchField.getText().toString().isEmpty()) {
+                //Toast.makeText(getActivity(), "Please enter no. question", Toast.LENGTH_SHORT).show();
+                GetNoQuestionFirebase();
+            } else {
+                Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show();
+                String searchText = searchField.getText().toString().toUpperCase();
+                GetSearchNoQuestionFirebase(searchText);
+            }
+        }
     }
 }
