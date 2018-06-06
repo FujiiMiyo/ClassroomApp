@@ -105,7 +105,7 @@ public class EditNoQuestionActivity extends AppCompatActivity implements View.On
                 Intent iassign = new Intent(EditNoQuestionActivity.this, EditExamsActivity.class);
                 iassign.putExtra("assignname", assignname);
                 iassign.putExtra("subjectID", subjectID);
-                Log.e("Send NumberQuestion",choice.getNumberQuestion());
+                Log.e("Send NumberQuestion", choice.getNumberQuestion());
                 iassign.putExtra("numberQuestion", choice.getNumberQuestion());
                 startActivity(iassign);
             }
@@ -120,7 +120,7 @@ public class EditNoQuestionActivity extends AppCompatActivity implements View.On
         //Clear ListSubject
         listNoQuestion.clear();
         listQuestion.clear();
-        Log.e("QuestionList_Clear",listNoQuestion.toString());
+        Log.e("QuestionList_Clear", listNoQuestion.toString());
         Query searchQuery = table_quest.orderByChild("subjectID").equalTo(subjectID);
         searchQuery.addChildEventListener(new ChildEventListener() {
             @Override
@@ -128,9 +128,9 @@ public class EditNoQuestionActivity extends AppCompatActivity implements View.On
                 //Log.e("CheckQuest",dataSnapshot.toString());
                 Assign assign = new Assign();
                 assign = dataSnapshot.getValue(Assign.class);
-                if (assign.getAssignname().equals(assignname)){
+                if (assign.getAssignname().equals(assignname)) {
                     if (dataSnapshot.hasChild("Quest")) {
-                        for (DataSnapshot postSnapshot : dataSnapshot.child("Quest").getChildren()){
+                        for (DataSnapshot postSnapshot : dataSnapshot.child("Quest").getChildren()) {
                             Choice choice = new Choice();
                             choice = postSnapshot.getValue(Choice.class);
                             //Log.e("Quest",postSnapshot.toString());
@@ -138,11 +138,10 @@ public class EditNoQuestionActivity extends AppCompatActivity implements View.On
                             listQuestion.add(choice);
                         }
 
-                        Log.e("QuestionList_1",listNoQuestion.toString());
+                        Log.e("QuestionList_1", listNoQuestion.toString());
 
                     }
-                }
-                else{
+                } else {
                     //TODO NoQuest;
                 }
                 recyclerViewNoQuestion.setAdapter(noQuestionAdapter);
@@ -177,7 +176,7 @@ public class EditNoQuestionActivity extends AppCompatActivity implements View.On
         //Clear ListSubject
         listNoQuestion.clear();
         listQuestion.clear();
-        Log.e("QuestionList_Clear",listNoQuestion.toString());
+        Log.e("QuestionList_Clear", listNoQuestion.toString());
         Query searchQuery = table_quest.orderByChild("subjectID").equalTo(subjectID);
         searchQuery.addChildEventListener(new ChildEventListener() {
             @Override
@@ -185,9 +184,9 @@ public class EditNoQuestionActivity extends AppCompatActivity implements View.On
                 //Log.e("CheckQuest",dataSnapshot.toString());
                 Assign assign = new Assign();
                 assign = dataSnapshot.getValue(Assign.class);
-                if (assign.getAssignname().equals(assignname)){
+                if (assign.getAssignname().equals(assignname)) {
                     if (dataSnapshot.hasChild("Quest")) {
-                        for (DataSnapshot postSnapshot : dataSnapshot.child("Quest").getChildren()){
+                        for (DataSnapshot postSnapshot : dataSnapshot.child("Quest").getChildren()) {
                             Choice choice = new Choice();
                             choice = postSnapshot.getValue(Choice.class);
                             if (choice.getNumberQuestion().contains(searchText)) {
@@ -201,11 +200,10 @@ public class EditNoQuestionActivity extends AppCompatActivity implements View.On
                             }
                         }
 
-                        Log.e("QuestionList_1",listNoQuestion.toString());
+                        Log.e("QuestionList_1", listNoQuestion.toString());
 
                     }
-                }
-                else{
+                } else {
                     //TODO NoQuest;
                 }
                 recyclerViewNoQuestion.setAdapter(noQuestionAdapter);
@@ -244,6 +242,8 @@ public class EditNoQuestionActivity extends AppCompatActivity implements View.On
         final OnItemClickListener listener;
         private Context context;
         private String TAG = "TT3TT";
+        private String subjectID;
+        private String assignname;
 
         public NoQuestionAdapter(Context context, List<Choice> listAssignNoQuestion, List<Choice> listAssignQuestion, OnItemClickListener listener) {
             this.context = context;
@@ -330,12 +330,12 @@ public class EditNoQuestionActivity extends AppCompatActivity implements View.On
         //--------------------- Delete subject button ------------------------------//
         private void deleteSubject(final String no_quest, String question, final int position) {
             //TODO;
-            /*DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Assign");
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Assign");
             Query subjectQuery = ref.child("Quest").orderByChild("subjectID").equalTo(subjectID);
             subjectQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot subjectSnapshot : dataSnapshot.getChildren()) {
+                    /*for (DataSnapshot subjectSnapshot : dataSnapshot.getChildren()) {
                         subjectSnapshot.getRef().removeValue();
                         listAssignNoQuestion.remove(position);
                         listAssignQuestion.remove(position);
@@ -344,15 +344,36 @@ public class EditNoQuestionActivity extends AppCompatActivity implements View.On
                         Log.d("Delete subject", "Subject has been deleted");
                         Toast.makeText(context, "Subject has been deleted.", Toast.LENGTH_SHORT).show();
                         //Log.e("CheckQuest",dataSnapshot.toString());
-                    }
+                    }*/
                     //Log.e("CheckQuest",dataSnapshot.toString());
+
+                    /*Assign assign = new Assign();
+                    assign = dataSnapshot.getValue(Assign.class);
+                    if (assign.getAssignname().equals(assignname)) {
+                        if (dataSnapshot.hasChild("Quest")) {
+                            for (DataSnapshot postSnapshot : dataSnapshot.child("Quest").getChildren()) {
+                                Choice choice = new Choice();
+                                choice = postSnapshot.getValue(Choice.class);
+                                //Log.e("Quest",postSnapshot.toString());
+                                listAssignNoQuestion.remove(position);
+                                listAssignQuestion.remove(position);
+                                notifyItemRemoved(position);
+                                notifyItemRangeChanged(position, listAssignNoQuestion.size());
+                                Log.d("Delete question", "Subject has been deleted");
+                                Toast.makeText(context, "No." + no_quest.toString() + "has been deleted.", Toast.LENGTH_SHORT).show();
+                            }
+
+                            Log.e("QuestionList_1", listAssignNoQuestion.toString());
+
+                        }
+                    }*/
                 }
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                     Log.e(TAG, "onCancelled", databaseError.toException());
                 }
-            });*/
+            });
         }
     }
 
@@ -397,7 +418,7 @@ public class EditNoQuestionActivity extends AppCompatActivity implements View.On
     //------------ Onclick --------------//
     @Override
     public void onClick(View v) {
-        if (v == searchBtn){
+        if (v == searchBtn) {
             if (searchField.getText().toString().isEmpty()) {
                 //Toast.makeText(getActivity(), "Please enter no. question", Toast.LENGTH_SHORT).show();
                 GetNoQuestionFirebase();

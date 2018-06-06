@@ -150,7 +150,7 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
                 createAssign.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(TeacherMenuExamsActivity. this, "Create assignment", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TeacherMenuExamsActivity.this, "Create assignment", Toast.LENGTH_SHORT).show();
                         Intent iassign = new Intent(TeacherMenuExamsActivity.this, AddExamsActivity.class);
                         iassign.putExtra("assignname", assign.getAssignname());
                         iassign.putExtra("subjectID", subjectID);
@@ -162,7 +162,7 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
                 editAssign.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(TeacherMenuExamsActivity. this, "Edit assignment", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TeacherMenuExamsActivity.this, "Edit assignment", Toast.LENGTH_SHORT).show();
                         //Intent iassign = new Intent(TeacherMenuExamsActivity.this, EditExamsActivity.class);
                         Intent iassign = new Intent(TeacherMenuExamsActivity.this, EditNoQuestionActivity.class);
                         iassign.putExtra("assignname", assign.getAssignname());
@@ -174,7 +174,7 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
                 checkScore.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(TeacherMenuExamsActivity. this, "Check scores of students", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TeacherMenuExamsActivity.this, "Check scores of students", Toast.LENGTH_SHORT).show();
                         Intent iassign = new Intent(TeacherMenuExamsActivity.this, CheckScoresActivity.class);
                         iassign.putExtra("assignname", assign.getAssignname());
                         iassign.putExtra("subjectID", subjectID);
@@ -185,7 +185,7 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
                 delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(TeacherMenuExamsActivity. this, "Delete assignment", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TeacherMenuExamsActivity.this, "Delete assignment", Toast.LENGTH_SHORT).show();
                         final Dialog deleteDialog = new Dialog(TeacherMenuExamsActivity.this);
                         deleteDialog.setContentView(R.layout.dialog_delete_assign);
                         ImageButton btnConfirm = deleteDialog.findViewById(R.id.btnConfirm);
@@ -209,13 +209,15 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
                     }
 
                     //------------------ Delete Assign -----------------//
-                    private void deleteAssign(String assignname, String time, final int position) {
+                    private void deleteAssign(final String assignname, String time, final int position) {
                         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-                        Query assignQuery = ref.child("Assign").orderByChild("assignname").equalTo(assign.getAssignname());
+                        Query assignQuery = ref.child("Assign").orderByChild("subjectID").equalTo(subjectID);
                         assignQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-
+                            //TODO;
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
+                                Assign assign = new Assign();
+                                assign = dataSnapshot.getValue(Assign.class);
                                 for (DataSnapshot assignSnapshot : dataSnapshot.getChildren()) {
                                     assignSnapshot.getRef().removeValue();
                                     listAssignName.remove(position);
@@ -225,7 +227,7 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
                                     //assignAdapter.notifyItemRangeChanged(listAssignName.indexOf(assign.getAssignname()), listAssignName.size());
                                     assignAdapter.notifyItemRemoved(position);
                                     assignAdapter.notifyItemRangeChanged(position, listAssignName.size());
-                                    Log.d("Delete subject", "Assign has been deleted");
+                                    Log.d("Delete assignment", "Assignment has been deleted");
                                     Toast.makeText(TeacherMenuExamsActivity.this, "Assign has been deleted.", Toast.LENGTH_SHORT).show();
                                 }
                             }
@@ -301,7 +303,7 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
                 Assign assign = new Assign();
                 assign = dataSnapshot.getValue(Assign.class);
 
-                if (assign.getAssignname().contains(searchText) ){
+                if (assign.getAssignname().contains(searchText)) {
                     //Add to ArrayList
                     listAssignName.add(assign);
                     listAssignDate.add(assign);
@@ -383,7 +385,7 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
                 textAssignName.setText(assignname.getAssignname());
                 textDate.setText(assigndate.getTime());
                 itemView.setOnClickListener(new View.OnClickListener() {
-                                        @Override
+                    @Override
                     public void onClick(View v) {
                         listener.onItemClick(assignname, position);
                     }
@@ -399,12 +401,14 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
         bottomSheetMenu.setContentView(sheetView);
         initSelectMenu();
     }
+
     private void initSelectMenu() {
         createAssign = sheetView.findViewById(R.id.menuCreateAssign);
         editAssign = sheetView.findViewById(R.id.menuEditAssign);
         checkScore = sheetView.findViewById(R.id.menuScore);
         delete = sheetView.findViewById(R.id.menuDelete);
     }
+
     private void displaySelectMenu() {
         //Toast.makeText(TeacherMenuExamsActivity. this, "Assignment is clicked", Toast.LENGTH_SHORT).show();
         bottomSheetMenu.show();
@@ -433,7 +437,7 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
                         //Check if editText is empty
                         if (editextAssignName.getText().toString().isEmpty()) {
                             Toast.makeText(c, "Please enter assignment name", Toast.LENGTH_SHORT).show();
-                        }  else if (dataSnapshot.child(editextAssignName.getText().toString()).exists()) {
+                        } else if (dataSnapshot.child(editextAssignName.getText().toString()).exists()) {
                             Toast.makeText(c, "Assignment name has existed", Toast.LENGTH_SHORT).show();
                         } else {
                             Assign assign = new Assign(editextAssignName.getText().toString().toUpperCase(), subjectID, currentDate);
