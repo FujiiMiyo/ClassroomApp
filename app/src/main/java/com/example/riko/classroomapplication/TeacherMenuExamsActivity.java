@@ -211,24 +211,27 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
                     //------------------ Delete Assign -----------------//
                     private void deleteAssign(final String assignname, String time, final int position) {
                         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                        //Query assignQuery = ref.child("Assign").orderByChild("assignname").equalTo(assign.getAssignname());
                         Query assignQuery = ref.child("Assign").orderByChild("subjectID").equalTo(subjectID);
                         assignQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                             //TODO;
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                Assign assign = new Assign();
-                                assign = dataSnapshot.getValue(Assign.class);
-                                for (DataSnapshot assignSnapshot : dataSnapshot.getChildren()) {
-                                    assignSnapshot.getRef().removeValue();
-                                    listAssignName.remove(position);
-                                    listAssignDate.remove(position);
-                                    //listSubjectID.remove(assign.getSubjectID());
-                                    //assignAdapter.notifyItemRemoved(listAssignName.indexOf(assign.getAssignname()));
-                                    //assignAdapter.notifyItemRangeChanged(listAssignName.indexOf(assign.getAssignname()), listAssignName.size());
-                                    assignAdapter.notifyItemRemoved(position);
-                                    assignAdapter.notifyItemRangeChanged(position, listAssignName.size());
-                                    Log.d("Delete assignment", "Assignment has been deleted");
-                                    Toast.makeText(TeacherMenuExamsActivity.this, "Assign has been deleted.", Toast.LENGTH_SHORT).show();
+                                /*Assign assign = new Assign();
+                                assign = dataSnapshot.getValue(Assign.class);*/
+                                for (DataSnapshot assignSnapshot : dataSnapshot.child("assignname").getChildren()) {
+                                    if (assign.getAssignname().equals(assignname)) {
+                                        assignSnapshot.getRef().removeValue();
+                                        listAssignName.remove(position);
+                                        listAssignDate.remove(position);
+                                        //listSubjectID.remove(assign.getSubjectID());
+                                        //assignAdapter.notifyItemRemoved(listAssignName.indexOf(assign.getAssignname()));
+                                        //assignAdapter.notifyItemRangeChanged(listAssignName.indexOf(assign.getAssignname()), listAssignName.size());
+                                        assignAdapter.notifyItemRemoved(position);
+                                        assignAdapter.notifyItemRangeChanged(position, listAssignName.size());
+                                        Log.d("Delete assignment", "Assignment has been deleted");
+                                        Toast.makeText(TeacherMenuExamsActivity.this, "Assign has been deleted.", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
                             }
 

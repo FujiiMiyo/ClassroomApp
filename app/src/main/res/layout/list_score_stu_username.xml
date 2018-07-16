@@ -66,8 +66,8 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:backgroundTint="@color/pinkRoseLight1"
-        android:background="@drawable/select_type_right"
+        android:backgroundTint="@color/grey6"
+        android:background="@drawable/select_type_left"
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"/>
 

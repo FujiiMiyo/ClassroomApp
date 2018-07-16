@@ -27,7 +27,7 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="60dp"
         android:text="00/00/0000 00:00:00"
-        android:textColor="@color/orangeLight"
+        android:textColor="@color/grey"
         android:textSize="14dp" />
 
 
