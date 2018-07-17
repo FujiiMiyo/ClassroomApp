@@ -211,6 +211,7 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
                     //------------------ Delete Assign -----------------//
                     private void deleteAssign(final String assignname, String time, final int position) {
                         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                        //Query assignQuery = ref.child("Assign").orderByChild("assignname").equalTo(assign.getAssignname());
                         Query assignQuery = ref.child("Assign").orderByChild("subjectID").equalTo(subjectID);
                         assignQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                             //TODO;
