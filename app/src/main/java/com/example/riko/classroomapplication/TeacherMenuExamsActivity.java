@@ -216,19 +216,29 @@ public class TeacherMenuExamsActivity extends AppCompatActivity implements View.
                             //TODO;
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                Assign assign = new Assign();
-                                assign = dataSnapshot.getValue(Assign.class);
+
                                 for (DataSnapshot assignSnapshot : dataSnapshot.getChildren()) {
-                                    assignSnapshot.getRef().removeValue();
+                                    //Key Function for Delete
+                                    Assign assign = new Assign();
+                                    assign = assignSnapshot.getValue(Assign.class);
+                                    if (assign.getAssignname().equals(assignname)){
+                                        Log.e("delete_data", assignname);
+                                        Log.e("data", assign.getAssignname());
+                                        assignSnapshot.getRef().removeValue();
+                                    //--------------//
+
                                     listAssignName.remove(position);
                                     listAssignDate.remove(position);
+
                                     //listSubjectID.remove(assign.getSubjectID());
                                     //assignAdapter.notifyItemRemoved(listAssignName.indexOf(assign.getAssignname()));
                                     //assignAdapter.notifyItemRangeChanged(listAssignName.indexOf(assign.getAssignname()), listAssignName.size());
+
                                     assignAdapter.notifyItemRemoved(position);
                                     assignAdapter.notifyItemRangeChanged(position, listAssignName.size());
                                     Log.d("Delete assignment", "Assignment has been deleted");
                                     Toast.makeText(TeacherMenuExamsActivity.this, "Assign has been deleted.", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
                             }
 

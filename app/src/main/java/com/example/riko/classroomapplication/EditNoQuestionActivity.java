@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.example.riko.classroomapplication.Model.Assign;
 import com.example.riko.classroomapplication.Model.Choice;
+import com.example.riko.classroomapplication.Model.Write;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -99,7 +100,7 @@ public class EditNoQuestionActivity extends AppCompatActivity implements View.On
         //----------------- Question list -------------------------------//
         listNoQuestion = new ArrayList<>();
         listQuestion = new ArrayList<>();
-        noQuestionAdapter = new NoQuestionAdapter(EditNoQuestionActivity.this, listNoQuestion, listQuestion, new NoQuestionAdapter.OnItemClickListener() {
+        noQuestionAdapter = new NoQuestionAdapter(EditNoQuestionActivity.this, listNoQuestion, listQuestion, subjectID, assignname, new NoQuestionAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Choice choice) {
                 Intent iassign = new Intent(EditNoQuestionActivity.this, EditExamsActivity.class);
@@ -120,6 +121,7 @@ public class EditNoQuestionActivity extends AppCompatActivity implements View.On
         //Clear ListSubject
         listNoQuestion.clear();
         listQuestion.clear();
+        //Log.e("delete", subjectID);
         Log.e("QuestionList_Clear", listNoQuestion.toString());
         Query searchQuery = table_quest.orderByChild("subjectID").equalTo(subjectID);
         searchQuery.addChildEventListener(new ChildEventListener() {
@@ -128,6 +130,7 @@ public class EditNoQuestionActivity extends AppCompatActivity implements View.On
                 //Log.e("CheckQuest",dataSnapshot.toString());
                 Assign assign = new Assign();
                 assign = dataSnapshot.getValue(Assign.class);
+                Log.e("check_data", dataSnapshot.toString());
                 if (assign.getAssignname().equals(assignname)) {
                     if (dataSnapshot.hasChild("Quest")) {
                         for (DataSnapshot postSnapshot : dataSnapshot.child("Quest").getChildren()) {
@@ -184,6 +187,7 @@ public class EditNoQuestionActivity extends AppCompatActivity implements View.On
                 //Log.e("CheckQuest",dataSnapshot.toString());
                 Assign assign = new Assign();
                 assign = dataSnapshot.getValue(Assign.class);
+
                 if (assign.getAssignname().equals(assignname)) {
                     if (dataSnapshot.hasChild("Quest")) {
                         for (DataSnapshot postSnapshot : dataSnapshot.child("Quest").getChildren()) {
@@ -245,10 +249,13 @@ public class EditNoQuestionActivity extends AppCompatActivity implements View.On
         private String subjectID;
         private String assignname;
 
-        public NoQuestionAdapter(Context context, List<Choice> listAssignNoQuestion, List<Choice> listAssignQuestion, OnItemClickListener listener) {
+
+        public NoQuestionAdapter(Context context, List<Choice> listAssignNoQuestion, List<Choice> listAssignQuestion, String subjectID,String assignname,OnItemClickListener listener) {
             this.context = context;
             this.listAssignNoQuestion = listAssignNoQuestion;
             this.listAssignQuestion = listAssignQuestion;
+            this.subjectID = subjectID;
+            this.assignname = assignname;
             this.listener = listener;
         }
 
@@ -267,6 +274,7 @@ public class EditNoQuestionActivity extends AppCompatActivity implements View.On
         public void onBindViewHolder(@NonNull NoQuestionAdapter.NoQuestionViewHolder holder, final int position) {
             final Choice no_quest = listAssignQuestion.get(position);
             final Choice question = listAssignQuestion.get(position);
+
             holder.bind(no_quest, question, listener);
             holder.btnDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -277,6 +285,7 @@ public class EditNoQuestionActivity extends AppCompatActivity implements View.On
                     deleteDialog.setContentView(R.layout.dialog_delete_no_quest);
                     ImageButton btnConfirm = deleteDialog.findViewById(R.id.btnConfirm);
                     ImageButton btnCancel = deleteDialog.findViewById(R.id.btnCancel);
+
                     btnConfirm.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -327,15 +336,65 @@ public class EditNoQuestionActivity extends AppCompatActivity implements View.On
             }
         }
 
+
         //--------------------- Delete subject button ------------------------------//
         private void deleteSubject(final String no_quest, String question, final int position) {
-            //TODO;
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Assign");
-            Query subjectQuery = ref.child("Quest").orderByChild("subjectID").equalTo(subjectID);
+
+
+            final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Assign");
+
+            Query subjectQuery = ref.orderByChild("subjectID").equalTo(subjectID);
             subjectQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    /*for (DataSnapshot subjectSnapshot : dataSnapshot.getChildren()) {
+
+                    //Assign assign = new Assign();
+                    //assign = dataSnapshot.getValue(Assign.class);
+                    //Log.e("data", dataSnapshot.toString());
+                    int flag = 0;
+                    for (DataSnapshot questionSnapshot : dataSnapshot.getChildren()) {
+                        //Log.e("data", questionSnapshot.toString());
+                        Assign assign = new Assign();
+                        assign = questionSnapshot.getValue(Assign.class);
+                        if (assign.getAssignname().equals(assignname)) {
+                            Log.e("data", assignname);
+                            Log.e("data", assign.getAssignname());
+
+                            for (DataSnapshot choiceSnapshot : questionSnapshot.child("Quest").getChildren()) {
+                                //Log.e("data", no_quest);
+                                if (flag > 0){
+                                    Choice choice = new Choice();
+                                    choice = choiceSnapshot.getValue(Choice.class);
+                                    int newNumberQuestion = Integer.parseInt(choice.getNumberQuestion())-1;
+                                    choice.setNumberQuestion(String.valueOf(newNumberQuestion));
+                                    ref.child(questionSnapshot.getKey()).child("Quest").child(String.valueOf(newNumberQuestion)).setValue(choice);
+                                    choiceSnapshot.getRef().removeValue();
+
+                                }
+
+                                if(choiceSnapshot.child("numberQuestion").getValue().equals(no_quest)) {
+                                    //Log.e("data", choiceSnapshot.toString());
+                                    choiceSnapshot.getRef().removeValue();
+                                    int new_totalQuest = Integer.parseInt(assign.getTotalQuest())-1;
+                                    ref.child(questionSnapshot.getKey()).child("totalQuest").setValue(String.valueOf(new_totalQuest));
+                                    //Log.e("data", choiceSnapshot.getRef().toString());
+                                    flag = 1;
+                                }
+
+
+                            }
+                        }
+
+                    }
+                    /*
+                    if (assign.getAssignname().equals(assignname)) {
+
+
+                        //Log.e("data", dataSnapshot.toString());
+                        for (DataSnapshot questionSnapshot : dataSnapshot.getChildren()) {
+
+
+                        /*
                         subjectSnapshot.getRef().removeValue();
                         listAssignNoQuestion.remove(position);
                         listAssignQuestion.remove(position);
@@ -343,7 +402,8 @@ public class EditNoQuestionActivity extends AppCompatActivity implements View.On
                         notifyItemRangeChanged(position, listAssignNoQuestion.size());
                         Log.d("Delete subject", "Subject has been deleted");
                         Toast.makeText(context, "Subject has been deleted.", Toast.LENGTH_SHORT).show();
-                        //Log.e("CheckQuest",dataSnapshot.toString());
+                        //Log.e("CheckQuest",dataSnapshot.toString());*/
+                    /*    }
                     }*/
                     //Log.e("CheckQuest",dataSnapshot.toString());
 
