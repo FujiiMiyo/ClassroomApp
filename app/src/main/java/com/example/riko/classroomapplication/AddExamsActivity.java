@@ -48,7 +48,7 @@ public class AddExamsActivity extends AppCompatActivity implements View.OnClickL
 
         if (savedInstanceState == null) {
             //Toast.makeText(this, "TeacherActivity", Toast.LENGTH_SHORT).show();
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_exam,
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_exam_add,
                     new CreateSpaceFragment()).commit();
         }
     }
@@ -82,7 +82,7 @@ public class AddExamsActivity extends AppCompatActivity implements View.OnClickL
                 CreateChoiceFragment myObj = new CreateChoiceFragment();
                 myObj.setArguments(choiceFragment);
 
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_exam,
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_exam_add,
                         myObj).commit();
             }
 
@@ -107,8 +107,8 @@ public class AddExamsActivity extends AppCompatActivity implements View.OnClickL
                 CreateWriteFragment myObj = new CreateWriteFragment();
                 myObj.setArguments(writeFragment);
 
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_exam,
-                        myObj).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_exam_add,
+                        myObj).commit(); //TODO: myObj
             }
 
             @Override

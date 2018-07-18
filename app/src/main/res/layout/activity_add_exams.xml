@@ -78,7 +78,7 @@
 
 
         <FrameLayout
-            android:id="@+id/fragment_container_exam"
+            android:id="@+id/fragment_container_exam_add"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="30dp"
